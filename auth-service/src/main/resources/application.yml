@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: auth-service
+  datasource:
+    url: jdbc:postgresql://auth-service-db:5432/auth_db
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/sus-connect
+  data:
+    redis:
+      host: redis
+      port: 6379
+
+server:
+  port: 0
+  servlet:
+    context-path: /
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://service-registry:8762/eureka/
+    enabled: true
+  instance:
+    prefer-ip-address: true
+    leaseRenewalIntervalInSeconds: 10
+    leaseExpirationDurationInSeconds: 30
+
+keycloak:
+  auth-server-url: http://keycloak:8080
+  realm: sus-connect
+  resource: auth-service
+  credentials-secret: auth-service-secret
+  public-client-id: frontend-client
+  admin-user: admin
+  admin-password: admin
+
+logging:
+  level:
+    root: INFO
+    br.com.fiap.authservice: DEBUG
+    org.springframework.security: DEBUG
