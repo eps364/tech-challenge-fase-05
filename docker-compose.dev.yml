@@ -1,0 +1,102 @@
+# docker-compose.dev.yml - Development Overrides
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+#
+# This file overrides production settings for faster development iteration:
+# - Increases logging verbosity
+# - Disables health checks for faster startup
+# - Enables auto-reload where applicable
+# - Uses smaller timeouts for faster feedback loops
+
+version: '3.9'
+
+services:
+  # Disable health checks for faster startup in development
+  keycloak-postgres:
+    healthcheck:
+      disable: true
+
+  keycloak:
+    healthcheck:
+      disable: true
+
+  kafka:
+    healthcheck:
+      disable: true
+
+  triagem-postgres:
+    healthcheck:
+      disable: true
+
+  agendamento-postgres:
+    healthcheck:
+      disable: true
+
+  prontuario-postgres:
+    healthcheck:
+      disable: true
+
+  redis:
+    healthcheck:
+      disable: true
+
+  auth-service-db:
+    healthcheck:
+      disable: true
+
+  service-registry:
+    healthcheck:
+      disable: true
+    environment:
+      LOGGING_LEVEL_ROOT: INFO
+      LOGGING_LEVEL_BR_COM_FIAP: DEBUG
+      SPRING_CLOUD_CONFIG_ENABLED: "false"
+
+  api-gateway:
+    healthcheck:
+      disable: true
+    environment:
+      LOGGING_LEVEL_ROOT: INFO
+      LOGGING_LEVEL_BR_COM_FIAP: DEBUG
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_CLOUD_GATEWAY: DEBUG
+      SPRING_CLOUD_CONFIG_ENABLED: "false"
+
+  auth-service:
+    healthcheck:
+      disable: true
+    environment:
+      LOGGING_LEVEL_ROOT: INFO
+      LOGGING_LEVEL_BR_COM_FIAP: DEBUG
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
+      SPRING_JPA_SHOW_SQL: "false"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "false"
+      SPRING_CLOUD_CONFIG_ENABLED: "false"
+
+  triagem-service:
+    healthcheck:
+      disable: true
+    environment:
+      LOGGING_LEVEL_ROOT: INFO
+      LOGGING_LEVEL_BR_COM_FIAP: DEBUG
+      SPRING_JPA_SHOW_SQL: "false"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "false"
+      SPRING_CLOUD_CONFIG_ENABLED: "false"
+
+  agendamento-service:
+    healthcheck:
+      disable: true
+    environment:
+      LOGGING_LEVEL_ROOT: INFO
+      LOGGING_LEVEL_BR_COM_FIAP: DEBUG
+      SPRING_JPA_SHOW_SQL: "false"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "false"
+      SPRING_CLOUD_CONFIG_ENABLED: "false"
+
+  prontuario-service:
+    healthcheck:
+      disable: true
+    environment:
+      LOGGING_LEVEL_ROOT: INFO
+      LOGGING_LEVEL_BR_COM_FIAP: DEBUG
+      SPRING_JPA_SHOW_SQL: "false"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "false"
+      SPRING_CLOUD_CONFIG_ENABLED: "false"
