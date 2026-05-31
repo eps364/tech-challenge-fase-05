@@ -15,7 +15,7 @@
 ✅ **Automatic Appointment**: Dynamic consultation reservation respecting service deadlines  
 ✅ **Unified Medical Record**: Centralized and audited medical history  
 ✅ **OAuth2/JWT Authentication**: Keycloak with centralized identity management  
-✅ **Microservices**: 3 independent services with isolated databases  
+✅ **Microservices**: 4 domain services with isolated databases  
 ✅ **Clean Architecture**: Pure core (Java) + Infra (Spring/JPA) separated  
 ✅ **API Gateway**: Dynamic routing via Eureka  
 ✅ **Event-Driven**: Kafka for asynchronous inter-service communication  
@@ -30,25 +30,21 @@
 - **Java 21+** (for local build)
 - **Maven 3.9+** (included via mvnw)
 
-### 1️⃣ Clone and Build
+### 1️⃣ Clone Repository
 
 ```bash
 git clone https://github.com/eps364/tech-challenge-fase-05.git
 cd tech-challenge-fase-05
-
-# Build all services
-mvn clean package
 ```
 
-### 2️⃣ Start Infrastructure
+### 2️⃣ Build and Start All Services
 
 ```bash
-# Start all services
-docker-compose up -d
-
-# For development (with debug logging):
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+# Build and start infrastructure + all microservices
+docker compose up --build -d
 ```
+
+The Dockerfiles now compile each Maven module during image build (multi-stage), so a prior local mvn clean package is optional.
 
 ### 3️⃣ Verify Health
 
@@ -67,6 +63,9 @@ curl http://localhost:8202/actuator/health
 
 # Check Medical Record Service
 curl http://localhost:8203/actuator/health
+
+# Check running containers
+docker compose ps
 ```
 
 ### 4️⃣ Access Web Consoles
@@ -80,7 +79,20 @@ curl http://localhost:8203/actuator/health
 ### 5️⃣ Stop Services
 
 ```bash
-docker-compose down
+docker compose down
+```
+
+To stop and remove volumes as well:
+
+```bash
+docker compose down -v
+```
+
+To force full rebuild of all service images:
+
+```bash
+docker compose build --no-cache
+docker compose up -d
 ```
 
 ---
