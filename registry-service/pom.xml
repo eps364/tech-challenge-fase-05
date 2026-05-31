@@ -12,7 +12,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>service-registry</artifactId>
+  <artifactId>registry-service</artifactId>
   <name>SUS-Connect Service Registry (Eureka)</name>
   <description>Service Discovery with Eureka</description>
 

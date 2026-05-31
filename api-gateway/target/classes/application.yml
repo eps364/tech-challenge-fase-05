@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: api-gateway
+  profiles:
+    active: dev
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: triage-route
+          uri: lb://triage-service
+          predicates:
+            - Path=/triage/**
+          filters:
+            - StripPrefix=1
+
+        - id: appointment-route
+          uri: lb://appointment-service
+          predicates:
+            - Path=/appointment/**
+          filters:
+            - StripPrefix=1
+
+        - id: medical-record-route
+          uri: lb://medical-record-service
+          predicates:
+            - Path=/medical-record/**
+          filters:
+            - StripPrefix=1
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI:http://keycloak:8080/realms/sus-connect}
+          jwk-set-uri: ${JWT_JWK_SET_URI:http://keycloak:8080/realms/sus-connect/protocol/openid-connect/certs}
+
+server:
+  port: 8761
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8762/eureka/}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,gateway
+  endpoint:
+    health:
+      show-details: always

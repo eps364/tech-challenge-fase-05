@@ -12,7 +12,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>prontuario-service</artifactId>
+  <artifactId>medicalrecord-service</artifactId>
   <name>SUS-Connect Medical Record Service</name>
   <description>Medical Records Service</description>
 

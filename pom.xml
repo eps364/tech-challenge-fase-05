@@ -22,12 +22,12 @@
   </parent>
 
   <modules>
-    <module>service-registry</module>
+    <module>registry-service</module>
     <module>api-gateway</module>
     <module>auth-service</module>
-    <module>triagem-service</module>
-    <module>agendamento-service</module>
-    <module>prontuario-service</module>
+    <module>triage-service</module>
+    <module>appointment-service</module>
+    <module>medicalrecord-service</module>
   </modules>
 
   <properties>
@@ -69,16 +69,6 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-flyway</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-kafka</artifactId>
     </dependency>
 
     <!-- Database -->
@@ -189,27 +179,6 @@
             <include>**/*Tests.java</include>
           </includes>
         </configuration>
-      </plugin>
-
-      <!-- Failsafe Plugin (Integration Tests) -->
-      <plugin>
-        <groupId>org.apache.maven.failsafe</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>${maven-failsafe-plugin.version}</version>
-        <configuration>
-          <includes>
-            <include>**/*IT.java</include>
-            <include>**/*IntegrationTest.java</include>
-          </includes>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>integration-test</goal>
-              <goal>verify</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
 
       <!-- Spotless Plugin (Code Formatting - Google Java Format) -->

@@ -12,7 +12,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>agendamento-service</artifactId>
+  <artifactId>appointment-service</artifactId>
   <name>SUS-Connect Appointment Service</name>
   <description>Appointment Scheduling Service</description>
 
