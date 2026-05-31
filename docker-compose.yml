@@ -186,6 +186,29 @@ services:
       - susconnect-network
 
   # Java microservices
+  config-server:
+    build:
+      context: .
+      dockerfile: ./config-server/Dockerfile
+    container_name: config-server
+    restart: on-failure
+    volumes:
+      - ./config-repo:/config-repo:ro
+    environment:
+      SPRING_APPLICATION_NAME: config-server
+      SERVER_PORT: 8888
+      CONFIG_REPO_PATH: file:/config-repo
+    ports:
+      - "8888:8888"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8888/actuator/health || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    networks:
+      - susconnect-network
+
   service-registry:
     build:
       context: .
@@ -217,11 +240,14 @@ services:
     container_name: api-gateway
     restart: on-failure
     depends_on:
+      config-server:
+        condition: service_healthy
       service-registry:
         condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: api-gateway
       SERVER_PORT: 8761
+      SPRING_CLOUD_CONFIG_URI: http://config-server:8888
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8762/eureka/
       JWT_ISSUER_URI: http://keycloak:8080/realms/sus-connect
       JWT_JWK_SET_URI: http://keycloak:8080/realms/sus-connect/protocol/openid-connect/certs
@@ -246,6 +272,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      config-server:
+        condition: service_healthy
       service-registry:
         condition: service_healthy
       keycloak:
@@ -260,6 +288,7 @@ services:
       SPRING_FLYWAY_ENABLED: "true"
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
+      SPRING_CLOUD_CONFIG_URI: http://config-server:8888
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8762/eureka/
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/sus-connect
       KEYCLOAK_AUTH_SERVER_URL: http://keycloak:8080
@@ -290,6 +319,8 @@ services:
         condition: service_healthy
       kafka:
         condition: service_healthy
+      config-server:
+        condition: service_healthy
       service-registry:
         condition: service_healthy
     environment:
@@ -301,6 +332,7 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: validate
       SPRING_FLYWAY_ENABLED: "true"
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_CLOUD_CONFIG_URI: http://config-server:8888
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8762/eureka/
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/sus-connect
     ports:
@@ -324,6 +356,8 @@ services:
         condition: service_healthy
       kafka:
         condition: service_healthy
+      config-server:
+        condition: service_healthy
       service-registry:
         condition: service_healthy
     environment:
@@ -335,6 +369,7 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: validate
       SPRING_FLYWAY_ENABLED: "true"
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_CLOUD_CONFIG_URI: http://config-server:8888
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8762/eureka/
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/sus-connect
     ports:
@@ -358,6 +393,8 @@ services:
         condition: service_healthy
       kafka:
         condition: service_healthy
+      config-server:
+        condition: service_healthy
       service-registry:
         condition: service_healthy
     environment:
@@ -369,6 +406,7 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: validate
       SPRING_FLYWAY_ENABLED: "true"
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_CLOUD_CONFIG_URI: http://config-server:8888
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8762/eureka/
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/sus-connect
     ports:
