@@ -1,0 +1,3 @@
+/home/emerson/projetos/fiap/tech-challenge-fase-05/medicalrecord-service/src/main/java/br/com/fiap/susconnect/medicalrecord/MedicalRecordServiceApplication.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/medicalrecord-service/src/main/java/br/com/fiap/susconnect/medicalrecord/core/domain/entity/MedicalRecord.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/medicalrecord-service/src/main/java/br/com/fiap/susconnect/medicalrecord/infra/entity/MedicalRecordJpa.java

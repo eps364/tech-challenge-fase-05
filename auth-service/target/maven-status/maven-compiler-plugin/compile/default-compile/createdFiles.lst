@@ -8,6 +8,8 @@ br/com/fiap/authservice/infra/exception/AuthenticationException.class
 br/com/fiap/authservice/core/usecase/RegisterUserUseCase.class
 br/com/fiap/authservice/core/dto/RefreshTokenRequest.class
 br/com/fiap/authservice/infra/config/KeycloakConfig.class
+br/com/fiap/authservice/infra/gateway/KeycloakGatewayImpl.class
+br/com/fiap/authservice/infra/gateway/RedisTokenBlacklistGatewayImpl.class
 br/com/fiap/authservice/core/usecase/LoginUseCase.class
 br/com/fiap/authservice/core/domain/LoginResult.class
 br/com/fiap/authservice/core/dto/LoginResponse.class

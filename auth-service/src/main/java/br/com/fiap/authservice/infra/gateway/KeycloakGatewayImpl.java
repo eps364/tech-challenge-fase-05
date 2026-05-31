@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import jakarta.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.Collections;
 
@@ -59,7 +60,7 @@ public class KeycloakGatewayImpl implements IdentityProviderGateway {
             userRepresentation.setEnabled(true);
 
             // Create user
-            javax.ws.rs.core.Response response = usersResource.create(userRepresentation);
+            Response response = usersResource.create(userRepresentation);
             if (response.getStatus() != 201) {
                 throw new RuntimeException("Failed to create user: " + response.getStatus());
             }
@@ -74,15 +75,12 @@ public class KeycloakGatewayImpl implements IdentityProviderGateway {
             usersResource.get(userId).resetPassword(passwordCred);
 
             // Assign roles
-            user.getRoles().forEach(role -> {
-                try {
-                    realmResource.roles().get(role).addComposites(Collections.singleton(
-                            realmResource.roles().get(role).toRepresentation()
-                    ));
-                } catch (Exception e) {
-                    // Role assignment
-                }
-            });
+            if (user.getRoles() != null && !user.getRoles().isEmpty()) {
+                var roles = user.getRoles().stream()
+                        .map(roleName -> realmResource.roles().get(roleName).toRepresentation())
+                        .toList();
+                usersResource.get(userId).roles().realmLevel().add(roles);
+            }
         } catch (Exception e) {
             throw new RuntimeException("Error creating user in Keycloak", e);
         }

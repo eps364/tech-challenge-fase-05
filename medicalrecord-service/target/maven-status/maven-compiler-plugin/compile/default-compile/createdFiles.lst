@@ -1,0 +1,4 @@
+br/com/fiap/susconnect/medicalrecord/MedicalRecordServiceApplication.class
+br/com/fiap/susconnect/medicalrecord/infra/entity/MedicalRecordJpa$MedicalRecordJpaBuilder.class
+br/com/fiap/susconnect/medicalrecord/infra/entity/MedicalRecordJpa.class
+br/com/fiap/susconnect/medicalrecord/core/domain/entity/MedicalRecord.class

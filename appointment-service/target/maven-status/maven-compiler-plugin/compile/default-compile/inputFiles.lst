@@ -1,0 +1,5 @@
+/home/emerson/projetos/fiap/tech-challenge-fase-05/appointment-service/src/main/java/br/com/fiap/susconnect/appointment/AppointmentServiceApplication.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/appointment-service/src/main/java/br/com/fiap/susconnect/appointment/core/domain/entity/Appointment.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/appointment-service/src/main/java/br/com/fiap/susconnect/appointment/core/gateway/AppointmentGateway.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/appointment-service/src/main/java/br/com/fiap/susconnect/appointment/infra/entity/AppointmentJpa.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/appointment-service/src/main/java/br/com/fiap/susconnect/appointment/infra/repository/AppointmentRepository.java

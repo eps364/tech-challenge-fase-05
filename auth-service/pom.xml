@@ -58,6 +58,12 @@
             <version>26.0.5</version>
         </dependency>
 
+        <!-- Jakarta RS API -->
+        <dependency>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+        </dependency>
+
         <!-- Database -->
         <dependency>
             <groupId>org.postgresql</groupId>

@@ -1,0 +1,9 @@
+/home/emerson/projetos/fiap/tech-challenge-fase-05/triage-service/src/main/java/br/com/fiap/susconnect/triage/TriageServiceApplication.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/triage-service/src/main/java/br/com/fiap/susconnect/triage/core/domain/entity/Triage.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/triage-service/src/main/java/br/com/fiap/susconnect/triage/core/dto/TriageOutput.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/triage-service/src/main/java/br/com/fiap/susconnect/triage/core/gateway/TriageGateway.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/triage-service/src/main/java/br/com/fiap/susconnect/triage/core/usecase/CreateTriageUseCase.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/triage-service/src/main/java/br/com/fiap/susconnect/triage/infra/entity/TriageJpa.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/triage-service/src/main/java/br/com/fiap/susconnect/triage/infra/gateway/TriageRepositoryAdapter.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/triage-service/src/main/java/br/com/fiap/susconnect/triage/infra/repository/TriageRepository.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/triage-service/src/main/java/br/com/fiap/susconnect/triage/infra/web/TriageController.java
