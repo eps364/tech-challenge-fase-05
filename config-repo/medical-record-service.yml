@@ -1,0 +1,25 @@
+# -----------------------------------------------------------------------
+# medical-record-service — centralized configuration
+# -----------------------------------------------------------------------
+
+server:
+  port: 8203
+
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://medical-record-postgres:5432/medical_record_db}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  kafka:
+    consumer:
+      group-id: medical-record-service
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer

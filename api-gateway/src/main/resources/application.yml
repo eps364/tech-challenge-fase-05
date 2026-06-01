@@ -1,8 +1,12 @@
 spring:
   application:
     name: api-gateway
+  main:
+    web-application-type: reactive
   profiles:
     active: dev
+  config:
+    import: "optional:configserver:${SPRING_CLOUD_CONFIG_URI:http://localhost:8888}"
 
   cloud:
     gateway:
@@ -29,6 +33,13 @@ spring:
           uri: lb://medical-record-service
           predicates:
             - Path=/medical-record/**
+          filters:
+            - StripPrefix=1
+
+        - id: auth-route
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
           filters:
             - StripPrefix=1
 

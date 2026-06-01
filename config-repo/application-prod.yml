@@ -1,0 +1,25 @@
+# -----------------------------------------------------------------------
+# Production profile overrides — applied to ALL services in prod.
+#
+# SECURITY RULES:
+#   - Never commit real secrets here.
+#   - Inject sensitive values via environment variables or a secret manager
+#     (e.g., AWS Secrets Manager, HashiCorp Vault, K8s Secrets).
+# -----------------------------------------------------------------------
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Must be overridden by SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+          issuer-uri: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI}
+  kafka:
+    # Must be overridden by SPRING_KAFKA_BOOTSTRAP_SERVERS
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
+
+eureka:
+  client:
+    serviceUrl:
+      # Must be overridden by EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}

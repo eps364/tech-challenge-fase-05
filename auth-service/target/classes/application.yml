@@ -1,6 +1,8 @@
 spring:
   application:
     name: auth-service
+  config:
+    import: "optional:configserver:${SPRING_CLOUD_CONFIG_URI:http://localhost:8888}"
   datasource:
     url: jdbc:postgresql://auth-service-db:5432/auth_db
     username: postgres

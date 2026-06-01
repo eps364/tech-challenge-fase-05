@@ -1,0 +1,19 @@
+meta {
+  name: Create Triage
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{triageBaseUrl}}/api/v1/triage
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+headers {
+  Accept: application/json
+}

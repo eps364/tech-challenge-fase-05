@@ -1,0 +1,19 @@
+meta {
+  name: Test Private
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{authBaseUrl}}/auth/test/private
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+headers {
+  Accept: application/json
+}

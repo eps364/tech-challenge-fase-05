@@ -2,7 +2,6 @@
   "realm": "sus-connect",
   "enabled": true,
   "accessTokenLifespan": 900,
-  "refreshTokenLifespan": 7776000,
   "clients": [
     {
       "clientId": "api-gateway",
