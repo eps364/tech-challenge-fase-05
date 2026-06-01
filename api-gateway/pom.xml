@@ -17,7 +17,7 @@
   <description>API Gateway with JWT Validation</description>
 
   <dependencies>
-    <!-- Spring Cloud Gateway -->
+    <!-- Spring Cloud Gateway (reactive WebFlux) -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-gateway</artifactId>
@@ -48,12 +48,19 @@
       <version>9.39.2</version>
     </dependency>
 
-    <!-- Lombok -->
+    <!-- Spring Cloud Config Client -->
     <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <optional>true</optional>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-config</artifactId>
     </dependency>
+    
+    <!-- Spring Boot Actuator -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+    <!-- Lombok (inherited from parent) -->
 
     <!-- Testing -->
     <dependency>

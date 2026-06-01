@@ -12,15 +12,15 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>registry-service</artifactId>
-  <name>SUS-Connect Service Registry (Eureka)</name>
-  <description>Service Discovery with Eureka</description>
+  <artifactId>config-server</artifactId>
+  <name>SUS-Connect Config Server</name>
+  <description>Centralized Configuration Server (Spring Cloud Config)</description>
 
   <dependencies>
-    <!-- Spring Cloud Netflix Eureka Server -->
+    <!-- Spring Cloud Config Server -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+      <artifactId>spring-cloud-config-server</artifactId>
     </dependency>
     
     <!-- Spring Boot Actuator -->
