@@ -29,13 +29,35 @@ services:
 
   # Disable healthchecks for Java microservices - they retry connections
   config-server:
+    build:
+      target: builder
+    command: mvn -f config-server/pom.xml spring-boot:run -Dspring-boot.devtools.restart.enabled=true
     healthcheck:
       disable: true
+    volumes:
+      - ./config-repo:/config-repo:ro
+      - m2-cache:/root/.m2
     environment:
       LOGGING_LEVEL_ROOT: INFO
       LOGGING_LEVEL_BR_COM_FIAP: DEBUG
+      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
+      SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
+      SPRING_PROFILES_ACTIVE: native,dev
+      MAVEN_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=4 -Xms256m -Xmx512m
+    develop:
+      watch:
+        - path: ./config-server/src/main/java
+          action: sync+restart
+          target: /workspace/config-server/src/main/java
+        - path: ./config-server/src/main/resources
+          action: sync+restart
+          target: /workspace/config-server/src/main/resources
 
   service-registry:
+    build:
+      target: builder
+    command: mvn -f registry-service/pom.xml spring-boot:run -Dspring-boot.devtools.restart.enabled=true
     # Keep dependency on healthy Keycloak to avoid connection errors
     depends_on:
       kafka:
@@ -44,23 +66,59 @@ services:
         condition: service_healthy
     healthcheck:
       disable: true
+    volumes:
+      - m2-cache:/root/.m2
     environment:
       LOGGING_LEVEL_ROOT: INFO
       LOGGING_LEVEL_BR_COM_FIAP: DEBUG
+      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
+      SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
+      SPRING_PROFILES_ACTIVE: dev
+      MAVEN_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=4 -Xms256m -Xmx512m
+    develop:
+      watch:
+        - path: ./registry-service/src/main/java
+          action: sync+restart
+          target: /workspace/registry-service/src/main/java
+        - path: ./registry-service/src/main/resources
+          action: sync+restart
+          target: /workspace/registry-service/src/main/resources
 
   api-gateway:
+    build:
+      target: builder
+    command: mvn -f api-gateway/pom.xml spring-boot:run -Dspring-boot.devtools.restart.enabled=true
     depends_on:
       - config-server
       - service-registry
     healthcheck:
       disable: true
+    volumes:
+      - m2-cache:/root/.m2
     environment:
       LOGGING_LEVEL_ROOT: INFO
       LOGGING_LEVEL_BR_COM_FIAP: DEBUG
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_CLOUD_GATEWAY: DEBUG
       SPRING_CLOUD_CONFIG_URI: http://config-server:8888
+      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
+      SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
+      SPRING_PROFILES_ACTIVE: dev
+      MAVEN_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=4 -Xms256m -Xmx512m
+    develop:
+      watch:
+        - path: ./api-gateway/src/main/java
+          action: sync+restart
+          target: /workspace/api-gateway/src/main/java
+        - path: ./api-gateway/src/main/resources
+          action: sync+restart
+          target: /workspace/api-gateway/src/main/resources
 
   auth-service:
+    build:
+      target: builder
+    command: mvn -f auth-service/pom.xml spring-boot:run -Dspring-boot.devtools.restart.enabled=true
     depends_on:
       - auth-service-db
       - redis
@@ -69,6 +127,8 @@ services:
       - keycloak
     healthcheck:
       disable: true
+    volumes:
+      - m2-cache:/root/.m2
     environment:
       LOGGING_LEVEL_ROOT: INFO
       LOGGING_LEVEL_BR_COM_FIAP: DEBUG
@@ -76,8 +136,24 @@ services:
       SPRING_JPA_SHOW_SQL: "false"
       SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "false"
       SPRING_CLOUD_CONFIG_URI: http://config-server:8888
+      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
+      SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
+      SPRING_PROFILES_ACTIVE: dev
+      MAVEN_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=4 -Xms256m -Xmx512m
+    develop:
+      watch:
+        - path: ./auth-service/src/main/java
+          action: sync+restart
+          target: /workspace/auth-service/src/main/java
+        - path: ./auth-service/src/main/resources
+          action: sync+restart
+          target: /workspace/auth-service/src/main/resources
 
   triage-service:
+    build:
+      target: builder
+    command: mvn -f triage-service/pom.xml spring-boot:run -Dspring-boot.devtools.restart.enabled=true
     depends_on:
       - triage-postgres
       - kafka
@@ -85,14 +161,32 @@ services:
       - service-registry
     healthcheck:
       disable: true
+    volumes:
+      - m2-cache:/root/.m2
     environment:
       LOGGING_LEVEL_ROOT: INFO
       LOGGING_LEVEL_BR_COM_FIAP: DEBUG
       SPRING_JPA_SHOW_SQL: "false"
       SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "false"
       SPRING_CLOUD_CONFIG_URI: http://config-server:8888
+      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
+      SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
+      SPRING_PROFILES_ACTIVE: dev
+      MAVEN_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=4 -Xms256m -Xmx512m
+    develop:
+      watch:
+        - path: ./triage-service/src/main/java
+          action: sync+restart
+          target: /workspace/triage-service/src/main/java
+        - path: ./triage-service/src/main/resources
+          action: sync+restart
+          target: /workspace/triage-service/src/main/resources
 
   appointment-service:
+    build:
+      target: builder
+    command: mvn -f appointment-service/pom.xml spring-boot:run -Dspring-boot.devtools.restart.enabled=true
     depends_on:
       - appointment-postgres
       - kafka
@@ -100,14 +194,32 @@ services:
       - service-registry
     healthcheck:
       disable: true
+    volumes:
+      - m2-cache:/root/.m2
     environment:
       LOGGING_LEVEL_ROOT: INFO
       LOGGING_LEVEL_BR_COM_FIAP: DEBUG
       SPRING_JPA_SHOW_SQL: "false"
       SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "false"
       SPRING_CLOUD_CONFIG_URI: http://config-server:8888
+      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
+      SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
+      SPRING_PROFILES_ACTIVE: dev
+      MAVEN_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=4 -Xms256m -Xmx512m
+    develop:
+      watch:
+        - path: ./appointment-service/src/main/java
+          action: sync+restart
+          target: /workspace/appointment-service/src/main/java
+        - path: ./appointment-service/src/main/resources
+          action: sync+restart
+          target: /workspace/appointment-service/src/main/resources
 
   medical-record-service:
+    build:
+      target: builder
+    command: mvn -f medicalrecord-service/pom.xml spring-boot:run -Dspring-boot.devtools.restart.enabled=true
     depends_on:
       - medical-record-postgres
       - kafka
@@ -115,9 +227,27 @@ services:
       - service-registry
     healthcheck:
       disable: true
+    volumes:
+      - m2-cache:/root/.m2
     environment:
       LOGGING_LEVEL_ROOT: INFO
       LOGGING_LEVEL_BR_COM_FIAP: DEBUG
       SPRING_JPA_SHOW_SQL: "false"
       SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "false"
       SPRING_CLOUD_CONFIG_URI: http://config-server:8888
+      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
+      SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
+      SPRING_PROFILES_ACTIVE: dev
+      MAVEN_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=4 -Xms256m -Xmx512m
+    develop:
+      watch:
+        - path: ./medicalrecord-service/src/main/java
+          action: sync+restart
+          target: /workspace/medicalrecord-service/src/main/java
+        - path: ./medicalrecord-service/src/main/resources
+          action: sync+restart
+          target: /workspace/medicalrecord-service/src/main/resources
+
+volumes:
+  m2-cache:

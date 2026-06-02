@@ -108,6 +108,69 @@ Complete technical documentation:
 - [`.agent/context/tech_history.md`](.agent/context/tech_history.md) - Architectural decisions
 - [`docs/event-storm.md`](docs/event-storm.md) - Event map
 - [`docs/protocol_manchester.md`](docs/protocol_manchester.md) - Manchester Protocol
+- [`docs/RFC_9457.md`](docs/RFC_9457.md) - **API Error Handling**: Problem Details standard (RFC 9457)
+- [`docs/PROBLEM_TYPES_REGISTRY.md`](docs/PROBLEM_TYPES_REGISTRY.md) - Complete registry of custom error problem types
+
+---
+
+## 🚨 API Error Handling (RFC 9457)
+
+This project implements **RFC 9457: Problem Details for HTTP APIs**, providing standardized, machine-readable error responses across all microservices.
+
+### Error Response Format
+
+All error responses use the `application/problem+json` media type with the following structure:
+
+```json
+{
+  "type": "https://api.example.com/problems/triage/invalid-risk-level",
+  "status": 422,
+  "title": "Invalid Risk Level",
+  "detail": "The provided risk level 'extreme' is not valid. Allowed values: low, medium, high.",
+  "instance": "/api/triage/abc123",
+  "timestamp": "2024-12-15T10:30:45.123Z",
+  "traceId": "4ba2b033-1234-5678-abcd-efg123456789",
+  "correlationId": "req-2024-12-15-001"
+}
+```
+
+### Key Features
+
+✅ **Standardized Format**: RFC 9457 compliance across all services  
+✅ **Custom Problem Types**: Domain-specific error URIs (e.g., `/problems/triage/invalid-risk-level`)  
+✅ **Traceability**: Built-in `traceId` and `correlationId` for request tracking  
+✅ **Operational Extensions**: `timestamp` for issue correlation with server logs  
+✅ **Service-Specific Errors**: Each microservice defines its own problem type registry  
+
+### Documentation & Resources
+
+- **Full Specification**: See [`docs/RFC_9457.md`](docs/RFC_9457.md) for complete RFC 9457 implementation details
+- **Problem Types Registry**: See [`docs/PROBLEM_TYPES_REGISTRY.md`](docs/PROBLEM_TYPES_REGISTRY.md) for all error types across services
+- **RFC 9457 Standard**: https://www.rfc-editor.org/rfc/rfc9457.html
+
+### Common Error Codes
+
+| HTTP Status | Problem Type | Description |
+|---|---|---|
+| **400** | `gateway/invalid-request`, `*/validation-error` | Invalid request or validation failed |
+| **401** | `auth/unauthorized`, `auth/token-expired` | Missing or invalid credentials |
+| **403** | `auth/forbidden`, `medical-records/access-denied` | Insufficient permissions |
+| **404** | `*/not-found` | Resource not found |
+| **409** | `appointments/conflict`, `*/conflict`, `triage/duplicate-entry` | Resource conflict |
+| **422** | `*/invalid-*` | Unprocessable entity |
+| **429** | `gateway/rate-limited` | Rate limit exceeded |
+| **503** | `gateway/service-unavailable` | Downstream service unavailable |
+
+### Trace ID Propagation
+
+All service-to-service calls propagate trace context via HTTP headers:
+
+```http
+X-Trace-ID: 4ba2b033-1234-5678-abcd-efg123456789
+X-Correlation-ID: req-2024-12-15-001
+```
+
+This enables complete request tracing across the entire microservices architecture.
 
 ---
 
