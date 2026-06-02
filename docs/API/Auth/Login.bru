@@ -17,7 +17,17 @@ headers {
 
 body:json {
   {
-    "username": "john.doe",
+    "username": "john4.doe",
     "password": "ChangeMe123!"
+  }
+}
+
+script:post-response {
+  if (res.body && res.body.accessToken) {
+    bru.setEnvVar("accessToken", res.body.accessToken);
+  }
+  
+  if (res.body && res.body.refreshToken) {
+    bru.setEnvVar("refreshToken", res.body.refreshToken);
   }
 }

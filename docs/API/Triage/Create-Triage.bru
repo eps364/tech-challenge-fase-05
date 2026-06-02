@@ -17,3 +17,9 @@ auth:bearer {
 headers {
   Accept: application/json
 }
+
+script:post-response {
+  if (res.status === 201) {
+    console.log("Triage created successfully with status 201");
+  }
+}

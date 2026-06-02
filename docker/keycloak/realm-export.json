@@ -22,6 +22,7 @@
       "name": "Auth Service",
       "enabled": true,
       "publicClient": false,
+      "directAccessGrantsEnabled": true,
       "secret": "auth-service-secret",
       "protocol": "openid-connect",
       "serviceAccountsEnabled": true,

@@ -17,3 +17,10 @@ auth:bearer {
 headers {
   Accept: application/json
 }
+
+script:post-response {
+  if (res.status === 200) {
+    const username = res.body.substring(res.body.indexOf("Hello ") + 6, res.body.indexOf("!"));
+    console.log("Authenticated as: " + username);
+  }
+}
