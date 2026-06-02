@@ -3,9 +3,9 @@
 ## Java & JVM Ecosystem
 
 ### Core Language
-- **Java 17** (LTS - Long Term Support until September 2026)
-- Features used: Records, Text Blocks, Sealed Classes
-- Compilation target: Java 17 bytecode
+- **Java 21** (LTS - Long Term Support until September 2031)
+- Features used: Records, Text Blocks, Sealed Classes, Virtual Threads
+- Compilation target: Java 21 bytecode
 
 ### Build Management
 - **Maven 3.9+** with multi-module structure
@@ -20,10 +20,10 @@
 ### Dependency Management
 ```xml
 <properties>
-  <spring-boot.version>3.3.0</spring-boot.version>
+  <spring-boot.version>3.4.5</spring-boot.version>
   <spring-cloud.version>2024.0.0</spring-cloud.version>
-  <maven.compiler.source>17</maven.compiler.source>
-  <maven.compiler.target>17</maven.compiler.target>
+  <maven.compiler.source>21</maven.compiler.source>
+  <maven.compiler.target>21</maven.compiler.target>
 </properties>
 ```
 
@@ -31,7 +31,7 @@
 
 ## Spring Ecosystem
 
-### Spring Boot (3.3.0)
+### Spring Boot (3.4.5)
 Core framework for microservices:
 - Auto-configuration for common patterns
 - Embedded Tomcat servlet container (port customizable)

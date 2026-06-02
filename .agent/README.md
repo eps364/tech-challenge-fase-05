@@ -19,8 +19,8 @@ Este diretório contém os arquivos de especificação que guiam a implementaç�
 
 | Camada | Tecnologia |
 | --- | --- |
-| Linguagem | Java 17 LTS |
-| Framework | Spring Boot 3.3.0 |
+| Linguagem | Java 21 LTS |
+| Framework | Spring Boot 3.4.5 |
 | ORM | Spring Data JPA + Hibernate |
 | Banco de dados | PostgreSQL 15 |
 | Migrations | Flyway |
