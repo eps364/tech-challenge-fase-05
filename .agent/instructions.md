@@ -6,31 +6,31 @@ Este arquivo define as diretrizes obrigatórias para a atuação do agente neste
 
 Sempre consulte os arquivos abaixo para garantir que todas as interações e gerações de código estejam alinhadas com as definições do projeto:
 
-1. **Regras de Negócio**: [.agent/context/business_rules.md](file:///.agent/context/business_rules.md) — Protocolo de Manchester, fluxos de triagem e eventos de domínio.
-2. **Arquitetura**: [.agent/context/architecture.md](file:///.agent/context/architecture.md) — Estrutura de microsserviços, Clean Architecture e bancos de dados.
-3. **Boas Práticas**: [.agent/context/best_practices.md](file:///.agent/context/best_practices.md) — Padrões de código, naming, commits e testes.
-4. **Tecnologias**: [.agent/context/technologies.md](file:///.agent/context/technologies.md) — Stack tecnológica detalhada.
-5. **Histórico Técnico**: [.agent/context/tech_history.md](file:///.agent/context/tech_history.md) — Decisões arquiteturais e suas justificativas.
-6. **Sugestões e Evolução**: [.agent/context/suggestions.md](file:///.agent/context/suggestions.md) — Próximos passos e melhorias sugeridas.
+1. **Regras de Negócio**: [`context/business_rules.md`](context/business_rules.md) — Protocolo de Manchester, fluxos de triagem e eventos de domínio.
+2. **Arquitetura**: [`context/architecture.md`](context/architecture.md) — Estrutura de 7 microsserviços, Clean Architecture e bancos de dados.
+3. **Boas Práticas**: [`context/best_practices.md`](context/best_practices.md) — Padrões de código, naming, commits e testes.
+4. **Tecnologias**: [`context/technologies.md`](context/technologies.md) — Stack tecnológica detalhada (Java 21, Spring Boot 3.4.5).
+5. **Histórico Técnico**: [`context/tech_history.md`](context/tech_history.md) — Decisões arquiteturais e suas justificativas.
+6. **Sugestões e Evolução**: [`context/suggestions.md`](context/suggestions.md) — Próximos passos e melhorias sugeridas.
 
 ## Regras de Código
 
 Consulte também:
 
-- [.agent/rules/clean-architecture.md](file:///.agent/rules/clean-architecture.md) — Estrutura obrigatória Core/Infra por serviço.
-- [.agent/rules/coding_rules.md](file:///.agent/rules/coding_rules.md) — Convenções de nomenclatura e validação de código.
+- [`rules/clean-architecture.md`](rules/clean-architecture.md) — Estrutura obrigatória Core/Infra por serviço.
+- [`rules/coding_rules.md`](rules/coding_rules.md) — Convenções de nomenclatura e validação de código.
 
 ## Workflow de Ambiente
 
 Para executar o projeto localmente:
 
-- [.agent/workflows/run-environment.md](file:///.agent/workflows/run-environment.md) — Passos para subir o ambiente completo com Docker Compose.
+- [`workflows/run-environment.md`](workflows/run-environment.md) — Passos para subir o ambiente completo com Docker Compose.
 
 ## Artefatos do Projeto
 
-- [.agent/requirements.md](file:///.agent/requirements.md) — Requisitos funcionais (RF01–RF10) e não-funcionais.
-- [.agent/features.md](file:///.agent/features.md) — Features mapeadas em sprints com tarefas granulares.
-- [.agent/patterns.md](file:///.agent/patterns.md) — Exemplos de código padronizados (Entity, DTO, Service, Controller, Tests).
+- [`requirements.md`](requirements.md) — Requisitos funcionais (RF01–RF10) e não-funcionais com status de implementação.
+- [`features.md`](features.md) — Features mapeadas em sprints com tarefas granulares e status de implementação.
+- [`patterns.md`](patterns.md) — Exemplos de código padronizados (Entity, DTO, Service, Controller, Tests).
 
 ---
 

@@ -4,57 +4,46 @@ Exemplos canônicos a seguir em toda implementação. Copie e adapte o nome do d
 
 ---
 
-## Padrão 1 — Entidade JPA com Auditoria
+## Padrão 1 — Entidade JPA com Auditoria (Infra Layer)
 
 ```java
-package br.com.fiap.susconnect.triagem.model;
+package br.com.fiap.susconnect.triage.infra.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
-@Table(name = "triagens", schema = "triagem")
-@Getter
-@Setter
+@Table(name = "triage")
+@Data
 @NoArgsConstructor
-public class Triagem {
+@AllArgsConstructor
+@Builder
+public class TriageJpa {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, length = 20)
-    private String pacienteId;
+    private UUID id;
 
     @Column(nullable = false)
-    private Long unidadeSaudeId;
+    private UUID patientId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private Cor corClassificacao;
+    @Column(nullable = false, length = 10)
+    private String riskLevel;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 30)
-    private StatusTriagem status = StatusTriagem.INICIADA;
+    @Column(nullable = false, name = "created_at")
+    private LocalDateTime createdAt;
 
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime dataCriacao;
-
-    @UpdateTimestamp
-    @Column(nullable = false)
-    private LocalDateTime dataAtualizacao;
-
-    @Version
-    private Long version;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }
 ```
+
+**Nota**: Entidades JPA devem estar em `infra/entity/` com sufixo `Jpa`. O pacote `core/entity/` contém apenas entidades de domínio (Java puro, sem anotações).
 
 ---
 
