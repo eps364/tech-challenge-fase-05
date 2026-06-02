@@ -1,1 +1,11 @@
 /home/emerson/projetos/fiap/tech-challenge-fase-05/api-gateway/src/main/java/br/com/fiap/gateway/ApiGatewayApplication.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/api-gateway/src/main/java/br/com/fiap/gateway/infra/exception/DomainException.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/api-gateway/src/main/java/br/com/fiap/gateway/infra/exception/ExceptionToProblemMapper.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/api-gateway/src/main/java/br/com/fiap/gateway/infra/exception/GlobalExceptionHandler.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/api-gateway/src/main/java/br/com/fiap/gateway/infra/exception/InvalidRequestException.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/api-gateway/src/main/java/br/com/fiap/gateway/infra/exception/ProblemDetail.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/api-gateway/src/main/java/br/com/fiap/gateway/infra/exception/ProblemDetailBuilder.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/api-gateway/src/main/java/br/com/fiap/gateway/infra/exception/ProblemType.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/api-gateway/src/main/java/br/com/fiap/gateway/infra/exception/RateLimitedException.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/api-gateway/src/main/java/br/com/fiap/gateway/infra/exception/ServiceUnavailableException.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/api-gateway/src/main/java/br/com/fiap/gateway/infra/exception/TraceIdProvider.java
