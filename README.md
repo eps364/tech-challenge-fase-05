@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Java Version](https://img.shields.io/badge/Java-21-orange)](https://www.oracle.com/java/)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.0-green)](https://spring.io/projects/spring-boot)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.5-green)](https://spring.io/projects/spring-boot)
 [![Docker Compose](https://img.shields.io/badge/Docker%20Compose-3.9-blue)](https://docs.docker.com/compose/)
 
 ## 📋 Overview
@@ -12,13 +12,13 @@
 ### Key Features
 
 ✅ **Intelligent Triage**: Automatic patient classification into 5 risk levels (RED, ORANGE, YELLOW, GREEN, BLUE)  
-✅ **Automatic Appointment**: Dynamic consultation reservation respecting service deadlines  
-✅ **Unified Medical Record**: Centralized and audited medical history  
 ✅ **OAuth2/JWT Authentication**: Keycloak with centralized identity management  
-✅ **Microservices**: 4 domain services with isolated databases  
+✅ **Microservices Architecture**: 7 independent services with isolated databases  
 ✅ **Clean Architecture**: Pure core (Java) + Infra (Spring/JPA) separated  
-✅ **API Gateway**: Dynamic routing via Eureka  
+✅ **API Gateway**: Dynamic routing via Eureka service discovery  
 ✅ **Event-Driven**: Kafka for asynchronous inter-service communication  
+⚠️ **Appointment Scheduling**: In development (entity layer complete)  
+⚠️ **Medical Records**: In development (entity layer complete)  
 
 ---
 
@@ -158,7 +158,7 @@ Complete technical documentation:
 - Dynamic routing to microservices
 - Rate limiting and security filters
 
-### 3. **Auth Service** (Port 8080)
+### 3. **Auth Service** (Port: Dynamic via Eureka)
 - User registration and authentication
 - Keycloak OAuth2/OpenID Connect integration
 - JWT token generation and validation
@@ -196,10 +196,10 @@ GET    /api/v1/triage/{id}         # Get triage by ID
 - Produces `appointment.confirmed` events
 
 **Database**: `appointment_db` (PostgreSQL)
+**Status**: ⚠️ In Development (entity layer implemented, endpoints pending)
 **Endpoints**:
 ```bash
-POST   /api/v1/appointment         # Create appointment
-GET    /api/v1/appointment/{id}    # Get appointment
+# Endpoints coming in Phase 2
 ```
 
 ### 6. **Medical Record Service** (Port 8203)
@@ -209,10 +209,10 @@ GET    /api/v1/appointment/{id}    # Get appointment
 - Consumes Kafka events
 
 **Database**: `medical_record_db` (PostgreSQL)
+**Status**: ⚠️ In Development (entity layer implemented, endpoints pending)
 **Endpoints**:
 ```bash
-POST   /api/v1/medical-record      # Create medical record
-GET    /api/v1/medical-record/{id} # Get medical record
+# Endpoints coming in Phase 2
 ```
 
 ---

@@ -1,74 +1,100 @@
 # Requisitos — SUS-Connect Triagem
 
+## Status de Implementação
+
+- ✅ Implementado
+- ⚠️ Parcialmente Implementado / Em Progresso
+- 🔲 Não Iniciado
+
 ## Requisitos Funcionais
 
-### RF01 — Autenticação de Usuário
+### RF01 — Autenticação de Usuário ✅
 
-- O sistema deve permitir login com email e senha
-- Gerar JWT com validade de 24 horas
-- Suportar refresh token para renovação sem novo login
-- Bloquear acesso a todos os endpoints sem token válido
+- ✅ O sistema deve permitir login com email e senha
+- ✅ Gerar JWT com validade de 24 horas
+- ✅ Suportar refresh token para renovação sem novo login
+- ✅ Bloquear acesso a todos os endpoints sem token válido
 
-### RF02 — Cadastro de Usuário
+**Status**: ✅ **Implementado** — Auth Service endpoints: POST /auth/login, POST /auth/refresh, GET /auth/test/private
 
-- Aceitar CPF, nome completo, email, senha e perfil (paciente, profissional, admin)
-- Validar CPF único e formato válido
-- Hash da senha com bcrypt (custo mínimo 10)
-- Enviar email de confirmação após cadastro
+### RF02 — Cadastro de Usuário ⚠️
 
-### RF03 — Busca de Serviços de Saúde
+- ✅ Aceitar CPF, nome completo, email, senha e perfil (paciente, profissional, admin)
+- ⚠️ Validar CPF único e formato válido (básico implementado, validação CPF completa pendente)
+- ⚠️ Hash da senha com bcrypt (implementado mas custo não configurável)
+- 🔲 Enviar email de confirmação após cadastro
 
-- Listar unidades de saúde com filtros: especialidade, localização, disponibilidade
-- Suportar paginação (page, size, sort)
-- Retornar: nome, endereço, telefone, horários, avaliação média
+**Status**: ⚠️ **Parcial** — Auth Service endpoint: POST /auth/register (sem validação avançada e email)
 
-### RF04 — Detalhes do Serviço
+### RF03 — Busca de Serviços de Saúde 🔲
 
-- Exibir horários de funcionamento por dia da semana
-- Listar profissionais de saúde vinculados
-- Mostrar avaliações e comentários dos usuários
-- Informar disponibilidade de vagas em tempo real
+- 🔲 Listar unidades de saúde com filtros: especialidade, localização, disponibilidade
+- 🔲 Suportar paginação (page, size, sort)
+- 🔲 Retornar: nome, endereço, telefone, horários, avaliação média
 
-### RF05 — Agendamento de Consulta
+**Status**: 🔲 **Não Iniciado**
 
-- Validar disponibilidade da vaga antes de confirmar
-- Impedir agendamento duplicado para o mesmo paciente/horário
-- Enviar confirmação por email com dados do agendamento
-- Liberar vaga automaticamente se não confirmada em 30 minutos
+### RF04 — Detalhes do Serviço 🔲
 
-### RF06 — Cancelamento de Consulta
+- 🔲 Exibir horários de funcionamento por dia da semana
+- 🔲 Listar profissionais de saúde vinculados
+- 🔲 Mostrar avaliações e comentários dos usuários
+- 🔲 Informar disponibilidade de vagas em tempo real
 
-- Permitir cancelamento com no mínimo 24 horas de antecedência
-- Liberar a vaga imediatamente após cancelamento
-- Notificar o profissional de saúde sobre o cancelamento
+**Status**: 🔲 **Não Iniciado**
 
-### RF07 — Histórico de Consultas
+### RF05 — Agendamento de Consulta ⚠️
 
-- Listar consultas passadas e futuras do paciente
-- Filtrar por data, status e especialidade
-- Permitir remarcação de consulta cancelada
-- Exibir resumo clínico se disponível
+- ⚠️ Validar disponibilidade da vaga antes de confirmar (entity layer only)
+- ⚠️ Impedir agendamento duplicado para o mesmo paciente/horário (entity layer only)
+- 🔲 Enviar confirmação por email com dados do agendamento
+- 🔲 Liberar vaga automaticamente se não confirmada em 30 minutos
 
-### RF08 — Avaliação de Serviço
+**Status**: ⚠️ **Estrutura** — Appointment Service entity layer implementada, endpoints e lógica pendentes
 
-- Permitir avaliação de 1 a 5 estrelas após consulta realizada
-- Aceitar comentário de até 500 caracteres
-- Limitar a uma avaliação por consulta por usuário
-- Calcular e atualizar média da unidade em tempo real
+### RF06 — Cancelamento de Consulta 🔲
 
-### RF09 — Gerenciamento de Perfil
+- 🔲 Permitir cancelamento com no mínimo 24 horas de antecedência
+- 🔲 Liberar a vaga imediatamente após cancelamento
+- 🔲 Notificar o profissional de saúde sobre o cancelamento
 
-- Permitir atualização de nome, email, telefone e foto
-- Configurar preferências de notificação (email, push)
-- Exportar dados pessoais em formato JSON (conformidade LGPD)
-- Permitir exclusão de conta com anonimização de dados históricos
+**Status**: 🔲 **Não Iniciado**
 
-### RF10 — Dashboard Pessoal
+### RF07 — Histórico de Consultas 🔲
 
-- Exibir próximas consultas (máx. 5)
-- Mostrar histórico resumido dos últimos 30 dias
-- Apresentar recomendações baseadas no histórico
-- Exibir métricas: total de consultas, média de avaliações dadas
+- 🔲 Listar consultas passadas e futuras do paciente
+- 🔲 Filtrar por data, status e especialidade
+- 🔲 Permitir remarcação de consulta cancelada
+- 🔲 Exibir resumo clínico se disponível
+
+**Status**: 🔲 **Não Iniciado**
+
+### RF08 — Avaliação de Serviço 🔲
+
+- 🔲 Permitir avaliação de 1 a 5 estrelas após consulta realizada
+- 🔲 Aceitar comentário de até 500 caracteres
+- 🔲 Limitar a uma avaliação por consulta por usuário
+- 🔲 Calcular e atualizar média da unidade em tempo real
+
+**Status**: 🔲 **Não Iniciado**
+
+### RF09 — Gerenciamento de Perfil 🔲
+
+- 🔲 Permitir atualização de nome, email, telefone e foto
+- 🔲 Configurar preferências de notificação (email, push)
+- 🔲 Exportar dados pessoais em formato JSON (conformidade LGPD)
+- 🔲 Permitir exclusão de conta com anonimização de dados históricos
+
+**Status**: 🔲 **Não Iniciado**
+
+### RF10 — Dashboard Pessoal 🔲
+
+- 🔲 Exibir próximas consultas (máx. 5)
+- 🔲 Mostrar histórico resumido dos últimos 30 dias
+- 🔲 Apresentar recomendações baseadas no histórico
+- 🔲 Exibir métricas: total de consultas, média de avaliações dadas
+
+**Status**: 🔲 **Não Iniciado**
 
 ---
 
@@ -124,15 +150,15 @@
 
 ---
 
-## Mapeamento Feature × Requisito
+## Mapeamento Feature × Requisito × Status
 
-| Feature | Sprint | Requisitos Atendidos |
-| --- | --- | --- |
-| F1: Autenticação | Sprint 0 | RF01, RF02, RNF03 |
-| F2: Perfil de Usuário | Sprint 1 | RF09, RNF03 |
-| F3: Busca de Serviços | Sprint 2 | RF03, RF04, RNF01 |
-| F4: Agendamento | Sprint 3 | RF05, RF06, RF07, RNF02 |
-| F5: Avaliações | Sprint 4 | RF08, RNF01 |
-| F6: Histórico Médico | Sprint 5 | RF07, RNF03 |
-| F7: Notificações | Sprint 6 | RF02, RF05, RF06, RNF06 |
-| F8: Dashboard | Sprint 7 | RF10, RNF01 |
+| Feature | Sprint | Requisitos Atendidos | Status |
+| --- | --- | --- | --- |
+| F1: Autenticação | Sprint 0 | RF01, RF02, RNF03 | ⚠️ Parcial |
+| F2: Perfil de Usuário | Sprint 1 | RF09, RNF03 | 🔲 Não Iniciado |
+| F3: Busca de Serviços | Sprint 2 | RF03, RF04, RNF01 | 🔲 Não Iniciado |
+| F4: Agendamento | Sprint 3 | RF05, RF06, RF07, RNF02 | ⚠️ Estrutura |
+| F5: Avaliações | Sprint 4 | RF08, RNF01 | 🔲 Não Iniciado |
+| F6: Histórico Médico | Sprint 5 | RF07, RNF03 | ⚠️ Estrutura |
+| F7: Notificações | Sprint 6 | RF02, RF05, RF06, RNF06 | 🔲 Não Iniciado |
+| F8: Dashboard | Sprint 7 | RF10, RNF01 | 🔲 Não Iniciado |
