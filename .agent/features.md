@@ -2,16 +2,16 @@
 
 ## Visão Geral
 
-| Feature | Sprint | Tema | Status |
-| --- | --- | --- | --- |
-| F1 | Sprint 0 | Autenticação e Autorização | 🔲 Pendente |
-| F2 | Sprint 1 | Gerenciamento de Perfil | 🔲 Pendente |
-| F3 | Sprint 2 | Busca de Serviços de Saúde | 🔲 Pendente |
-| F4 | Sprint 3 | Gerenciamento de Agendamentos | 🔲 Pendente |
-| F5 | Sprint 4 | Avaliações e Notas | 🔲 Pendente |
-| F6 | Sprint 5 | Histórico Médico | 🔲 Pendente |
-| F7 | Sprint 6 | Notificações | 🔲 Pendente |
-| F8 | Sprint 7 | Dashboard e Relatórios | 🔲 Pendente |
+| Feature | Sprint | Tema | Status | Implementation |
+| --- | --- | --- | --- | --- |
+| F1 | Sprint 0 | Autenticação e Autorização | ⚠️ Parcial | Auth Service: register, login, logout, refresh endpoints working |
+| F2 | Sprint 1 | Gerenciamento de Perfil | 🔲 Pendente | — |
+| F3 | Sprint 2 | Busca de Serviços de Saúde | 🔲 Pendente | — |
+| F4 | Sprint 3 | Gerenciamento de Agendamentos | ⚠️ Estrutura | Appointment Service: entity layer only |
+| F5 | Sprint 4 | Avaliações e Notas | 🔲 Pendente | — |
+| F6 | Sprint 5 | Histórico Médico | ⚠️ Estrutura | Medical Record Service: entity layer only |
+| F7 | Sprint 6 | Notificações | 🔲 Pendente | — |
+| F8 | Sprint 7 | Dashboard e Relatórios | 🔲 Pendente | — |
 
 ---
 

@@ -3,52 +3,67 @@
 ## Distributed Architecture: Healthcare Microservices
 
 ### Overview
-**SUS-Connect** implements a microservices architecture for healthcare clinical triage management in the Brazilian healthcare system (SUS), following **Manchester Protocol v3.0**. Three specialized services coordinate the end-to-end flow: triage → appointment → medical record.
+**SUS-Connect** implements a microservices architecture for healthcare clinical triage management in the Brazilian healthcare system (SUS), following **Manchester Protocol v3.0**. Seven specialized services coordinate the end-to-end flow: authentication → service registry → API gateway → clinical services (triage, appointment, medical-record) with centralized configuration.
 
-### Core Microservices
+### Core Domain Microservices
 
 #### 1. **Triage Service** (Port 8201)
 - **Responsibility**: Clinical classification and patient prioritization
 - **Protocol**: Manchester v3.0 (5 risk colors)
 - **Logic**: Symptom collection → risk calculation → automatic appointment scheduling
-- **Database**: `triage_db` (PostgreSQL)
+- **Database**: `triage_db` (PostgreSQL, port 5432)
 - **Events**: Publishes `triage.risk-classification` (Kafka)
+- **Status**: ✅ Basic endpoints implemented
 
 #### 2. **Appointment Service** (Port 8202)
 - **Responsibility**: Slot management and consultation confirmation
 - **Integrations**: Validates availability via OpenFeign with Triage
-- **Database**: `appointment_db` (PostgreSQL)
+- **Database**: `appointment_db` (PostgreSQL, port 5433)
 - **Events**: Publishes `appointment.confirmed` (Kafka)
+- **Status**: ⚠️ Entity layer only, endpoints pending
 
 #### 3. **Medical Record Service** (Port 8203)
 - **Responsibility**: Medical history and clinical documentation
 - **Logic**: Consultation persistence, results, prescriptions
-- **Database**: `medical_record_db` (PostgreSQL)
+- **Database**: `medical_record_db` (PostgreSQL, port 5434)
 - **Events**: Consumes `triage.risk-classification` and `appointment.confirmed`
+- **Status**: ⚠️ Entity layer only, endpoints pending
 
-### Infrastructure Services
+### Security & Identity Services
 
-#### **API Gateway** (Port 8761)
-- Single entry point for all external requests
-- Dynamic routes discovered from Eureka:
-  - `/triage/**` → triage-service
-  - `/appointment/**` → appointment-service
-  - `/medical-record/**` → medical-record-service
-- Custom JWT validation (Keycloak tokens)
-- Rate limiting per IP
+#### 4. **Auth Service** (Port: Dynamic via Eureka)
+- **Responsibility**: User authentication and token generation
+- **Features**: OAuth2 integration with Keycloak, JWT generation, refresh tokens
+- **Database**: `auth_db` (PostgreSQL, port 5431)
+- **Caching**: Redis (port 6379) for token blacklist
+- **Status**: ✅ Basic auth endpoints implemented (register, login, logout, refresh)
 
-#### **Service Registry (Eureka)** (Port 8762)
-- Service discovery and automatic health checks
-- All 3 services automatically register themselves
-- Gateway consults dynamically for routing
+### Infrastructure & Discovery Services
 
-#### **Keycloak** (Port 8080)
-- Realm: `sus-connect`
-- OAuth2 clients:
-  - `api-gateway` (public client)
-  - `triage-service` (service account)
-  - `appointment-service` (service account)
-  - `medical-record-service` (service account)
+#### 5. **API Gateway** (Port 8761)
+- **Responsibility**: Single entry point for all external requests
+- **Features**: Dynamic routing, JWT validation, rate limiting
+- **Configuration**: 
+  - Routes to all microservices via Eureka discovery
+  - Path predicates: `/triage/**`, `/appointment/**`, `/medical-record/**`, `/auth/**`
+  - Prefix stripping for clean service paths
+- **Security**: OAuth2 JWT validation with Keycloak
+
+#### 6. **Service Registry (Eureka)** (Port 8762)
+- **Responsibility**: Service discovery and automatic health checks
+- **Features**: Dynamic service registration, health monitoring
+- **All services automatically register**: Triage, Appointment, Medical Record, Auth, Config Server
+- **Gateway consults for dynamic routing**
+
+#### 7. **Config Server** (Port 8888)
+- **Responsibility**: Centralized configuration management
+- **Source**: `/config-repo` directory with YAML files per service
+- **Configuration files**: `application.yml`, `auth-service.yml`, `triage-service.yml`, etc.
+- **Status**: ✅ Infrastructure setup complete
+
+
+
+### Additional Infrastructure
 
 ### Data Flow
 
@@ -76,8 +91,8 @@ Medical Record Service
 
 ### Technology Stack
 
-- **Language**: Java 17
-- **Framework**: Spring Boot 3.3.0
+- **Language**: Java 21
+- **Framework**: Spring Boot 3.4.5
 - **Cloud**: Spring Cloud 2024.0.0 (Eureka, OpenFeign, Circuit Breaker)
 - **Database**: PostgreSQL 15
 - **Message Broker**: Apache Kafka 7.5
