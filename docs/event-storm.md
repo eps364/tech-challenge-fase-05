@@ -1,6 +1,14 @@
 # 🏥 Event Storm - MVP SUS-Connect
 
-Mapeamento completo de **eventos, agregados, comandos, políticas e projeções** para a plataforma SUS-Connect, estruturada em **3 serviços modulares** baseados em Event-Driven Architecture.
+Mapeamento completo de **eventos, agregados, comandos, políticas e projeções** para a plataforma SUS-Connect, estruturada em **7 serviços microservices** baseados em Event-Driven Architecture.
+
+**Status de Implementação**:
+- ✅ Estrutura de serviços e bancos de dados  
+- ✅ Keycloak e autenticação
+- ✅ Auth Service: endpoints básicos operacionais
+- ✅ Triage Service: endpoint skeleton com entity layer
+- ⚠️ Kafka topics: configurados mas sem publishers/consumers ativos ainda
+- 🔲 Events: mapeamento completo definido, implementação em progresso
 
 ---
 

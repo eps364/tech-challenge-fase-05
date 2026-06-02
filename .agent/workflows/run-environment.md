@@ -4,7 +4,26 @@ description: Como rodar o ambiente completo do SUS-Connect com Docker Compose
 
 # Fluxo de Execução do Ambiente Completo
 
-Este workflow descreve os passos para construir e iniciar o ecossistema de microsserviços do SUS-Connect Triagem Inteligente.
+Este workflow descreve os passos para construir e iniciar o ecossistema de 7 microsserviços do SUS-Connect Triagem Inteligente.
+
+## Status Atual ✅
+
+| Componente | Status | Porta |
+| --- | --- | --- |
+| Keycloak | ✅ Operacional | 8080 |
+| PostgreSQL (Auth) | ✅ Operacional | 5431 |
+| PostgreSQL (Triage) | ✅ Operacional | 5432 |
+| PostgreSQL (Appointment) | ✅ Operacional | 5433 |
+| PostgreSQL (Medical Record) | ✅ Operacional | 5434 |
+| Redis | ✅ Operacional | 6379 |
+| Kafka + Zookeeper | ✅ Operacional | 9092, 2181 |
+| Registry Service (Eureka) | ✅ Operacional | 8762 |
+| Config Server | ✅ Operacional | 8888 |
+| API Gateway | ✅ Operacional | 8761 |
+| Auth Service | ✅ Operacional | Dynamic (via Eureka) |
+| Triage Service | ⚠️ Skeleton | 8201 |
+| Appointment Service | ⚠️ Skeleton | 8202 |
+| Medical Record Service | ⚠️ Skeleton | 8203 |
 
 ## Pré-requisitos
 
