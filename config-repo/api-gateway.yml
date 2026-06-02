@@ -3,7 +3,10 @@
 # -----------------------------------------------------------------------
 
 server:
-  port: 8761
+  port: 0
+  error:
+    include-stacktrace: never
+    include-message: always
 
 spring:
   cloud:
@@ -38,8 +41,6 @@ spring:
           uri: lb://auth-service
           predicates:
             - Path=/auth/**
-          filters:
-            - StripPrefix=1
 
   security:
     oauth2:
@@ -47,3 +48,17 @@ spring:
         jwt:
           issuer-uri: ${JWT_ISSUER_URI:http://keycloak:8080/realms/sus-connect}
           jwk-set-uri: ${JWT_JWK_SET_URI:http://keycloak:8080/realms/sus-connect/protocol/openid-connect/certs}
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+logging:
+  level:
+    root: INFO
+    br.com.fiap.gateway: INFO
+    org.springframework.cloud.gateway: INFO
+    org.springframework.security: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{correlationId:-}] [%thread] %-5level %logger{36} - %msg%n"
