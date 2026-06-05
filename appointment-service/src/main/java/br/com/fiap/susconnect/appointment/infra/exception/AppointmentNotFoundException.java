@@ -1,27 +1,27 @@
+/* Copyright (c) 2024 FIAP. All rights reserved. */
 package br.com.fiap.susconnect.appointment.infra.exception;
 
+import br.com.fiap.common.exception.DomainException;
+import br.com.fiap.common.exception.ProblemType;
 import org.springframework.http.HttpStatus;
 
-/**
- * Exception thrown when an appointment record is not found.
- */
+/** Exception thrown when an appointment record is not found. */
 @ProblemType(
     type = "https://api.example.com/problems/appointments/not-found",
     title = "Appointment Not Found",
     status = HttpStatus.NOT_FOUND,
-    description = "Requested appointment does not exist"
-)
+    description = "Requested appointment does not exist")
 public class AppointmentNotFoundException extends DomainException {
 
-    public AppointmentNotFoundException(String message) {
-        super(message);
-    }
+  public AppointmentNotFoundException(String message) {
+    super(message);
+  }
 
-    public AppointmentNotFoundException(String message, String instance) {
-        super(message, instance);
-    }
+  public AppointmentNotFoundException(String message, String instance) {
+    super(message, instance);
+  }
 
-    public AppointmentNotFoundException(String message, String instance, Object extensionData) {
-        super(message, instance, extensionData);
-    }
+  public AppointmentNotFoundException(String message, String instance, Object extensionData) {
+    super(message, instance, extensionData);
+  }
 }

@@ -17,6 +17,12 @@
   <description>Appointment Scheduling Service</description>
 
   <dependencies>
+    <!-- Common Library (shared exception infrastructure + Bean Validation) -->
+    <dependency>
+      <groupId>br.com.fiap</groupId>
+      <artifactId>common-lib</artifactId>
+    </dependency>
+
     <!-- Spring Boot Web -->
     <dependency>
       <groupId>org.springframework.boot</groupId>

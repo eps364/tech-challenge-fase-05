@@ -22,6 +22,7 @@
   </parent>
 
   <modules>
+    <module>common-lib</module>
     <module>config-server</module>
     <module>registry-service</module>
     <module>api-gateway</module>
@@ -57,6 +58,13 @@
 
   <dependencyManagement>
     <dependencies>
+      <!-- Common Library -->
+      <dependency>
+        <groupId>br.com.fiap</groupId>
+        <artifactId>common-lib</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
       <!-- Spring Cloud BOM -->
       <dependency>
         <groupId>org.springframework.cloud</groupId>

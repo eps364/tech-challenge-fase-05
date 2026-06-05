@@ -1,3 +1,4 @@
+/* Copyright (c) 2024 FIAP. All rights reserved. */
 package br.com.fiap.susconnect.triage;
 
 import org.springframework.boot.SpringApplication;

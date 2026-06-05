@@ -1,11 +1,12 @@
+/* Copyright (c) 2024 FIAP. All rights reserved. */
 package br.com.fiap.susconnect.medicalrecord.core.domain.entity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * Medical Record Domain Entity - Medical records
- * Represents complete medical record for a patient consultation
+ * Medical Record Domain Entity - Medical records Represents complete medical record for a patient
+ * consultation
  */
 public class MedicalRecord {
 

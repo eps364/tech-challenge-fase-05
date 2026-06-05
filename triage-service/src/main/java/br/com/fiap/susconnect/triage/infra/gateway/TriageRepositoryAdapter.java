@@ -1,3 +1,4 @@
+/* Copyright (c) 2024 FIAP. All rights reserved. */
 package br.com.fiap.susconnect.triage.infra.gateway;
 
 import br.com.fiap.susconnect.triage.core.domain.entity.Triage;
