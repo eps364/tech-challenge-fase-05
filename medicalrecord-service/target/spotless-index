@@ -1,1 +1,8 @@
 Cg5TS6zH9LWbZOPmT+3gS4nipyShjX2VAuLZmW9Q8Os=
+src/main/java/br/com/fiap/susconnect/medicalrecord/MedicalRecordServiceApplication.java 2026-06-05T18:03:39.899695280Z
+src/main/java/br/com/fiap/susconnect/medicalrecord/core/domain/entity/MedicalRecord.java 2026-06-05T18:03:39.991704158Z
+src/main/java/br/com/fiap/susconnect/medicalrecord/infra/entity/MedicalRecordJpa.java 2026-06-05T18:03:39.975702614Z
+src/main/java/br/com/fiap/susconnect/medicalrecord/infra/exception/AccessDeniedException.java 2026-06-05T18:03:39.927697982Z
+src/main/java/br/com/fiap/susconnect/medicalrecord/infra/exception/MedicalRecordConflictException.java 2026-06-05T18:03:39.955700684Z
+src/main/java/br/com/fiap/susconnect/medicalrecord/infra/exception/MedicalRecordNotFoundException.java 2026-06-05T18:03:39.967701842Z
+src/main/java/br/com/fiap/susconnect/medicalrecord/infra/exception/MedicalRecordValidationException.java 2026-06-05T18:03:39.939699140Z

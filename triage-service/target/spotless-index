@@ -1,2 +1,17 @@
 wL5AEebaMlApHIqMD0UYxVe/cSFaenCHj0ogJllbUBQ=
-src/main/java/br/com/fiap/susconnect/triage/infra/config/UseCaseConfig.java 2026-06-01T22:37:14.968575309Z
+src/main/java/br/com/fiap/susconnect/triage/TriageServiceApplication.java 2026-06-05T18:03:39.715677524Z
+src/main/java/br/com/fiap/susconnect/triage/core/domain/entity/RiskLevel.java 2026-06-05T18:08:59.179028164Z
+src/main/java/br/com/fiap/susconnect/triage/core/domain/entity/Triage.java 2026-06-05T18:11:49.208698279Z
+src/main/java/br/com/fiap/susconnect/triage/core/dto/TriageOutput.java 2026-06-05T18:11:49.233460455Z
+src/main/java/br/com/fiap/susconnect/triage/core/dto/TriageRequest.java 2026-06-05T18:03:39.679674050Z
+src/main/java/br/com/fiap/susconnect/triage/core/gateway/TriageGateway.java 2026-06-05T18:03:39.663672506Z
+src/main/java/br/com/fiap/susconnect/triage/core/usecase/CreateTriageUseCase.java 2026-06-05T18:03:39.639670190Z
+src/main/java/br/com/fiap/susconnect/triage/infra/config/UseCaseConfig.java 2026-06-05T18:03:39.499656681Z
+src/main/java/br/com/fiap/susconnect/triage/infra/entity/TriageJpa.java 2026-06-05T18:11:49.171555017Z
+src/main/java/br/com/fiap/susconnect/triage/infra/exception/InvalidRiskLevelException.java 2026-06-05T18:03:39.575664015Z
+src/main/java/br/com/fiap/susconnect/triage/infra/exception/TriageDuplicateEntryException.java 2026-06-05T18:03:39.563662856Z
+src/main/java/br/com/fiap/susconnect/triage/infra/exception/TriageNotFoundException.java 2026-06-05T18:03:39.587665172Z
+src/main/java/br/com/fiap/susconnect/triage/infra/exception/TriageValidationException.java 2026-06-05T18:03:39.599666330Z
+src/main/java/br/com/fiap/susconnect/triage/infra/gateway/TriageRepositoryAdapter.java 2026-06-05T18:03:39.539660541Z
+src/main/java/br/com/fiap/susconnect/triage/infra/repository/TriageRepository.java 2026-06-05T18:03:39.627669032Z
+src/main/java/br/com/fiap/susconnect/triage/infra/web/TriageController.java 2026-06-05T18:03:39.515658225Z

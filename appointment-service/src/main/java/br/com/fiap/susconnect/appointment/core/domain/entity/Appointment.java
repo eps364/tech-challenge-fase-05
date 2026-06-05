@@ -4,10 +4,7 @@ package br.com.fiap.susconnect.appointment.core.domain.entity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * Appointment Domain Entity - Appointment scheduling Represents a clinical appointment slot
- * reservation
- */
+/** Appointment domain entity — represents a clinical appointment slot reservation. */
 public class Appointment {
 
   private UUID id;
@@ -15,7 +12,7 @@ public class Appointment {
   private UUID patientId;
   private UUID professionalId;
   private LocalDateTime dateTime;
-  private String status; // CONFIRMED, IN_PROGRESS, COMPLETED, CANCELLED, NO_SHOW
+  private AppointmentStatus status;
   private LocalDateTime createdAt;
 
   private Appointment() {}
@@ -26,12 +23,11 @@ public class Appointment {
     appointment.triageId = triageId;
     appointment.patientId = patientId;
     appointment.dateTime = dateTime;
-    appointment.status = "CONFIRMED";
+    appointment.status = AppointmentStatus.CONFIRMED;
     appointment.createdAt = LocalDateTime.now();
     return appointment;
   }
 
-  // Getters
   public UUID getId() {
     return id;
   }
@@ -52,7 +48,7 @@ public class Appointment {
     return dateTime;
   }
 
-  public String getStatus() {
+  public AppointmentStatus getStatus() {
     return status;
   }
 
@@ -60,7 +56,7 @@ public class Appointment {
     return createdAt;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(AppointmentStatus status) {
     this.status = status;
   }
 

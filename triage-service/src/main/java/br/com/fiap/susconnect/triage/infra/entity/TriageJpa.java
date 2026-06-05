@@ -1,8 +1,11 @@
 /* Copyright (c) 2024 FIAP. All rights reserved. */
 package br.com.fiap.susconnect.triage.infra.entity;
 
+import br.com.fiap.susconnect.triage.core.domain.entity.RiskLevel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
@@ -26,8 +29,9 @@ public class TriageJpa {
   @Column(nullable = false)
   private UUID patientId;
 
+  @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 10)
-  private String riskLevel;
+  private RiskLevel riskLevel;
 
   @Column(nullable = false, name = "created_at")
   private LocalDateTime createdAt;

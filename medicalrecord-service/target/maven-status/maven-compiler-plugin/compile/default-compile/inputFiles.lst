@@ -1,3 +1,7 @@
 /home/emerson/projetos/fiap/tech-challenge-fase-05/medicalrecord-service/src/main/java/br/com/fiap/susconnect/medicalrecord/MedicalRecordServiceApplication.java
 /home/emerson/projetos/fiap/tech-challenge-fase-05/medicalrecord-service/src/main/java/br/com/fiap/susconnect/medicalrecord/core/domain/entity/MedicalRecord.java
 /home/emerson/projetos/fiap/tech-challenge-fase-05/medicalrecord-service/src/main/java/br/com/fiap/susconnect/medicalrecord/infra/entity/MedicalRecordJpa.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/medicalrecord-service/src/main/java/br/com/fiap/susconnect/medicalrecord/infra/exception/AccessDeniedException.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/medicalrecord-service/src/main/java/br/com/fiap/susconnect/medicalrecord/infra/exception/MedicalRecordConflictException.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/medicalrecord-service/src/main/java/br/com/fiap/susconnect/medicalrecord/infra/exception/MedicalRecordNotFoundException.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/medicalrecord-service/src/main/java/br/com/fiap/susconnect/medicalrecord/infra/exception/MedicalRecordValidationException.java

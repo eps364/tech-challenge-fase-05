@@ -1,8 +1,11 @@
 /* Copyright (c) 2024 FIAP. All rights reserved. */
 package br.com.fiap.susconnect.appointment.infra.entity;
 
+import br.com.fiap.susconnect.appointment.core.domain.entity.AppointmentStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
@@ -34,8 +37,9 @@ public class AppointmentJpa {
   @Column(nullable = false, name = "date_time")
   private LocalDateTime dateTime;
 
+  @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
-  private String status;
+  private AppointmentStatus status;
 
   @Column(name = "created_at", nullable = false, updatable = false)
   private LocalDateTime createdAt;

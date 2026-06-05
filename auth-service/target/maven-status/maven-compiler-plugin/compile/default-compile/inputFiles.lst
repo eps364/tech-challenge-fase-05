@@ -17,6 +17,8 @@
 /home/emerson/projetos/fiap/tech-challenge-fase-05/auth-service/src/main/java/br/com/fiap/authservice/infra/config/UseCaseConfig.java
 /home/emerson/projetos/fiap/tech-challenge-fase-05/auth-service/src/main/java/br/com/fiap/authservice/infra/controller/AuthController.java
 /home/emerson/projetos/fiap/tech-challenge-fase-05/auth-service/src/main/java/br/com/fiap/authservice/infra/exception/AuthenticationException.java
-/home/emerson/projetos/fiap/tech-challenge-fase-05/auth-service/src/main/java/br/com/fiap/authservice/infra/exception/GlobalExceptionHandler.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/auth-service/src/main/java/br/com/fiap/authservice/infra/exception/ForbiddenException.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/auth-service/src/main/java/br/com/fiap/authservice/infra/exception/InvalidTokenException.java
+/home/emerson/projetos/fiap/tech-challenge-fase-05/auth-service/src/main/java/br/com/fiap/authservice/infra/exception/TokenExpiredException.java
 /home/emerson/projetos/fiap/tech-challenge-fase-05/auth-service/src/main/java/br/com/fiap/authservice/infra/gateway/KeycloakGatewayImpl.java
 /home/emerson/projetos/fiap/tech-challenge-fase-05/auth-service/src/main/java/br/com/fiap/authservice/infra/gateway/RedisTokenBlacklistGatewayImpl.java

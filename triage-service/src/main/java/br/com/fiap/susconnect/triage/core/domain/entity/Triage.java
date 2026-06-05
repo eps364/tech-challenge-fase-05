@@ -5,14 +5,16 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * Triage Domain Entity - Rich domain model with business logic Represents a clinical triage
- * assessment following Manchester Protocol v3.0
+ * Triage domain entity — rich model following Manchester Protocol v3.0.
+ *
+ * <p>Default risk level on creation is {@link RiskLevel#BLUE} (non-urgent) until a clinical
+ * assessment upgrades it.
  */
 public class Triage {
 
   private UUID id;
   private UUID patientId;
-  private String riskLevel; // RED, ORANGE, YELLOW, GREEN, BLUE
+  private RiskLevel riskLevel;
   private LocalDateTime createdAt;
 
   private Triage() {}
@@ -21,12 +23,11 @@ public class Triage {
     var triage = new Triage();
     triage.id = UUID.randomUUID();
     triage.patientId = patientId;
-    triage.riskLevel = "BLUE"; // default
+    triage.riskLevel = RiskLevel.BLUE;
     triage.createdAt = LocalDateTime.now();
     return triage;
   }
 
-  // Getters
   public UUID getId() {
     return id;
   }
@@ -35,7 +36,7 @@ public class Triage {
     return patientId;
   }
 
-  public String getRiskLevel() {
+  public RiskLevel getRiskLevel() {
     return riskLevel;
   }
 
@@ -43,7 +44,7 @@ public class Triage {
     return createdAt;
   }
 
-  public void setRiskLevel(String riskLevel) {
+  public void setRiskLevel(RiskLevel riskLevel) {
     this.riskLevel = riskLevel;
   }
 }

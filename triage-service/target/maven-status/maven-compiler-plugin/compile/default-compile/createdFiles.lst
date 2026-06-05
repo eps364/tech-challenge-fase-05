@@ -1,10 +1,12 @@
-br/com/fiap/susconnect/triage/infra/repository/TriageRepository.class
-br/com/fiap/susconnect/triage/core/domain/entity/Triage.class
 br/com/fiap/susconnect/triage/infra/entity/TriageJpa.class
+br/com/fiap/susconnect/triage/core/domain/entity/Triage.class
 br/com/fiap/susconnect/triage/core/usecase/CreateTriageUseCase.class
+br/com/fiap/susconnect/triage/infra/entity/TriageJpa$TriageJpaBuilder.class
+br/com/fiap/susconnect/triage/infra/repository/TriageRepository.class
 br/com/fiap/susconnect/triage/infra/web/TriageController.class
+br/com/fiap/susconnect/triage/core/domain/entity/RiskLevel.class
+br/com/fiap/susconnect/triage/core/dto/TriageRequest.class
 br/com/fiap/susconnect/triage/core/gateway/TriageGateway.class
 br/com/fiap/susconnect/triage/TriageServiceApplication.class
 br/com/fiap/susconnect/triage/infra/gateway/TriageRepositoryAdapter.class
-br/com/fiap/susconnect/triage/infra/entity/TriageJpa$TriageJpaBuilder.class
 br/com/fiap/susconnect/triage/core/dto/TriageOutput.class
