@@ -12,14 +12,15 @@ Documento de referencia dos endpoints implementados no projeto, seguindo o model
 | Auth Service | POST | `/auth/logout` | Bearer token | Efetua logout e revoga token atual. |
 | Auth Service | GET | `/auth/test/public` | Publica | Endpoint de teste publico. |
 | Auth Service | GET | `/auth/test/private` | Bearer token | Endpoint de teste autenticado. |
-| Triage Service | POST | `/api/v1/triage` | Bearer token | Cria triagem (skeleton atual). |
-| Triage Service | GET | `/api/v1/triage/{id}` | Bearer token | Consulta triagem por ID (skeleton atual). |
+| Triage Service | POST | `/api/v1/triage` | Bearer token | Cria triagem — retorna id, riskLevel, createdAt. |
+| Triage Service | GET | `/api/v1/triage/{id}` | Bearer token | Placeholder — retorna "OK". |
 
 ## Detalhe de cada endpoint
 
 ## Auth Service
 
-Base URL de desenvolvimento (colecao Bruno): `http://localhost:8081`
+Base URL via API Gateway: `http://localhost:8761`  
+Base URL direta (porta dinâmica — verifique no Eureka): `http://localhost:<porta-dinâmica>`
 
 ### 1) POST /auth/register
 
@@ -175,22 +176,41 @@ Hello john.doe! This is a private endpoint
 
 ## Triage Service
 
-Base URL de desenvolvimento (colecao Bruno): `http://localhost:8201`
+Base URL via API Gateway: `http://localhost:8761`  
+Base URL direta (porta dinâmica — verifique no Eureka): `http://localhost:<porta-dinâmica>`
 
-Observacao: os endpoints de triagem estao em modo skeleton no estado atual do projeto.
+Observacao: o endpoint POST /api/v1/triage está funcional. O endpoint GET /api/v1/triage/{id} é placeholder (retorna "OK").
 
 ### 7) POST /api/v1/triage
 
-- Objetivo: criar uma nova triagem.
+- Objetivo: criar uma nova triagem com classificação inicial BLUE (Manchester Protocol).
 - Autenticacao: requer bearer token.
 - Headers:
   - `Authorization: Bearer <access-token>`
+  - `Content-Type: application/json`
   - `Accept: application/json`
-- Body: nao possui.
+- Body (JSON):
+
+```json
+{
+  "patientId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
 
 - Resposta de sucesso:
   - `201 Created`
-  - Body: vazio.
+  - Body (JSON):
+
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "riskLevel": "BLUE",
+  "createdAt": "2026-06-05T20:00:00"
+}
+```
+
+- Erros comuns:
+  - `400 Bad Request` (patientId nulo ou inválido)
 
 ### 8) GET /api/v1/triage/{id}
 

@@ -7,7 +7,7 @@ Esta pasta contém os endpoints implementados no projeto no formato Bruno.
 | Serviço | Status | Endpoints |
 | --- | --- | --- |
 | Auth Service | ✅ Ativo | 6 endpoints |
-| Triage Service | ⚠️ Skeleton | 2 endpoints |
+| Triage Service | ✅ Funcional | 2 endpoints (POST funcional, GET placeholder) |
 | Appointment Service | 🔲 Em Desenvolvimento | Nenhum ainda |
 | Medical Record Service | 🔲 Em Desenvolvimento | Nenhum ainda |
 
@@ -22,10 +22,10 @@ Esta pasta contém os endpoints implementados no projeto no formato Bruno.
 - `GET /auth/test/public` — Teste público
 - `GET /auth/test/private` — Teste privado (requer autenticação)
 
-### Triage Service ⚠️ (Endpoints Skeleton)
+### Triage Service ✅ (POST funcional, GET placeholder)
 
-- `POST /api/v1/triage` — Criar nova triagem
-- `GET /api/v1/triage/{id}` — Buscar triagem por ID
+- `POST /api/v1/triage` — Criar nova triagem (requer `{"patientId": "<UUID>"}`, retorna `TriageOutput`)
+- `GET /api/v1/triage/{id}` — Placeholder (retorna "OK")
 
 ### Appointment Service 🔲 (Em Desenvolvimento)
 
@@ -101,15 +101,22 @@ Authorization: Bearer {{accessToken}}
 Execute **`Triage → Create-Triage`**:
 
 ```http
-POST /api/v1/triage
+POST /triage/api/v1/triage
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "patientName": "João Silva",
-  "age": 45,
-  "symptoms": ["febre", "tosse"],
-  "riskLevel": "medium"
+  "patientId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+**Response (201 Created):**
+
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "riskLevel": "BLUE",
+  "createdAt": "2026-06-05T20:00:00"
 }
 ```
 
