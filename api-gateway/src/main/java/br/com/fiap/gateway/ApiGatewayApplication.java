@@ -1,3 +1,4 @@
+/* Copyright (c) 2024 FIAP. All rights reserved. */
 package br.com.fiap.gateway;
 
 import org.springframework.boot.SpringApplication;
