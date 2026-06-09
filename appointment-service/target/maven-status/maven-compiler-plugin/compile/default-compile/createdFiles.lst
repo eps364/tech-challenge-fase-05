@@ -1,7 +1,0 @@
-br/com/fiap/susconnect/appointment/core/domain/entity/Appointment.class
-br/com/fiap/susconnect/appointment/infra/entity/AppointmentJpa.class
-br/com/fiap/susconnect/appointment/core/gateway/AppointmentGateway.class
-br/com/fiap/susconnect/appointment/core/domain/entity/AppointmentStatus.class
-br/com/fiap/susconnect/appointment/infra/repository/AppointmentRepository.class
-br/com/fiap/susconnect/appointment/AppointmentServiceApplication.class
-br/com/fiap/susconnect/appointment/infra/entity/AppointmentJpa$AppointmentJpaBuilder.class
