@@ -17,6 +17,7 @@ public class MedicalRecord {
   private String prescription;
   private LocalDateTime consultationDate;
   private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 
   private MedicalRecord() {}
 
@@ -27,6 +28,25 @@ public class MedicalRecord {
     record.patientId = patientId;
     record.createdAt = LocalDateTime.now();
     return record;
+  }
+
+  public static MedicalRecord reconstruct(
+      UUID id,
+      UUID appointmentId,
+      UUID patientId,
+      String diagnosis,
+      String prescription,
+      LocalDateTime consultationDate,
+      LocalDateTime createdAt) {
+    var r = new MedicalRecord();
+    r.id = id;
+    r.appointmentId = appointmentId;
+    r.patientId = patientId;
+    r.diagnosis = diagnosis;
+    r.prescription = prescription;
+    r.consultationDate = consultationDate;
+    r.createdAt = createdAt;
+    return r;
   }
 
   // Getters
@@ -56,6 +76,10 @@ public class MedicalRecord {
 
   public LocalDateTime getCreatedAt() {
     return createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
   }
 
   public void setDiagnosis(String diagnosis) {

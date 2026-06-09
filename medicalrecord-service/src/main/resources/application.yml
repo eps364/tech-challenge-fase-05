@@ -25,8 +25,11 @@ spring:
   kafka:
     bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     consumer:
-      group-id: medical-record-service
+      group-id: medicalrecord-service
+      auto-offset-reset: earliest
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "br.com.fiap.*"
 
   security:
     oauth2:
