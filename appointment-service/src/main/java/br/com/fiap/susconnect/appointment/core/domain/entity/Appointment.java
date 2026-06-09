@@ -63,4 +63,23 @@ public class Appointment {
   public void setProfessionalId(UUID professionalId) {
     this.professionalId = professionalId;
   }
+
+  public static Appointment reconstruct(
+      UUID id,
+      UUID triageId,
+      UUID patientId,
+      UUID professionalId,
+      LocalDateTime dateTime,
+      AppointmentStatus status,
+      LocalDateTime createdAt) {
+    var a = new Appointment();
+    a.id = id;
+    a.triageId = triageId;
+    a.patientId = patientId;
+    a.professionalId = professionalId;
+    a.dateTime = dateTime;
+    a.status = status;
+    a.createdAt = createdAt;
+    return a;
+  }
 }
