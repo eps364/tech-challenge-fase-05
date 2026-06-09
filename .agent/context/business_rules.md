@@ -9,11 +9,11 @@ The Manchester Protocol is a **5-tier risk classification system** used to prior
 
 | Level | Color | Priority | Service Time | Example |
 |-------|-------|----------|--------------|---------|
-| 1 | RED | Immediate | < 10 minutes | Cardiac arrest, severe trauma |
-| 2 | ORANGE | Very Urgent | 10-60 minutes | Acute chest pain, severe dehydration |
-| 3 | YELLOW | Urgent | 1-3 hours | Moderate pain, fever 38°C+ |
-| 4 | GREEN | Normal | 3-24 hours | Minor injuries, mild symptoms |
-| 5 | BLUE | Non-urgent | 24+ hours | Follow-up, low-risk complaints |
+| 1 | RED | Immediate | ≤ 0 min (immediate) | Cardiac arrest, severe trauma |
+| 2 | ORANGE | Very Urgent | ≤ 10 min | Acute chest pain, severe dehydration |
+| 3 | YELLOW | Urgent | ≤ 60 min | Moderate pain, fever 38°C+ |
+| 4 | GREEN | Standard | ≤ 120 min | Minor injuries, mild symptoms |
+| 5 | BLUE | Non-urgent | ≤ 240 min | Follow-up, low-risk complaints |
 
 ---
 
@@ -238,11 +238,11 @@ Patient Notification
 ## System Performance Rules
 
 ### Timeframe Compliance
-- **RED**: Must be seen within 10 minutes (measured from triage completion)
-- **ORANGE**: Must be seen within 60 minutes
-- **YELLOW**: Must be seen within 180 minutes (3 hours)
-- **GREEN**: Must be seen within 1440 minutes (24 hours)
-- **BLUE**: Can be seen within 24+ hours
+- **RED**: Must be seen within 0 min (immediate)
+- **ORANGE**: Must be seen within 10 minutes
+- **YELLOW**: Must be seen within 60 minutes
+- **GREEN**: Must be seen within 120 minutes (2 hours)
+- **BLUE**: Must be seen within 240 minutes (4 hours)
 
 ### Triage Completion Time
 - **Target**: < 5 minutes per patient

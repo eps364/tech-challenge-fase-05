@@ -354,11 +354,11 @@ Audit logs for access
 ### Risk Levels
 | Level | Color | Service Time |
 |-------|-------|--------------|
-| 1 | RED | < 10 minutes |
-| 2 | ORANGE | 10-60 minutes |
-| 3 | YELLOW | 1-3 hours |
-| 4 | GREEN | 3-24 hours |
-| 5 | BLUE | 24+ hours |
+| 1 | RED | ≤ 0 min (immediate) |
+| 2 | ORANGE | ≤ 10 min |
+| 3 | YELLOW | ≤ 60 min |
+| 4 | GREEN | ≤ 120 min |
+| 5 | BLUE | ≤ 240 min |
 
 ### Rationale
 - **Standardized**: Used by major hospitals worldwide
@@ -396,13 +396,13 @@ Audit logs for access
 **Use Docker Compose 3.9 for orchestration**
 
 ### Services
-- 3 PostgreSQL databases
+- 4 PostgreSQL databases (keycloak, auth, triage, appointment, medical-record)
 - Apache Kafka + Zookeeper
 - Keycloak
 - Service Registry (Eureka)
 - API Gateway
-- 3 Microservices
-- Redis (future)
+- 3 Microservices (Triage, Appointment, Medical Record)
+- Redis 7 (Auth Service — token blacklist)
 
 ### Rationale
 - **Consistency**: Dev environment mirrors production
@@ -541,15 +541,15 @@ Audit logs for access
 ✅ **Operational**
 - Auth Service: Register, login, logout, refresh endpoints
 - Keycloak realm: `sus-connect` with default users and clients
-- JWT validation: RS256 signature with 15-minute token lifespan
+- JWT validation: RS256 signature — access token 5 min, refresh token 30 min
 - Spring Security: OAuth2 resource server configuration
 - Basic rate limiting and CORS in API Gateway
 
 ### Domain Services
 ✅ **Partial Implementation**
-- **Triage Service** (Port 8201): Manchester Protocol entity layer, skeleton endpoints
-- **Appointment Service** (Port 8202): Entity layer only
-- **Medical Record Service** (Port 8203): Entity layer only
+- **Triage Service** (Port: dynamic via Eureka): POST /api/v1/triage funcional com CreateTriageUseCase; GET /api/v1/triage/{id} placeholder
+- **Appointment Service** (Port: dynamic via Eureka): Entity layer only
+- **Medical Record Service** (Port: dynamic via Eureka): Entity layer only
 - Clean Architecture: Core/Infra separation in all services
 - Flyway migrations: Infrastructure ready, initial schema created
 

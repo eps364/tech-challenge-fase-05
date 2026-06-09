@@ -208,7 +208,8 @@ src/test/java/
 
 ### Docker
 Container images:
-- **Base**: `openjdk:17-slim` for applications
+- **Builder**: `maven:3.9-eclipse-temurin-21` (multi-stage build)
+- **Runtime**: `eclipse-temurin:21-jre-noble` for all Java services
 - **PostgreSQL**: `postgres:15-alpine`
 - **Keycloak**: `quay.io/keycloak/keycloak:26.5.4`
 - **Kafka**: `confluentinc/cp-kafka:7.5.0`
@@ -225,14 +226,15 @@ Orchestration:
 ### Multi-stage Build
 ```dockerfile
 # Stage 1: Build
-FROM maven:3.9-openjdk-17 AS builder
-COPY . /build
-RUN cd /build && mvn clean package
+FROM maven:3.9-eclipse-temurin-21 AS builder
+COPY . /workspace
+WORKDIR /workspace
+RUN mvn -pl <service> -am -B -DskipTests clean package
 
 # Stage 2: Runtime
-FROM openjdk:17-slim
-COPY --from=builder /build/target/*.jar app.jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
+FROM eclipse-temurin:21-jre-noble AS runtime
+COPY --from=builder /workspace/<service>/target/*.jar /app/app.jar
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
 ```
 
 ---
