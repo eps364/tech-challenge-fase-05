@@ -2,21 +2,8 @@
 package br.com.fiap.authservice.core.domain;
 
 import br.com.fiap.common.exception.DomainException;
-import br.com.fiap.common.exception.ProblemType;
-import org.springframework.http.HttpStatus;
 
-/**
- * Exception thrown when domain validation fails.
- *
- * <p>Mapped to RFC 9457 problem type: https://api.example.com/problems/auth/validation-error
- *
- * <p>HTTP Status: 400 Bad Request
- */
-@ProblemType(
-    type = "https://api.example.com/problems/auth/validation-error",
-    title = "Validation Error",
-    status = HttpStatus.BAD_REQUEST,
-    description = "Invalid login credentials, registration data, or password format")
+/** Exception thrown when domain validation fails. HTTP mapping is handled by the infra layer. */
 public class ValidationException extends DomainException {
 
   public ValidationException(String message) {
