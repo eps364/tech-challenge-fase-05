@@ -55,16 +55,11 @@ curl http://localhost:8762
 # Check API Gateway
 curl http://localhost:8761/actuator/health
 
-# Check Triage Service
-curl http://localhost:8201/actuator/health
+# Domain services (triage, appointment, medical-record) use dynamic ports.
+# Access them via the API Gateway or check their assigned port in Eureka:
+curl http://localhost:8762/eureka/apps
 
-# Check Appointment Service
-curl http://localhost:8202/actuator/health
-
-# Check Medical Record Service
-curl http://localhost:8203/actuator/health
-
-# Check running containers
+# Check running containers and dynamic ports
 docker compose ps
 ```
 
@@ -189,7 +184,7 @@ This enables complete request tracing across the entire microservices architectu
            │               │              │
            ▼               ▼              ▼
     Auth Service    Triage Service   Appointment      Medical Record
-      (8080)          (8201)         Service (8202)    Service (8203)
+    (dynamic)       (dynamic)        Service(dynamic)  Service(dynamic)
            │               │              │              │
            ▼               ▼              ▼              ▼
       auth_db         triage_db       appointment_db   medical_record_db
@@ -239,11 +234,11 @@ GET    /auth/test/public       # Public test endpoint
 GET    /auth/test/private      # Private test endpoint (ROLE_user)
 ```
 
-### 4. **Triage Service** (Port 8201)
+### 4. **Triage Service** (Port: dynamic via Eureka)
 - Manchester Protocol v3.0 implementation
 - Patient risk classification
-- Automatic appointment scheduling
-- Produces `triage.risk-classification` events
+- ⚠️ Appointment scheduling integration pending
+- ⚠️ Kafka event production (`triage.risk-classification`) pending
 
 **Database**: `triage_db` (PostgreSQL)
 **Endpoints**:
@@ -252,7 +247,7 @@ POST   /api/v1/triage              # Create new triage
 GET    /api/v1/triage/{id}         # Get triage by ID
 ```
 
-### 5. **Appointment Service** (Port 8202)
+### 5. **Appointment Service** (Port: dynamic via Eureka)
 - Appointment slot management
 - Consultation reservation
 - Status tracking
@@ -265,7 +260,7 @@ GET    /api/v1/triage/{id}         # Get triage by ID
 # Endpoints coming in Phase 2
 ```
 
-### 6. **Medical Record Service** (Port 8203)
+### 6. **Medical Record Service** (Port: dynamic via Eureka)
 - Patient medical history
 - Consultation documentation
 - Diagnosis and prescriptions

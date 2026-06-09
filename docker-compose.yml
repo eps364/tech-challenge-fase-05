@@ -281,7 +281,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://auth-service-db:5432/auth_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: password
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
       SPRING_FLYWAY_ENABLED: "true"
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
@@ -319,7 +319,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://triage-postgres:5432/triage_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: password
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
       SPRING_FLYWAY_ENABLED: "true"
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       SPRING_CLOUD_CONFIG_URI: http://config-server:8888
@@ -349,7 +349,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://appointment-postgres:5432/appointment_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: password
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
       SPRING_FLYWAY_ENABLED: "true"
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       SPRING_CLOUD_CONFIG_URI: http://config-server:8888
@@ -379,7 +379,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://medical-record-postgres:5432/medical_record_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: password
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
       SPRING_FLYWAY_ENABLED: "true"
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       SPRING_CLOUD_CONFIG_URI: http://config-server:8888
