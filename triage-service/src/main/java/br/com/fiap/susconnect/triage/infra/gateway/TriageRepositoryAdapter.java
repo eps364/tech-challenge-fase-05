@@ -36,14 +36,30 @@ public class TriageRepositoryAdapter implements TriageGateway {
   }
 
   @Override
+  @Transactional
+  public void update(Triage triage) {
+    var jpa =
+        TriageJpa.builder()
+            .id(triage.getId())
+            .patientId(triage.getPatientId())
+            .riskLevel(triage.getRiskLevel())
+            .createdAt(triage.getCreatedAt())
+            .updatedAt(triage.getUpdatedAt())
+            .build();
+    repository.save(jpa);
+  }
+
+  @Override
   public Optional<Triage> findById(UUID id) {
     return repository
         .findById(id)
         .map(
-            jpa -> {
-              var triage = Triage.create(jpa.getPatientId());
-              triage.setRiskLevel(jpa.getRiskLevel());
-              return triage;
-            });
+            jpa ->
+                Triage.reconstruct(
+                    jpa.getId(),
+                    jpa.getPatientId(),
+                    jpa.getRiskLevel(),
+                    jpa.getCreatedAt(),
+                    jpa.getUpdatedAt()));
   }
 }

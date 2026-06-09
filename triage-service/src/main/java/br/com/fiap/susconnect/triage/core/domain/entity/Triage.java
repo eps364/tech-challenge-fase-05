@@ -16,6 +16,7 @@ public class Triage {
   private UUID patientId;
   private RiskLevel riskLevel;
   private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 
   private Triage() {}
 
@@ -26,6 +27,26 @@ public class Triage {
     triage.riskLevel = RiskLevel.BLUE;
     triage.createdAt = LocalDateTime.now();
     return triage;
+  }
+
+  public static Triage reconstruct(
+      UUID id,
+      UUID patientId,
+      RiskLevel riskLevel,
+      LocalDateTime createdAt,
+      LocalDateTime updatedAt) {
+    var triage = new Triage();
+    triage.id = id;
+    triage.patientId = patientId;
+    triage.riskLevel = riskLevel;
+    triage.createdAt = createdAt;
+    triage.updatedAt = updatedAt;
+    return triage;
+  }
+
+  public void updateRiskLevel(RiskLevel newRiskLevel) {
+    this.riskLevel = newRiskLevel;
+    this.updatedAt = LocalDateTime.now();
   }
 
   public UUID getId() {
@@ -44,7 +65,7 @@ public class Triage {
     return createdAt;
   }
 
-  public void setRiskLevel(RiskLevel riskLevel) {
-    this.riskLevel = riskLevel;
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
   }
 }

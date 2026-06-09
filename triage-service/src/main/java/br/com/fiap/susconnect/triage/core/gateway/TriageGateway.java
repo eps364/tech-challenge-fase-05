@@ -13,5 +13,7 @@ public interface TriageGateway {
 
   void save(Triage triage);
 
+  void update(Triage triage);
+
   Optional<Triage> findById(UUID id);
 }

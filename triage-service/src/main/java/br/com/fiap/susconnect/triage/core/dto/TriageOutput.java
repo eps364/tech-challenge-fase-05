@@ -6,4 +6,9 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 /** Triage Output DTO - Response payload */
-public record TriageOutput(UUID id, RiskLevel riskLevel, LocalDateTime createdAt) {}
+public record TriageOutput(
+    UUID id,
+    UUID patientId,
+    RiskLevel riskLevel,
+    LocalDateTime createdAt,
+    LocalDateTime updatedAt) {}
