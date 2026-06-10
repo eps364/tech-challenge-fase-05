@@ -24,14 +24,14 @@ services:
   kafka:
     healthcheck:
       interval: 10s
-      timeout: 5s
-      retries: 3
+      timeout: 15s
+      retries: 10
 
   # Disable healthchecks for Java microservices - they retry connections
   config-server:
     build:
       target: builder
-    command: mvn -f config-server/pom.xml spring-boot:run -Dspring-boot.devtools.restart.enabled=true
+    command: bash -c "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f config-server/pom.xml spring-boot:run "
     healthcheck:
       disable: true
     volumes:
@@ -40,7 +40,7 @@ services:
     environment:
       LOGGING_LEVEL_ROOT: INFO
       LOGGING_LEVEL_BR_COM_FIAP: DEBUG
-      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      SPRING_DEVTOOLS_RESTART_ENABLED: "false"
       SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
       SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
       SPRING_PROFILES_ACTIVE: native,dev
@@ -57,7 +57,7 @@ services:
   service-registry:
     build:
       target: builder
-    command: mvn -f registry-service/pom.xml spring-boot:run -Dspring-boot.devtools.restart.enabled=true
+    command: bash -c "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f registry-service/pom.xml spring-boot:run "
     # Keep dependency on healthy Keycloak to avoid connection errors
     depends_on:
       kafka:
@@ -71,7 +71,7 @@ services:
     environment:
       LOGGING_LEVEL_ROOT: INFO
       LOGGING_LEVEL_BR_COM_FIAP: DEBUG
-      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      SPRING_DEVTOOLS_RESTART_ENABLED: "false"
       SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
       SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
       SPRING_PROFILES_ACTIVE: dev
@@ -88,7 +88,7 @@ services:
   api-gateway:
     build:
       target: builder
-    command: mvn -f api-gateway/pom.xml spring-boot:run -Dspring-boot.devtools.restart.enabled=true
+    command: bash -c "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f api-gateway/pom.xml spring-boot:run "
     depends_on:
       - config-server
       - service-registry
@@ -101,7 +101,7 @@ services:
       LOGGING_LEVEL_BR_COM_FIAP: DEBUG
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_CLOUD_GATEWAY: DEBUG
       SPRING_CLOUD_CONFIG_URI: http://config-server:8888
-      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      SPRING_DEVTOOLS_RESTART_ENABLED: "false"
       SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
       SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
       SPRING_PROFILES_ACTIVE: dev
@@ -118,7 +118,7 @@ services:
   auth-service:
     build:
       target: builder
-    command: mvn -f auth-service/pom.xml spring-boot:run -Dspring-boot.devtools.restart.enabled=true
+    command: bash -c "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f auth-service/pom.xml spring-boot:run "
     depends_on:
       - auth-service-db
       - redis
@@ -136,7 +136,7 @@ services:
       SPRING_JPA_SHOW_SQL: "false"
       SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "false"
       SPRING_CLOUD_CONFIG_URI: http://config-server:8888
-      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      SPRING_DEVTOOLS_RESTART_ENABLED: "false"
       SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
       SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
       SPRING_PROFILES_ACTIVE: dev
@@ -153,7 +153,7 @@ services:
   triage-service:
     build:
       target: builder
-    command: mvn -f triage-service/pom.xml spring-boot:run -Dspring-boot.devtools.restart.enabled=true
+    command: bash -c "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f triage-service/pom.xml spring-boot:run "
     depends_on:
       - triage-postgres
       - kafka
@@ -169,7 +169,7 @@ services:
       SPRING_JPA_SHOW_SQL: "false"
       SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "false"
       SPRING_CLOUD_CONFIG_URI: http://config-server:8888
-      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      SPRING_DEVTOOLS_RESTART_ENABLED: "false"
       SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
       SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
       SPRING_PROFILES_ACTIVE: dev
@@ -186,7 +186,7 @@ services:
   appointment-service:
     build:
       target: builder
-    command: mvn -f appointment-service/pom.xml spring-boot:run -Dspring-boot.devtools.restart.enabled=true
+    command: bash -c "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f appointment-service/pom.xml spring-boot:run "
     depends_on:
       - appointment-postgres
       - kafka
@@ -202,7 +202,7 @@ services:
       SPRING_JPA_SHOW_SQL: "false"
       SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "false"
       SPRING_CLOUD_CONFIG_URI: http://config-server:8888
-      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      SPRING_DEVTOOLS_RESTART_ENABLED: "false"
       SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
       SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
       SPRING_PROFILES_ACTIVE: dev
@@ -219,7 +219,7 @@ services:
   medical-record-service:
     build:
       target: builder
-    command: mvn -f medicalrecord-service/pom.xml spring-boot:run -Dspring-boot.devtools.restart.enabled=true
+    command: bash -c "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f medicalrecord-service/pom.xml spring-boot:run "
     depends_on:
       - medical-record-postgres
       - kafka
@@ -235,7 +235,7 @@ services:
       SPRING_JPA_SHOW_SQL: "false"
       SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "false"
       SPRING_CLOUD_CONFIG_URI: http://config-server:8888
-      SPRING_DEVTOOLS_RESTART_ENABLED: "true"
+      SPRING_DEVTOOLS_RESTART_ENABLED: "false"
       SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
       SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
       SPRING_PROFILES_ACTIVE: dev
