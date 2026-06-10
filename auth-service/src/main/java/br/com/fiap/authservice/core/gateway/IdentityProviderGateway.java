@@ -5,7 +5,7 @@ import br.com.fiap.authservice.core.domain.LoginResult;
 import br.com.fiap.authservice.core.domain.User;
 
 public interface IdentityProviderGateway {
-  void createUser(User user);
+  User createUser(User user);
 
   LoginResult login(String username, String password);
 

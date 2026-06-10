@@ -5,6 +5,7 @@ import br.com.fiap.authservice.core.dto.LoginRequest;
 import br.com.fiap.authservice.core.dto.LoginResponse;
 import br.com.fiap.authservice.core.dto.RefreshTokenRequest;
 import br.com.fiap.authservice.core.dto.RegisterRequest;
+import br.com.fiap.authservice.core.dto.RegisterResponse;
 import br.com.fiap.authservice.core.usecase.LoginUseCase;
 import br.com.fiap.authservice.core.usecase.LogoutUseCase;
 import br.com.fiap.authservice.core.usecase.RefreshTokenUseCase;
@@ -47,14 +48,22 @@ public class AuthController {
     @ApiResponse(responseCode = "400", description = "Validation error"),
     @ApiResponse(responseCode = "422", description = "Validation failed")
   })
-  public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {
-    registerUserUseCase.execute(
-        request.username(),
-        request.email(),
-        request.firstName(),
-        request.lastName(),
-        request.password());
-    return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
+  public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
+    var output =
+        registerUserUseCase.execute(
+            request.username(),
+            request.email(),
+            request.firstName(),
+            request.lastName(),
+            request.password());
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(
+            new RegisterResponse(
+                output.username(),
+                output.email(),
+                output.firstName(),
+                output.lastName(),
+                output.roles()));
   }
 
   @PostMapping("/login")

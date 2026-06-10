@@ -44,12 +44,11 @@ public class KeycloakGatewayImpl implements IdentityProviderGateway {
   }
 
   @Override
-  public void createUser(User user) {
+  public User createUser(User user) {
     try {
       RealmResource realmResource = keycloak.realm(realm);
       UsersResource usersResource = realmResource.users();
 
-      // Create user representation
       UserRepresentation userRepresentation = new UserRepresentation();
       userRepresentation.setUsername(user.getUsername());
       userRepresentation.setEmail(user.getEmail());
@@ -57,22 +56,19 @@ public class KeycloakGatewayImpl implements IdentityProviderGateway {
       userRepresentation.setLastName(user.getLastName());
       userRepresentation.setEnabled(true);
 
-      // Create user
       Response response = usersResource.create(userRepresentation);
       if (response.getStatus() != 201) {
         throw new RuntimeException("Failed to create user: " + response.getStatus());
       }
 
-      // Set password
       String userId = response.getLocation().getPath().replaceAll(".*/([^/]+)$", "$1");
+
       CredentialRepresentation passwordCred = new CredentialRepresentation();
       passwordCred.setTemporary(false);
       passwordCred.setType(CredentialRepresentation.PASSWORD);
       passwordCred.setValue(user.getPassword());
-
       usersResource.get(userId).resetPassword(passwordCred);
 
-      // Assign roles
       if (user.getRoles() != null && !user.getRoles().isEmpty()) {
         var roles =
             user.getRoles().stream()
@@ -80,6 +76,24 @@ public class KeycloakGatewayImpl implements IdentityProviderGateway {
                 .toList();
         usersResource.get(userId).roles().realmLevel().add(roles);
       }
+
+      var assignedRoles =
+          usersResource.get(userId).roles().realmLevel().listEffective().stream()
+              .map(r -> r.getName())
+              .filter(
+                  name ->
+                      !name.startsWith("default-roles")
+                          && !name.equals("offline_access")
+                          && !name.equals("uma_authorization"))
+              .collect(java.util.stream.Collectors.toSet());
+
+      return User.createWithRoles(
+          user.getUsername(),
+          user.getEmail(),
+          user.getFirstName(),
+          user.getLastName(),
+          user.getPassword(),
+          assignedRoles);
     } catch (Exception e) {
       throw new RuntimeException("Error creating user in Keycloak", e);
     }
