@@ -1,0 +1,25 @@
+meta {
+  name: Get Appointment By Id
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{appointmentBaseUrl}}/api/v1/appointments/{{appointmentId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+headers {
+  Accept: application/json
+}
+
+script:post-response {
+  if (res.status === 200) {
+    console.log("Appointment found: " + res.body.id + " — status: " + res.body.status);
+  }
+}

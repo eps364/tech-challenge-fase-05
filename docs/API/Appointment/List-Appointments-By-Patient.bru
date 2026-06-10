@@ -1,0 +1,25 @@
+meta {
+  name: List Appointments By Patient
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{appointmentBaseUrl}}/api/v1/appointments?patientId={{patientId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+headers {
+  Accept: application/json
+}
+
+script:post-response {
+  if (res.status === 200) {
+    console.log("Appointments found: " + res.body.length);
+  }
+}

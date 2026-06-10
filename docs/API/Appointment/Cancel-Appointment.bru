@@ -1,0 +1,25 @@
+meta {
+  name: Cancel Appointment
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{appointmentBaseUrl}}/api/v1/appointments/{{appointmentId}}/cancel
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+headers {
+  Accept: application/json
+}
+
+script:post-response {
+  if (res.status === 200) {
+    console.log("Appointment " + res.body.id + " cancelled — status: " + res.body.status);
+  }
+}

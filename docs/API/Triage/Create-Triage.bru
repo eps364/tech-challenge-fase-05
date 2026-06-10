@@ -6,7 +6,7 @@ meta {
 
 post {
   url: {{triageBaseUrl}}/api/v1/triage
-  body: none
+  body: json
   auth: bearer
 }
 
@@ -15,11 +15,19 @@ auth:bearer {
 }
 
 headers {
+  Content-Type: application/json
   Accept: application/json
 }
 
+body:json {
+  {
+    "patientId": "{{patientId}}"
+  }
+}
+
 script:post-response {
-  if (res.status === 201) {
-    console.log("Triage created successfully with status 201");
+  if (res.status === 201 && res.body && res.body.id) {
+    bru.setEnvVar("triageId", res.body.id);
+    console.log("Triage created with ID: " + res.body.id + " — riskLevel: " + res.body.riskLevel);
   }
 }

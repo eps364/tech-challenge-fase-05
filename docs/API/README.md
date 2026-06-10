@@ -1,54 +1,106 @@
 # API Collection (Bruno)
 
-Esta pasta contém os endpoints implementados no projeto no formato Bruno.
+Esta pasta contém todos os endpoints do projeto no formato Bruno.
 
-## ⚠️ Status de Implementação
+## Status de Implementação
 
 | Serviço | Status | Endpoints |
 | --- | --- | --- |
 | Auth Service | ✅ Ativo | 6 endpoints |
-| Triage Service | ✅ Funcional | 2 endpoints (POST funcional, GET placeholder) |
-| Appointment Service | 🔲 Em Desenvolvimento | Nenhum ainda |
-| Medical Record Service | 🔲 Em Desenvolvimento | Nenhum ainda |
+| Triage Service | ✅ Ativo | 3 endpoints |
+| Appointment Service | ✅ Ativo | 4 endpoints |
+| Medical Record Service | ✅ Ativo | 4 endpoints |
 
-## Endpoints incluidos
+## Variáveis de Ambiente (`environments/local.bru`)
+
+| Variável | Valor padrão | Descrição |
+| --- | --- | --- |
+| `authBaseUrl` | `http://localhost:8761` | Base URL do Auth Service via Gateway |
+| `triageBaseUrl` | `http://localhost:8761/triage` | Base URL do Triage Service via Gateway |
+| `appointmentBaseUrl` | `http://localhost:8761/appointment` | Base URL do Appointment Service via Gateway |
+| `medicalRecordBaseUrl` | `http://localhost:8761/medical-record` | Base URL do Medical Record Service via Gateway |
+| `accessToken` | — | Preenchido automaticamente pelo script do Login |
+| `refreshToken` | — | Preenchido automaticamente pelo script do Login |
+| `triageId` | UUID de exemplo | Preenchido automaticamente pelo Create Triage |
+| `appointmentId` | UUID de exemplo | Preenchido automaticamente pelo Schedule Appointment |
+| `medicalRecordId` | UUID de exemplo | Preenchido automaticamente pelo Create Medical Record |
+| `patientId` | UUID de exemplo | ID do paciente usado nos requests |
+
+## Endpoints
 
 ### Auth Service ✅
 
-- `POST /auth/register` — Registro de novo usuário
-- `POST /auth/login` — Autenticação
-- `POST /auth/refresh` — Renovação de token
-- `POST /auth/logout` — Logout (autenticado)
-- `GET /auth/test/public` — Teste público
-- `GET /auth/test/private` — Teste privado (requer autenticação)
+| Seq | Método | Path | Auth | Descrição |
+| --- | --- | --- | --- | --- |
+| 1 | `POST` | `/auth/register` | ❌ | Registro de novo usuário |
+| 2 | `POST` | `/auth/login` | ❌ | Autenticação — salva tokens automaticamente |
+| 3 | `POST` | `/auth/refresh` | ❌ | Renovação de access token |
+| 4 | `POST` | `/auth/logout` | ✅ | Logout — revoga token via Redis blacklist |
+| 5 | `GET` | `/auth/test/public` | ❌ | Endpoint público de diagnóstico |
+| 6 | `GET` | `/auth/test/private` | ✅ | Endpoint privado de diagnóstico |
 
-### Triage Service ✅ (POST funcional, GET placeholder)
+### Triage Service ✅
 
-- `POST /api/v1/triage` — Criar nova triagem (requer `{"patientId": "<UUID>"}`, retorna `TriageOutput`)
-- `GET /api/v1/triage/{id}` — Placeholder (retorna "OK")
+| Seq | Método | Path | Auth | Descrição |
+| --- | --- | --- | --- | --- |
+| 1 | `POST` | `/api/v1/triage` | ✅ | Cria nova triagem (inicia como BLUE) — salva `triageId` |
+| 2 | `GET` | `/api/v1/triage/{id}` | ✅ | Busca triagem por ID |
+| 3 | `PATCH` | `/api/v1/triage/{id}/classify` | ✅ | Classifica nível de risco (Manchester Protocol) |
 
-### Appointment Service 🔲 (Em Desenvolvimento)
+**Níveis de risco válidos:** `RED`, `ORANGE`, `YELLOW`, `GREEN`, `BLUE`
 
-Endpoints virão em Phase 2
+### Appointment Service ✅
 
-### Medical Record Service 🔲 (Em Desenvolvimento)
+| Seq | Método | Path | Auth | Descrição |
+| --- | --- | --- | --- | --- |
+| 1 | `POST` | `/api/v1/appointments` | ✅ | Agenda consulta — salva `appointmentId` |
+| 2 | `GET` | `/api/v1/appointments/{id}` | ✅ | Busca consulta por ID |
+| 3 | `PATCH` | `/api/v1/appointments/{id}/cancel` | ✅ | Cancela uma consulta |
+| 4 | `GET` | `/api/v1/appointments?patientId={id}` | ✅ | Lista consultas de um paciente |
 
-Endpoints virão em Phase 2
+### Medical Record Service ✅
+
+| Seq | Método | Path | Auth | Descrição |
+| --- | --- | --- | --- | --- |
+| 1 | `POST` | `/api/v1/medical-records` | ✅ | Cria prontuário — salva `medicalRecordId` |
+| 2 | `GET` | `/api/v1/medical-records/{id}` | ✅ | Busca prontuário por ID |
+| 3 | `PATCH` | `/api/v1/medical-records/{id}` | ✅ | Atualiza diagnóstico / prescrição |
+| 4 | `GET` | `/api/v1/medical-records?patientId={id}` | ✅ | Lista prontuários de um paciente |
+
+---
 
 ## Uso rápido
 
 1. Abra a pasta `docs/API` no Bruno.
 2. Selecione o ambiente `environments/local.bru`.
-3. Para endpoints autenticados, preencha os valores de `accessToken` obtidos via POST /auth/login.
-4. Execute as requests.
+3. Execute as requests na ordem sugerida abaixo.
 
-## 📋 Fluxo Completo (Login → Uso → Refresh → Logout)
+---
 
-### Passo 1️⃣: Login (obter tokens)
+## 📋 Fluxo Completo
 
-Execute **`Auth → Login`** com credenciais válidas:
+### 1️⃣ Registrar usuário (se necessário)
 
-**Request:**
+Execute **`Auth → Register`**:
+
+```json
+POST /auth/register
+{
+  "username": "john4.doe",
+  "email": "john.doe4@example.com",
+  "firstName": "John",
+  "lastName": "Doe",
+  "password": "ChangeMe123!"
+}
+```
+
+**Response (201 Created):** `"User registered successfully"`
+
+---
+
+### 2️⃣ Login (obter tokens)
+
+Execute **`Auth → Login`**:
 
 ```json
 POST /auth/login
@@ -58,7 +110,7 @@ POST /auth/login
 }
 ```
 
-**Response:**
+**Response (200 OK):**
 
 ```json
 {
@@ -69,36 +121,13 @@ POST /auth/login
 }
 ```
 
-**O que acontece:**
-
-- ✅ O script `post-response` extrai automaticamente `accessToken` e `refreshToken`
-- ✅ Salva em variáveis de ambiente: `{{accessToken}}` e `{{refreshToken}}`
-- ✅ Essas variáveis ficam disponíveis para todos os endpoints autenticados
+✅ `accessToken` e `refreshToken` são salvos automaticamente nas variáveis de ambiente.
 
 ---
 
-### Passo 2️⃣: Usar o Access Token em endpoints autenticados
+### 3️⃣ Criar Triagem
 
-Agora você pode executar qualquer endpoint que requer autenticação. Exemplos:
-
-#### Teste Privado (Auth Service)
-
-Execute **`Auth → Test-Private`**:
-
-```http
-GET /auth/test/private
-Authorization: Bearer {{accessToken}}
-```
-
-**Response esperada:**
-
-```json
-"Hello john4.doe! This is a private endpoint"
-```
-
-#### Criar Triagem (Triage Service)
-
-Execute **`Triage → Create-Triage`**:
+Execute **`Triage → Create Triage`**:
 
 ```http
 POST /triage/api/v1/triage
@@ -106,7 +135,7 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "patientId": "550e8400-e29b-41d4-a716-446655440000"
+  "patientId": "{{patientId}}"
 }
 ```
 
@@ -114,28 +143,75 @@ Content-Type: application/json
 
 ```json
 {
-  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "id": "uuid",
+  "patientId": "uuid",
   "riskLevel": "BLUE",
-  "createdAt": "2026-06-05T20:00:00"
+  "createdAt": "2026-06-10T10:00:00",
+  "updatedAt": "2026-06-10T10:00:00"
 }
 ```
 
-#### Buscar Triagem por ID
-
-Execute **`Triage → Get-Triage-By-Id`**:
-
-```http
-GET /api/v1/triage/{id}
-Authorization: Bearer {{accessToken}}
-```
+✅ `triageId` salvo automaticamente.
 
 ---
 
-### Passo 3️⃣: Renovar Token (quando expirar)
+### 4️⃣ Classificar Risco (Manchester Protocol)
 
-Quando o `accessToken` expirar (após `expiresIn` segundos), execute **`Auth → Refresh-Token`**:
+Execute **`Triage → Classify Triage`**:
 
-**Request:**
+```http
+PATCH /triage/api/v1/triage/{{triageId}}/classify
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "riskLevel": "YELLOW"
+}
+```
+
+**Response (200 OK):** `TriageOutput` com `riskLevel` atualizado.
+
+---
+
+### 5️⃣ Agendar Consulta
+
+Execute **`Appointment → Schedule Appointment`**:
+
+```json
+POST /appointment/api/v1/appointments
+{
+  "triageId": "{{triageId}}",
+  "patientId": "{{patientId}}",
+  "dateTime": "2026-06-10T10:00:00"
+}
+```
+
+**Response (201 Created):** `AppointmentOutput` — ✅ `appointmentId` salvo automaticamente.
+
+---
+
+### 6️⃣ Criar Prontuário
+
+Execute **`Medical Record → Create Medical Record`**:
+
+```json
+POST /medical-record/api/v1/medical-records
+{
+  "appointmentId": "{{appointmentId}}",
+  "patientId": "{{patientId}}",
+  "diagnosis": "Acute pharyngitis",
+  "prescription": "Amoxicillin 500mg 8/8h for 7 days",
+  "consultationDate": "2026-06-10T10:30:00"
+}
+```
+
+**Response (201 Created):** `MedicalRecordOutput` — ✅ `medicalRecordId` salvo automaticamente.
+
+---
+
+### 7️⃣ Renovar Token (quando expirar)
+
+Execute **`Auth → Refresh Token`**:
 
 ```json
 POST /auth/refresh
@@ -144,80 +220,45 @@ POST /auth/refresh
 }
 ```
 
-**Response:**
-
-```json
-{
-  "accessToken": "eyJhbGciOiJSUzI1NiIs...",
-  "refreshToken": "eyJhbGciOiJSUzI1NiIs...",
-  "expiresIn": 300,
-  "tokenType": "Bearer"
-}
-```
-
-**O que acontece:**
-
-- ✅ O script `post-response` automaticamente atualiza `{{accessToken}}`
-- ✅ Você continua usando os endpoints sem interrupção
-- ✅ Sem necessidade de fazer login novamente
+✅ `accessToken` atualizado automaticamente.
 
 ---
 
-### Passo 4️⃣: Logout (encerrar sessão)
+### 8️⃣ Logout
 
-Execute **`Auth → Logout`** para revogar o token:
-
-**Request:**
+Execute **`Auth → Logout`**:
 
 ```http
 POST /auth/logout
 Authorization: Bearer {{accessToken}}
 ```
 
-**Response:**
+**Response (200 OK):** `"Logged out successfully"`
 
-```http
-200 OK
-"Logged out successfully"
-```
-
-**O que acontece:**
-
-- ✅ Token é adicionado à blacklist no Redis
-- ✅ Script `post-response` deleta `{{accessToken}}` automaticamente
-- ✅ Endpoints autenticados retornarão 401 se você tentar usar o token antigo
+✅ Token adicionado à blacklist Redis. Variáveis limpas automaticamente.
 
 ---
 
-## 🔄 Resumo Executivo do Fluxo
-
-| Passo | Endpoint | Ação | Resultado |
-| --- | --- | --- | --- |
-| 1 | `POST /auth/login` | Enviar credenciais | Obtem `accessToken` e `refreshToken` |
-| 2 | Qualquer endpoint autenticado | Usar `{{accessToken}}` no header `Authorization: Bearer` | Acessa recurso protegido |
-| 3 | `POST /auth/refresh` | Usar `{{refreshToken}}` | Renova `accessToken` |
-| 4 | `POST /auth/logout` | Usar `{{accessToken}}` | Revoga token e limpa variáveis |
-
 ## ⏱️ Tempos de Expiração
 
-| Token | Duração | Renovação |
+| Token | Duração | Ação |
 | --- | --- | --- |
-| `accessToken` | 300 segundos (5 min) | Renove via `/auth/refresh` antes de expirar |
-| `refreshToken` | Válido por mais tempo | Não precisa renovar, apenas use no refresh |
+| `accessToken` | 300 segundos (5 min) | Renove via `/auth/refresh` |
+| `refreshToken` | Longa duração | Use apenas no refresh |
 
 ## 🛡️ Boas Práticas
 
-1. **Sempre execute Login antes de qualquer request autenticada**
-2. **Se receber 401, execute Refresh-Token para renovar**
+1. **Execute Login antes de qualquer request autenticada**
+2. **Se receber 401, execute Refresh Token para renovar**
 3. **Se Refresh falhar (401), execute Login novamente**
-4. **Ao terminar, execute Logout para limpar a sessão**
-5. **Variáveis são salvas automaticamente** — não precisa copiar/colar tokens
+4. **Ao terminar, execute Logout para revogar o token**
+5. **Scripts `post-response` salvam IDs automaticamente** — execute Create antes de Get/Patch
 
-## Acesso aos Swagger UI
-
-Cada serviço expõe documentação OpenAPI em `/swagger-ui.html`:
+## 🔗 Swagger UI
 
 | Serviço | URL |
 | --- | --- |
-| Auth Service | Via API Gateway: `http://localhost:8761/auth/swagger-ui.html` |
-| Triage Service | Via API Gateway: `http://localhost:8761/triage/swagger-ui.html` |
+| Auth Service | `http://localhost:8761/auth/swagger-ui.html` |
+| Triage Service | `http://localhost:8761/triage/swagger-ui.html` |
+| Appointment Service | `http://localhost:8761/appointment/swagger-ui.html` |
+| Medical Record Service | `http://localhost:8761/medical-record/swagger-ui.html` |
