@@ -1,16 +1,16 @@
 # docker-compose.dev.yml - Development Overrides
-# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up --watch
 #
 # This file overrides production settings for faster development iteration:
-# - Increases logging verbosity
-# - Keeps critical infrastructure healthchecks (Keycloak, Kafka, DBs)
-# - Disables healthchecks only for Java services for faster startup
-# - Enables auto-reload where applicable
+# - Mounts source code from host into the builder image (no rebuild needed)
+# - Uses spring-boot:run for faster startup and hot restart
+# - Disables healthchecks for Java services
+# - Uses Docker Compose Watch (sync+restart) for file change detection
 
 services:
   # Keep database healthchecks - critical for preventing startup failures
   # Databases start fast, healthchecks prevent data corruption issues
-  
+
   # Keep Keycloak healthcheck - auth services depend on it being fully ready
   keycloak:
     healthcheck:
@@ -31,34 +31,40 @@ services:
   config-server:
     build:
       target: builder
-    command: bash -c "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f config-server/pom.xml spring-boot:run "
+    entrypoint: []
+    command:
+      - bash
+      - -c
+      - "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f config-server/pom.xml spring-boot:run"
     healthcheck:
       disable: true
     volumes:
+      - .:/workspace
       - ./config-repo:/config-repo:ro
       - m2-cache:/root/.m2
     environment:
       LOGGING_LEVEL_ROOT: INFO
       LOGGING_LEVEL_BR_COM_FIAP: DEBUG
       SPRING_DEVTOOLS_RESTART_ENABLED: "false"
-      SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
-      SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
       SPRING_PROFILES_ACTIVE: native,dev
       MAVEN_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=4 -Xms256m -Xmx512m
     develop:
       watch:
-        - path: ./config-server/src/main/java
+        - path: ./config-server/src
           action: sync+restart
-          target: /workspace/config-server/src/main/java
-        - path: ./config-server/src/main/resources
+          target: /workspace/config-server/src
+        - path: ./common-lib/src
           action: sync+restart
-          target: /workspace/config-server/src/main/resources
+          target: /workspace/common-lib/src
 
   service-registry:
     build:
       target: builder
-    command: bash -c "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f registry-service/pom.xml spring-boot:run "
-    # Keep dependency on healthy Keycloak to avoid connection errors
+    entrypoint: []
+    command:
+      - bash
+      - -c
+      - "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f registry-service/pom.xml spring-boot:run"
     depends_on:
       kafka:
         condition: service_healthy
@@ -67,58 +73,56 @@ services:
     healthcheck:
       disable: true
     volumes:
+      - .:/workspace
       - m2-cache:/root/.m2
     environment:
       LOGGING_LEVEL_ROOT: INFO
       LOGGING_LEVEL_BR_COM_FIAP: DEBUG
-      SPRING_DEVTOOLS_RESTART_ENABLED: "false"
-      SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
-      SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
       SPRING_PROFILES_ACTIVE: dev
       MAVEN_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=4 -Xms256m -Xmx512m
     develop:
       watch:
-        - path: ./registry-service/src/main/java
+        - path: ./registry-service/src
           action: sync+restart
-          target: /workspace/registry-service/src/main/java
-        - path: ./registry-service/src/main/resources
-          action: sync+restart
-          target: /workspace/registry-service/src/main/resources
+          target: /workspace/registry-service/src
 
   api-gateway:
     build:
       target: builder
-    command: bash -c "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f api-gateway/pom.xml spring-boot:run "
+    entrypoint: []
+    command:
+      - bash
+      - -c
+      - "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f api-gateway/pom.xml spring-boot:run"
     depends_on:
       - config-server
       - service-registry
     healthcheck:
       disable: true
     volumes:
+      - .:/workspace
       - m2-cache:/root/.m2
     environment:
       LOGGING_LEVEL_ROOT: INFO
       LOGGING_LEVEL_BR_COM_FIAP: DEBUG
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_CLOUD_GATEWAY: DEBUG
       SPRING_CLOUD_CONFIG_URI: http://config-server:8888
-      SPRING_DEVTOOLS_RESTART_ENABLED: "false"
-      SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
-      SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
       SPRING_PROFILES_ACTIVE: dev
       MAVEN_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=4 -Xms256m -Xmx512m
     develop:
       watch:
-        - path: ./api-gateway/src/main/java
+        - path: ./api-gateway/src
           action: sync+restart
-          target: /workspace/api-gateway/src/main/java
-        - path: ./api-gateway/src/main/resources
-          action: sync+restart
-          target: /workspace/api-gateway/src/main/resources
+          target: /workspace/api-gateway/src
 
   auth-service:
     build:
       target: builder
-    command: bash -c "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f auth-service/pom.xml spring-boot:run "
+    entrypoint: []
+    command:
+      - bash
+      - -c
+      - "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f auth-service/pom.xml spring-boot:run"
     depends_on:
       - auth-service-db
       - redis
@@ -128,32 +132,33 @@ services:
     healthcheck:
       disable: true
     volumes:
+      - .:/workspace
       - m2-cache:/root/.m2
     environment:
       LOGGING_LEVEL_ROOT: INFO
       LOGGING_LEVEL_BR_COM_FIAP: DEBUG
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
       SPRING_JPA_SHOW_SQL: "false"
-      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "false"
       SPRING_CLOUD_CONFIG_URI: http://config-server:8888
-      SPRING_DEVTOOLS_RESTART_ENABLED: "false"
-      SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
-      SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
       SPRING_PROFILES_ACTIVE: dev
       MAVEN_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=4 -Xms256m -Xmx512m
     develop:
       watch:
-        - path: ./auth-service/src/main/java
+        - path: ./auth-service/src
           action: sync+restart
-          target: /workspace/auth-service/src/main/java
-        - path: ./auth-service/src/main/resources
+          target: /workspace/auth-service/src
+        - path: ./common-lib/src
           action: sync+restart
-          target: /workspace/auth-service/src/main/resources
+          target: /workspace/common-lib/src
 
   triage-service:
     build:
       target: builder
-    command: bash -c "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f triage-service/pom.xml spring-boot:run "
+    entrypoint: []
+    command:
+      - bash
+      - -c
+      - "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f triage-service/pom.xml spring-boot:run"
     depends_on:
       - triage-postgres
       - kafka
@@ -162,31 +167,32 @@ services:
     healthcheck:
       disable: true
     volumes:
+      - .:/workspace
       - m2-cache:/root/.m2
     environment:
       LOGGING_LEVEL_ROOT: INFO
       LOGGING_LEVEL_BR_COM_FIAP: DEBUG
       SPRING_JPA_SHOW_SQL: "false"
-      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "false"
       SPRING_CLOUD_CONFIG_URI: http://config-server:8888
-      SPRING_DEVTOOLS_RESTART_ENABLED: "false"
-      SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
-      SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
       SPRING_PROFILES_ACTIVE: dev
       MAVEN_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=4 -Xms256m -Xmx512m
     develop:
       watch:
-        - path: ./triage-service/src/main/java
+        - path: ./triage-service/src
           action: sync+restart
-          target: /workspace/triage-service/src/main/java
-        - path: ./triage-service/src/main/resources
+          target: /workspace/triage-service/src
+        - path: ./common-lib/src
           action: sync+restart
-          target: /workspace/triage-service/src/main/resources
+          target: /workspace/common-lib/src
 
   appointment-service:
     build:
       target: builder
-    command: bash -c "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f appointment-service/pom.xml spring-boot:run "
+    entrypoint: []
+    command:
+      - bash
+      - -c
+      - "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f appointment-service/pom.xml spring-boot:run"
     depends_on:
       - appointment-postgres
       - kafka
@@ -195,31 +201,32 @@ services:
     healthcheck:
       disable: true
     volumes:
+      - .:/workspace
       - m2-cache:/root/.m2
     environment:
       LOGGING_LEVEL_ROOT: INFO
       LOGGING_LEVEL_BR_COM_FIAP: DEBUG
       SPRING_JPA_SHOW_SQL: "false"
-      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "false"
       SPRING_CLOUD_CONFIG_URI: http://config-server:8888
-      SPRING_DEVTOOLS_RESTART_ENABLED: "false"
-      SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
-      SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
       SPRING_PROFILES_ACTIVE: dev
       MAVEN_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=4 -Xms256m -Xmx512m
     develop:
       watch:
-        - path: ./appointment-service/src/main/java
+        - path: ./appointment-service/src
           action: sync+restart
-          target: /workspace/appointment-service/src/main/java
-        - path: ./appointment-service/src/main/resources
+          target: /workspace/appointment-service/src
+        - path: ./common-lib/src
           action: sync+restart
-          target: /workspace/appointment-service/src/main/resources
+          target: /workspace/common-lib/src
 
   medical-record-service:
     build:
       target: builder
-    command: bash -c "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f medicalrecord-service/pom.xml spring-boot:run "
+    entrypoint: []
+    command:
+      - bash
+      - -c
+      - "mvn install -N -DskipTests -Dspotless.skip=true -q && mvn install -pl common-lib -DskipTests -Dspotless.skip=true -q && mvn -f medicalrecord-service/pom.xml spring-boot:run"
     depends_on:
       - medical-record-postgres
       - kafka
@@ -228,26 +235,23 @@ services:
     healthcheck:
       disable: true
     volumes:
+      - .:/workspace
       - m2-cache:/root/.m2
     environment:
       LOGGING_LEVEL_ROOT: INFO
       LOGGING_LEVEL_BR_COM_FIAP: DEBUG
       SPRING_JPA_SHOW_SQL: "false"
-      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "false"
       SPRING_CLOUD_CONFIG_URI: http://config-server:8888
-      SPRING_DEVTOOLS_RESTART_ENABLED: "false"
-      SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2000
-      SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1000
       SPRING_PROFILES_ACTIVE: dev
       MAVEN_OPTS: -XX:+TieredCompilation -XX:TieredStopAtLevel=4 -Xms256m -Xmx512m
     develop:
       watch:
-        - path: ./medicalrecord-service/src/main/java
+        - path: ./medicalrecord-service/src
           action: sync+restart
-          target: /workspace/medicalrecord-service/src/main/java
-        - path: ./medicalrecord-service/src/main/resources
+          target: /workspace/medicalrecord-service/src
+        - path: ./common-lib/src
           action: sync+restart
-          target: /workspace/medicalrecord-service/src/main/resources
+          target: /workspace/common-lib/src
 
 volumes:
   m2-cache:
