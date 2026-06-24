@@ -1,7 +1,7 @@
 /* Copyright (c) 2024 FIAP. All rights reserved. */
 package br.com.fiap.susconnect.triage.infra.config;
 
-import br.com.fiap.susconnect.triage.core.dto.TriageClassifiedEvent;
+import br.com.fiap.common.events.TriageClassifiedEvent;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.producer.ProducerConfig;

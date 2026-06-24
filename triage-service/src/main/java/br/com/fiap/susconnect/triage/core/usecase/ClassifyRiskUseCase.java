@@ -3,7 +3,7 @@ package br.com.fiap.susconnect.triage.core.usecase;
 
 import br.com.fiap.susconnect.triage.core.domain.TriageNotFoundDomainException;
 import br.com.fiap.susconnect.triage.core.domain.entity.RiskLevel;
-import br.com.fiap.susconnect.triage.core.dto.TriageClassifiedEvent;
+import br.com.fiap.common.events.TriageClassifiedEvent;
 import br.com.fiap.susconnect.triage.core.dto.TriageOutput;
 import br.com.fiap.susconnect.triage.core.gateway.TriageEventPublisher;
 import br.com.fiap.susconnect.triage.core.gateway.TriageGateway;

@@ -1,7 +1,7 @@
 /* Copyright (c) 2024 FIAP. All rights reserved. */
 package br.com.fiap.susconnect.appointment.infra.config;
 
-import br.com.fiap.susconnect.appointment.core.dto.TriageClassifiedEvent;
+import br.com.fiap.common.events.TriageClassifiedEvent;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -25,6 +25,7 @@ public class KafkaConsumerConfig {
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
     props.put(JsonDeserializer.TRUSTED_PACKAGES, "br.com.fiap.*");
     props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, TriageClassifiedEvent.class.getName());
+    props.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, false);
     return new DefaultKafkaConsumerFactory<>(props);
   }
 

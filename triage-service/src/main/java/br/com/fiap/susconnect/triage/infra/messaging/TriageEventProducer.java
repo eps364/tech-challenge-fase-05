@@ -1,7 +1,7 @@
 /* Copyright (c) 2024 FIAP. All rights reserved. */
 package br.com.fiap.susconnect.triage.infra.messaging;
 
-import br.com.fiap.susconnect.triage.core.dto.TriageClassifiedEvent;
+import br.com.fiap.common.events.TriageClassifiedEvent;
 import br.com.fiap.susconnect.triage.core.gateway.TriageEventPublisher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;

@@ -253,6 +253,8 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8762/eureka/
       JWT_ISSUER_URI: http://keycloak:8080/realms/sus-connect
       JWT_JWK_SET_URI: http://keycloak:8080/realms/sus-connect/protocol/openid-connect/certs
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
     ports:
       - "8761:8761"
     networks:

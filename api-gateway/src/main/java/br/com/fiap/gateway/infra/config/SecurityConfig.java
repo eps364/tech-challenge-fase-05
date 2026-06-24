@@ -92,7 +92,7 @@ public class SecurityConfig {
               .map(String::valueOf)
               .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
               .collect(Collectors.toList());
-        });
+    });
     return new ReactiveJwtAuthenticationConverterAdapter(converter);
   }
 }

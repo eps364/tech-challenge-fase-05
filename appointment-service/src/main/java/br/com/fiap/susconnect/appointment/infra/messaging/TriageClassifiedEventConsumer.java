@@ -1,7 +1,7 @@
 /* Copyright (c) 2024 FIAP. All rights reserved. */
 package br.com.fiap.susconnect.appointment.infra.messaging;
 
-import br.com.fiap.susconnect.appointment.core.dto.TriageClassifiedEvent;
+import br.com.fiap.common.events.TriageClassifiedEvent;
 import br.com.fiap.susconnect.appointment.core.usecase.ScheduleAppointmentUseCase;
 import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;

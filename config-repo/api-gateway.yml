@@ -49,6 +49,11 @@ spring:
           issuer-uri: ${JWT_ISSUER_URI:http://keycloak:8080/realms/sus-connect}
           jwk-set-uri: ${JWT_JWK_SET_URI:http://keycloak:8080/realms/sus-connect/protocol/openid-connect/certs}
 
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST:redis}
+      port: ${SPRING_DATA_REDIS_PORT:6379}
+
 eureka:
   instance:
     prefer-ip-address: true
