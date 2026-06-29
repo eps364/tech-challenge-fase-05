@@ -23,13 +23,7 @@
 
   <modules>
     <module>common-lib</module>
-    <module>config-server</module>
-    <module>registry-service</module>
-    <module>api-gateway</module>
-    <module>auth-service</module>
-    <module>triage-service</module>
     <module>appointment-service</module>
-    <module>medicalrecord-service</module>
   </modules>
 
   <properties>
@@ -37,11 +31,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     
-    <!-- Spring Cloud Version -->
-    <spring-cloud.version>2024.0.0</spring-cloud.version>
-    
     <!-- Library Versions -->
-    <testcontainers.version>1.19.3</testcontainers.version>
     <springdoc-openapi.version>2.1.0</springdoc-openapi.version>
   </properties>
 
@@ -64,60 +54,17 @@
         <artifactId>common-lib</artifactId>
         <version>${project.version}</version>
       </dependency>
-
-      <!-- Spring Cloud BOM -->
-      <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-dependencies</artifactId>
-        <version>${spring-cloud.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-
       <!-- SpringDoc OpenAPI (Swagger/OpenAPI 3.0) -->
       <dependency>
         <groupId>org.springdoc</groupId>
         <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         <version>${springdoc-openapi.version}</version>
       </dependency>
-      
-      <!-- Testcontainers -->
-      <dependency>
-        <groupId>org.testcontainers</groupId>
-        <artifactId>testcontainers</artifactId>
-        <version>${testcontainers.version}</version>
-      </dependency>
-      
-      <dependency>
-        <groupId>org.testcontainers</groupId>
-        <artifactId>postgresql</artifactId>
-        <version>${testcontainers.version}</version>
-      </dependency>
-      
-      <dependency>
-        <groupId>org.testcontainers</groupId>
-        <artifactId>junit-jupiter</artifactId>
-        <version>${testcontainers.version}</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
   <build>
     <plugins>
-      <!-- Spring Boot Maven Plugin -->
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-            </exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-
       <!-- Compiler Plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

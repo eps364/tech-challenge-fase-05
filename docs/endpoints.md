@@ -1,242 +1,96 @@
-# Endpoints - Tech Challenge Fase 05
+# Endpoints - Appointment Service
 
-Documento de referencia dos endpoints implementados no projeto, seguindo o modelo da Fase 03 (visao por servico + detalhe de cada rota).
+Base URL local: `http://localhost:8202`
 
-## Resumo por servico
+Autenticacao: desabilitada no escopo reduzido para facilitar desenvolvimento
+local da feature de agendamento.
 
-| Servico | Metodo | Endpoint | Autenticacao | Descricao |
-| --- | --- | --- | --- | --- |
-| Auth Service | POST | `/auth/register` | Publica | Registra novo usuario. |
-| Auth Service | POST | `/auth/login` | Publica | Autentica usuario e retorna tokens. |
-| Auth Service | POST | `/auth/refresh` | Publica (com refresh token) | Gera novo access token. |
-| Auth Service | POST | `/auth/logout` | Bearer token | Efetua logout e revoga token atual. |
-| Auth Service | GET | `/auth/test/public` | Publica | Endpoint de teste publico. |
-| Auth Service | GET | `/auth/test/private` | Bearer token | Endpoint de teste autenticado. |
-| Triage Service | POST | `/api/v1/triage` | Bearer token | Cria triagem — retorna id, riskLevel, createdAt. |
-| Triage Service | GET | `/api/v1/triage/{id}` | Bearer token | Placeholder — retorna "OK". |
+## Pacientes
 
-## Detalhe de cada endpoint
+### GET /api/v1/patients
 
-## Auth Service
+Lista a massa local de pacientes criada pelo Flyway.
 
-Base URL via API Gateway: `http://localhost:8761`  
-Base URL direta (porta dinâmica — verifique no Eureka): `http://localhost:<porta-dinâmica>`
+## Agendamentos
 
-### 1) POST /auth/register
+### POST /api/v1/appointments
 
-- Objetivo: registrar um novo usuario.
-- Autenticacao: nao requer token.
-- Headers:
-  - `Content-Type: application/json`
-  - `Accept: application/json`
-- Body (JSON):
+Cria uma consulta ou exame.
 
 ```json
 {
-  "username": "john.doe",
-  "email": "john.doe@example.com",
-  "firstName": "John",
-  "lastName": "Doe",
-  "password": "ChangeMe123!"
+  "patientId": "11111111-1111-1111-1111-111111111111",
+  "professionalId": "99999999-9999-9999-9999-999999999991",
+  "dateTime": "2026-07-10T10:00:00",
+  "appointmentType": "EXAM",
+  "serviceName": "Hemograma completo",
+  "facilityName": "UBS Central",
+  "preparationNotes": "Jejum de 8 horas. Beber agua normalmente."
 }
 ```
 
-- Resposta de sucesso:
-  - `201 Created`
-  - Body:
+Campos:
 
-```text
-User registered successfully
-```
+- `appointmentType`: `CONSULTATION` ou `EXAM`.
+- `preparationNotes`: texto livre para jejum, medicamento, documentos ou
+  outras condicoes especiais.
 
-- Erros comuns:
-  - `400 Bad Request` (RuntimeException)
+### GET /api/v1/appointments/{id}
 
-### 2) POST /auth/login
+Consulta um agendamento por ID.
 
-- Objetivo: autenticar usuario e retornar access token e refresh token.
-- Autenticacao: nao requer token.
-- Headers:
-  - `Content-Type: application/json`
-  - `Accept: application/json`
-- Body (JSON):
+### GET /api/v1/appointments?patientId={id}
+
+Lista agendamentos de um paciente.
+
+### PATCH /api/v1/appointments/{id}/cancel
+
+Cancela um agendamento.
+
+### PATCH /api/v1/appointments/{id}/cannot-attend
+
+Marca que o paciente nao podera comparecer, cancela o horario e tenta gerar
+uma oferta para outro paciente com agendamento futuro equivalente.
 
 ```json
 {
-  "username": "john.doe",
-  "password": "ChangeMe123!"
+  "reason": "Paciente informou que nao conseguira comparecer."
 }
 ```
 
-- Resposta de sucesso:
-  - `200 OK`
-  - Body (JSON):
+Resposta:
 
 ```json
 {
-  "accessToken": "<jwt>",
-  "refreshToken": "<refresh-token>",
-  "expiresIn": 300,
-  "tokenType": "Bearer"
+  "appointment": {
+    "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1",
+    "status": "CANCELLED",
+    "patientNotification": "Agendamento cancelado..."
+  },
+  "generatedOffer": {
+    "id": "uuid",
+    "candidatePatientId": "44444444-4444-4444-4444-444444444444",
+    "status": "PENDING",
+    "message": "Uma vaga abriu..."
+  }
 }
 ```
 
-- Erros comuns:
-  - `401 Unauthorized` (AuthenticationException)
-  - `400 Bad Request` (RuntimeException)
+### POST /api/v1/appointments/notifications/reminders?hoursAhead=48
 
-### 3) POST /auth/refresh
+Atualiza a mensagem de notificacao dos agendamentos confirmados dentro da
+janela informada.
 
-- Objetivo: gerar novos tokens a partir do refresh token.
-- Autenticacao: nao requer bearer token no header; requer refresh token no body.
-- Headers:
-  - `Content-Type: application/json`
-  - `Accept: application/json`
-- Body (JSON):
+## Ofertas de Vaga
 
-```json
-{
-  "refreshToken": "<refresh-token>"
-}
-```
+### GET /api/v1/appointments/offers?patientId={id}
 
-- Resposta de sucesso:
-  - `200 OK`
-  - Body (JSON):
+Lista ofertas pendentes para um paciente.
 
-```json
-{
-  "accessToken": "<jwt>",
-  "refreshToken": "<refresh-token>",
-  "expiresIn": 300,
-  "tokenType": "Bearer"
-}
-```
+### PATCH /api/v1/appointments/offers/{offerId}/accept
 
-- Erros comuns:
-  - `401 Unauthorized` (AuthenticationException)
-  - `400 Bad Request` (RuntimeException)
+Aceita a oferta e move o agendamento futuro do paciente para o horario aberto.
 
-### 4) POST /auth/logout
+### PATCH /api/v1/appointments/offers/{offerId}/decline
 
-- Objetivo: realizar logout do token atual.
-- Autenticacao: requer bearer token.
-- Headers:
-  - `Authorization: Bearer <access-token>`
-  - `Accept: application/json`
-- Body: nao possui.
-
-- Resposta de sucesso:
-  - `200 OK`
-  - Body:
-
-```text
-Logged out successfully
-```
-
-- Erros comuns:
-  - `401 Unauthorized` (token ausente/invalido)
-  - `400 Bad Request` (RuntimeException)
-
-### 5) GET /auth/test/public
-
-- Objetivo: validar endpoint publico do servico.
-- Autenticacao: nao requer token.
-- Headers:
-  - `Accept: application/json`
-- Body: nao possui.
-
-- Resposta de sucesso:
-  - `200 OK`
-  - Body:
-
-```text
-This is a public endpoint
-```
-
-### 6) GET /auth/test/private
-
-- Objetivo: validar endpoint autenticado do servico.
-- Autenticacao: requer bearer token.
-- Headers:
-  - `Authorization: Bearer <access-token>`
-  - `Accept: application/json`
-- Body: nao possui.
-
-- Resposta de sucesso:
-  - `200 OK`
-  - Body (exemplo):
-
-```text
-Hello john.doe! This is a private endpoint
-```
-
-- Erros comuns:
-  - `401 Unauthorized` (token ausente/invalido)
-
-## Triage Service
-
-Base URL via API Gateway: `http://localhost:8761`  
-Base URL direta (porta dinâmica — verifique no Eureka): `http://localhost:<porta-dinâmica>`
-
-Observacao: o endpoint POST /api/v1/triage está funcional. O endpoint GET /api/v1/triage/{id} é placeholder (retorna "OK").
-
-### 7) POST /api/v1/triage
-
-- Objetivo: criar uma nova triagem com classificação inicial BLUE (Manchester Protocol).
-- Autenticacao: requer bearer token.
-- Headers:
-  - `Authorization: Bearer <access-token>`
-  - `Content-Type: application/json`
-  - `Accept: application/json`
-- Body (JSON):
-
-```json
-{
-  "patientId": "550e8400-e29b-41d4-a716-446655440000"
-}
-```
-
-- Resposta de sucesso:
-  - `201 Created`
-  - Body (JSON):
-
-```json
-{
-  "id": "550e8400-e29b-41d4-a716-446655440000",
-  "riskLevel": "BLUE",
-  "createdAt": "2026-06-05T20:00:00"
-}
-```
-
-- Erros comuns:
-  - `400 Bad Request` (patientId nulo ou inválido)
-
-### 8) GET /api/v1/triage/{id}
-
-- Objetivo: consultar triagem por identificador.
-- Autenticacao: requer bearer token.
-- Headers:
-  - `Authorization: Bearer <access-token>`
-  - `Accept: application/json`
-- Path param:
-  - `id` (UUID)
-- Body: nao possui.
-
-- Resposta de sucesso:
-  - `200 OK`
-  - Body atual:
-
-```text
-OK
-```
-
-- Erros comuns:
-  - `400 Bad Request` (UUID invalido)
-
-## Endpoints ainda nao implementados nesta fase
-
-| Servico | Status |
-| --- | --- |
-| Appointment Service | Em desenvolvimento |
-| Medical Record Service | Em desenvolvimento |
+Recusa a oferta sem alterar o agendamento atual do paciente.

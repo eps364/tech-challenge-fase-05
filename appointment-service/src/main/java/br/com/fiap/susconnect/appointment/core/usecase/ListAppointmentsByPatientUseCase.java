@@ -1,8 +1,8 @@
 /* Copyright (c) 2024 FIAP. All rights reserved. */
 package br.com.fiap.susconnect.appointment.core.usecase;
 
-import br.com.fiap.susconnect.appointment.core.domain.entity.Appointment;
 import br.com.fiap.susconnect.appointment.core.dto.AppointmentOutput;
+import br.com.fiap.susconnect.appointment.core.dto.AppointmentOutputMapper;
 import br.com.fiap.susconnect.appointment.core.gateway.AppointmentGateway;
 import java.util.List;
 import java.util.UUID;
@@ -19,17 +19,8 @@ public class ListAppointmentsByPatientUseCase {
 
   public List<AppointmentOutput> execute(UUID patientId) {
     log.info("Listing appointments for patientId={}", patientId);
-    return appointmentGateway.findByPatientId(patientId).stream().map(this::toOutput).toList();
-  }
-
-  private AppointmentOutput toOutput(Appointment a) {
-    return new AppointmentOutput(
-        a.getId(),
-        a.getTriageId(),
-        a.getPatientId(),
-        a.getProfessionalId(),
-        a.getDateTime(),
-        a.getStatus().name(),
-        a.getCreatedAt());
+    return appointmentGateway.findByPatientId(patientId).stream()
+        .map(AppointmentOutputMapper::toOutput)
+        .toList();
   }
 }

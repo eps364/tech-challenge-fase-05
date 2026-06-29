@@ -7,11 +7,7 @@ meta {
 post {
   url: {{appointmentBaseUrl}}/api/v1/appointments
   body: json
-  auth: bearer
-}
-
-auth:bearer {
-  token: {{accessToken}}
+  auth: none
 }
 
 headers {
@@ -21,15 +17,19 @@ headers {
 
 body:json {
   {
-    "triageId": "{{triageId}}",
     "patientId": "{{patientId}}",
-    "dateTime": "2026-06-10T10:00:00"
+    "professionalId": "99999999-9999-9999-9999-999999999991",
+    "dateTime": "2026-07-10T10:00:00",
+    "appointmentType": "EXAM",
+    "serviceName": "Hemograma completo",
+    "facilityName": "UBS Central",
+    "preparationNotes": "Jejum de 8 horas. Beber agua normalmente."
   }
 }
 
 script:post-response {
   if (res.status === 201 && res.body && res.body.id) {
     bru.setEnvVar("appointmentId", res.body.id);
-    console.log("Appointment scheduled with ID: " + res.body.id + " — status: " + res.body.status);
+    console.log("Appointment scheduled with ID: " + res.body.id + " - status: " + res.body.status);
   }
 }

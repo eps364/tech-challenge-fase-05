@@ -1,762 +1,101 @@
-# SUS-Connect Intelligent Triage - Tech Challenge Phase 05
+# SUS-Connect Appointment Service
 
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Java Version](https://img.shields.io/badge/Java-21-orange)](https://www.oracle.com/java/)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.5-green)](https://spring.io/projects/spring-boot)
-[![Docker Compose](https://img.shields.io/badge/Docker%20Compose-3.9-blue)](https://docs.docker.com/compose/)
+Projeto reduzido para desenvolver a feature de agendamentos, consultas, exames,
+lembretes ao paciente e reaproveitamento de vagas quando alguem informa que nao
+podera comparecer.
 
-## 📋 Overview
+## Escopo Atual
 
-**SUS-Connect** is a decentralized healthcare platform that implements **intelligent clinical triage** based on **Manchester Protocol v3.0**. The system coordinates the end-to-end flow: risk classification → automatic appointment → medical documentation, with full support for **Keycloak authentication**, **scalable microservices**, and **clean architecture**.
+- `appointment-service`: API principal de agendamentos.
+- `common-lib`: suporte compartilhado de erros RFC 9457 e validacao.
+- PostgreSQL local para dados de pacientes, agendamentos e ofertas de vaga.
 
-### Key Features
+Os demais modulos permanecem no repositorio para historico, mas foram removidos
+do build Maven e do Docker Compose principal.
 
-✅ **Intelligent Triage**: Automatic patient classification into 5 risk levels (RED, ORANGE, YELLOW, GREEN, BLUE)  
-✅ **OAuth2/JWT Authentication**: Keycloak with centralized identity management  
-✅ **Microservices Architecture**: 7 independent services with isolated databases  
-✅ **Clean Architecture**: Pure core (Java) + Infra (Spring/JPA) separated  
-✅ **API Gateway**: Dynamic routing via Eureka service discovery  
-✅ **Event-Driven**: Kafka for asynchronous inter-service communication  
-⚠️ **Appointment Scheduling**: In development (entity layer complete)  
-⚠️ **Medical Records**: In development (entity layer complete)  
+## Funcionalidades
 
----
+- Agendar consulta ou exame.
+- Informar unidade, profissional, tipo de atendimento e notas de preparo.
+- Guardar a notificacao do paciente no proprio agendamento.
+- Gerar lembretes para agendamentos futuros em uma janela configuravel.
+- Marcar que o paciente nao podera comparecer.
+- Cancelar o horario aberto e oferecer a vaga para outro paciente com
+  agendamento futuro equivalente.
+- Aceitar ou recusar ofertas de antecipacao.
+- Carregar massa local de pacientes e agendamentos via Flyway.
 
-## 🚀 Quick Start
+## Rodando Localmente
 
-### Prerequisites
-
-- **Docker & Docker Compose** 3.9+
-- **Java 21+** (for local build)
-- **Maven 3.9+** (included via mvnw)
-
-### 1️⃣ Clone Repository
+Subir banco e servico:
 
 ```bash
-git clone https://github.com/eps364/tech-challenge-fase-05.git
-cd tech-challenge-fase-05
+docker compose up --build
 ```
 
-### 2️⃣ Build and Start All Services
+Subir apenas o banco para rodar o servico pela IDE/Maven:
 
 ```bash
-# Build and start infrastructure + all microservices
-docker compose up --build -d
+docker compose -f docker-compose.dev.yml up -d
+mvn -pl appointment-service -am spring-boot:run
 ```
 
-The Dockerfiles now compile each Maven module during image build (multi-stage), so a prior local mvn clean package is optional.
+URLs principais:
 
-### 3️⃣ Verify Health
+- API: `http://localhost:8202`
+- Swagger: `http://localhost:8202/swagger-ui/index.html`
+- Health: `http://localhost:8202/actuator/health`
 
-```bash
-# Check Eureka (Service Registry)
-curl http://localhost:8762
+## Massa Local
 
-# Check API Gateway
-curl http://localhost:8761/actuator/health
+O Flyway cria cinco pacientes e cinco agendamentos futuros. IDs uteis:
 
-# Domain services (triage, appointment, medical-record) use dynamic ports.
-# Access them via the API Gateway or check their assigned port in Eureka:
-curl http://localhost:8762/eureka/apps
+| Pessoa | ID |
+| --- | --- |
+| Ana Souza | `11111111-1111-1111-1111-111111111111` |
+| Bruno Lima | `22222222-2222-2222-2222-222222222222` |
+| Carla Santos | `33333333-3333-3333-3333-333333333333` |
+| Diego Martins | `44444444-4444-4444-4444-444444444444` |
+| Elisa Rocha | `55555555-5555-5555-5555-555555555555` |
 
-# Check running containers and dynamic ports
-docker compose ps
-```
+Para testar reaproveitamento de vaga:
 
-### 4️⃣ Access Web Consoles
+1. Cancele/informe ausencia do exame `aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1`.
+2. O sistema deve gerar uma oferta para Diego Martins, que possui um
+   `Hemograma completo` em data mais distante.
+3. Aceite a oferta retornada para antecipar o agendamento dele.
 
-| Service | URL | Credentials |
-|---------|-----|-------------|
-| **Eureka** | http://localhost:8762 | - |
-| **Keycloak Admin** | http://localhost:8080 | admin / admin |
-| **Swagger API** | http://localhost:8761/swagger-ui.html | - |
+## Endpoints
 
-### 5️⃣ Stop Services
+| Metodo | Endpoint | Descricao |
+| --- | --- | --- |
+| `GET` | `/api/v1/patients` | Lista pacientes da massa local. |
+| `POST` | `/api/v1/appointments` | Cria consulta ou exame. |
+| `GET` | `/api/v1/appointments/{id}` | Consulta agendamento por ID. |
+| `GET` | `/api/v1/appointments?patientId={id}` | Lista agendamentos por paciente. |
+| `PATCH` | `/api/v1/appointments/{id}/cancel` | Cancela agendamento. |
+| `PATCH` | `/api/v1/appointments/{id}/cannot-attend` | Cancela e tenta gerar oferta da vaga. |
+| `POST` | `/api/v1/appointments/notifications/reminders?hoursAhead=48` | Gera lembretes. |
+| `GET` | `/api/v1/appointments/offers?patientId={id}` | Lista ofertas pendentes. |
+| `PATCH` | `/api/v1/appointments/offers/{offerId}/accept` | Aceita oferta e antecipa agendamento. |
+| `PATCH` | `/api/v1/appointments/offers/{offerId}/decline` | Recusa oferta. |
 
-```bash
-docker compose down
-```
-
-To stop and remove volumes as well:
-
-```bash
-docker compose down -v
-```
-
-To force full rebuild of all service images:
-
-```bash
-docker compose build --no-cache
-docker compose up -d
-```
-
----
-
-## 📚 Documentation
-
-Complete technical documentation:
-
-- [`.agent/context/architecture.md`](.agent/context/architecture.md) - Distributed architecture
-- [`.agent/context/business_rules.md`](.agent/context/business_rules.md) - Manchester Protocol
-- [`.agent/context/best_practices.md`](.agent/context/best_practices.md) - Code patterns
-- [`.agent/context/technologies.md`](.agent/context/technologies.md) - Technology stack
-- [`.agent/context/tech_history.md`](.agent/context/tech_history.md) - Architectural decisions
-- [`docs/event-storm.md`](docs/event-storm.md) - Event map
-- [`docs/protocol_manchester.md`](docs/protocol_manchester.md) - Manchester Protocol
-- [`docs/RFC_9457.md`](docs/RFC_9457.md) - **API Error Handling**: Problem Details standard (RFC 9457)
-- [`docs/PROBLEM_TYPES_REGISTRY.md`](docs/PROBLEM_TYPES_REGISTRY.md) - Complete registry of custom error problem types
-
----
-
-## 🚨 API Error Handling (RFC 9457)
-
-This project implements **RFC 9457: Problem Details for HTTP APIs**, providing standardized, machine-readable error responses across all microservices.
-
-### Error Response Format
-
-All error responses use the `application/problem+json` media type with the following structure:
+## Exemplo de Agendamento
 
 ```json
 {
-  "type": "https://api.example.com/problems/triage/invalid-risk-level",
-  "status": 422,
-  "title": "Invalid Risk Level",
-  "detail": "The provided risk level 'extreme' is not valid. Allowed values: low, medium, high.",
-  "instance": "/api/triage/abc123",
-  "timestamp": "2024-12-15T10:30:45.123Z",
-  "traceId": "4ba2b033-1234-5678-abcd-efg123456789",
-  "correlationId": "req-2024-12-15-001"
+  "patientId": "11111111-1111-1111-1111-111111111111",
+  "professionalId": "99999999-9999-9999-9999-999999999991",
+  "dateTime": "2026-07-10T10:00:00",
+  "appointmentType": "EXAM",
+  "serviceName": "Hemograma completo",
+  "facilityName": "UBS Central",
+  "preparationNotes": "Jejum de 8 horas. Beber agua normalmente."
 }
 ```
 
-### Key Features
-
-✅ **Standardized Format**: RFC 9457 compliance across all services  
-✅ **Custom Problem Types**: Domain-specific error URIs (e.g., `/problems/triage/invalid-risk-level`)  
-✅ **Traceability**: Built-in `traceId` and `correlationId` for request tracking  
-✅ **Operational Extensions**: `timestamp` for issue correlation with server logs  
-✅ **Service-Specific Errors**: Each microservice defines its own problem type registry  
-
-### Documentation & Resources
-
-- **Full Specification**: See [`docs/RFC_9457.md`](docs/RFC_9457.md) for complete RFC 9457 implementation details
-- **Problem Types Registry**: See [`docs/PROBLEM_TYPES_REGISTRY.md`](docs/PROBLEM_TYPES_REGISTRY.md) for all error types across services
-- **RFC 9457 Standard**: https://www.rfc-editor.org/rfc/rfc9457.html
-
-### Common Error Codes
-
-| HTTP Status | Problem Type | Description |
-|---|---|---|
-| **400** | `gateway/invalid-request`, `*/validation-error` | Invalid request or validation failed |
-| **401** | `auth/unauthorized`, `auth/token-expired` | Missing or invalid credentials |
-| **403** | `auth/forbidden`, `medical-records/access-denied` | Insufficient permissions |
-| **404** | `*/not-found` | Resource not found |
-| **409** | `appointments/conflict`, `*/conflict`, `triage/duplicate-entry` | Resource conflict |
-| **422** | `*/invalid-*` | Unprocessable entity |
-| **429** | `gateway/rate-limited` | Rate limit exceeded |
-| **503** | `gateway/service-unavailable` | Downstream service unavailable |
-
-### Trace ID Propagation
-
-All service-to-service calls propagate trace context via HTTP headers:
-
-```http
-X-Trace-ID: 4ba2b033-1234-5678-abcd-efg123456789
-X-Correlation-ID: req-2024-12-15-001
-```
-
-This enables complete request tracing across the entire microservices architecture.
-
----
-
-## 🏗️ Architecture
-
-```
-                    Patient/Professional
-                           │
-                           ▼
-                    Keycloak (8080)
-                 OAuth2/JWT/OpenID Connect
-                           │
-                           ▼
-                    API Gateway (8761)
-           ┌───────────────┬──────────────┐
-           │               │              │
-           ▼               ▼              ▼
-    Auth Service    Triage Service   Appointment      Medical Record
-    (dynamic)       (dynamic)        Service(dynamic)  Service(dynamic)
-           │               │              │              │
-           ▼               ▼              ▼              ▼
-      auth_db         triage_db       appointment_db   medical_record_db
-   (PostgreSQL)    (PostgreSQL)      (PostgreSQL)      (PostgreSQL)
-           │               │              │              │
-           └───┬───────────┼──────────────┼──────────────┘
-               ▼           │              │
-          Redis Cache      │              │
-            (Token         │              │
-          Blacklist)       ▼              ▼
-                      Kafka Topics
-              - triage.risk-classification
-              - appointment.confirmed
-              - medical-record.created
-```
-
----
-
-## 📦 Modules
-
-### 1. **Service Registry** (Port 8762)
-- Eureka server for service discovery
-- Health checks and load balancing
-- Automatic service registration/deregistration
-
-### 2. **API Gateway** (Port 8761)
-- Entry point for all external requests
-- JWT validation via Keycloak tokens
-- Dynamic routing to microservices
-- Rate limiting and security filters
-
-### 3. **Auth Service** (Port: Dynamic via Eureka)
-- User registration and authentication
-- Keycloak OAuth2/OpenID Connect integration
-- JWT token generation and validation
-- Token refresh and logout functionality
-- Redis-backed token blacklist
-
-**Database**: `auth_db` (PostgreSQL)
-**Endpoints**:
-```bash
-POST   /auth/register          # User registration
-POST   /auth/login             # User authentication
-POST   /auth/refresh           # Token refresh
-POST   /auth/logout            # User logout (authenticated)
-GET    /auth/test/public       # Public test endpoint
-GET    /auth/test/private      # Private test endpoint (ROLE_user)
-```
-
-### 4. **Triage Service** (Port: dynamic via Eureka)
-- Manchester Protocol v3.0 implementation
-- Patient risk classification
-- ⚠️ Appointment scheduling integration pending
-- ⚠️ Kafka event production (`triage.risk-classification`) pending
-
-**Database**: `triage_db` (PostgreSQL)
-**Endpoints**:
-```bash
-POST   /api/v1/triage              # Create new triage
-GET    /api/v1/triage/{id}         # Get triage by ID
-```
-
-### 5. **Appointment Service** (Port: dynamic via Eureka)
-- Appointment slot management
-- Consultation reservation
-- Status tracking
-- Produces `appointment.confirmed` events
-
-**Database**: `appointment_db` (PostgreSQL)
-**Status**: ⚠️ In Development (entity layer implemented, endpoints pending)
-**Endpoints**:
-```bash
-# Endpoints coming in Phase 2
-```
-
-### 6. **Medical Record Service** (Port: dynamic via Eureka)
-- Patient medical history
-- Consultation documentation
-- Diagnosis and prescriptions
-- Consumes Kafka events
-
-**Database**: `medical_record_db` (PostgreSQL)
-**Status**: ⚠️ In Development (entity layer implemented, endpoints pending)
-**Endpoints**:
-```bash
-# Endpoints coming in Phase 2
-```
-
----
-
-## 🗄️ Database Schema
-
-### Triage Table
-```sql
-CREATE TABLE triage (
-  id UUID PRIMARY KEY,
-  patient_id UUID NOT NULL,
-  risk_level VARCHAR(10) NOT NULL,  -- RED, ORANGE, YELLOW, GREEN, BLUE
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP
-);
-```
-
-### Appointment Table
-```sql
-CREATE TABLE appointment (
-  id UUID PRIMARY KEY,
-  triage_id UUID NOT NULL,
-  patient_id UUID NOT NULL,
-  professional_id UUID,
-  date_time TIMESTAMP NOT NULL,
-  status VARCHAR(20) NOT NULL,      -- CONFIRMED, IN_PROGRESS, COMPLETED, CANCELLED, NO_SHOW
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP
-);
-```
-
-### Medical Record Table
-```sql
-CREATE TABLE medical_record (
-  id UUID PRIMARY KEY,
-  appointment_id UUID NOT NULL,
-  patient_id UUID NOT NULL,
-  diagnosis TEXT,
-  prescription TEXT,
-  consultation_date TIMESTAMP,
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP
-);
-```
-
----
-
-## 🔐 Security
-
-### Authentication
-- **Provider**: Keycloak (OAuth2 + OpenID Connect)
-- **Realm**: `sus-connect`
-- **Token Type**: JWT (RS256)
-- **Default Credentials**: admin / admin
-
-### Authorization
-- **Roles**: PATIENT, PROFESSIONAL, ADMIN
-- **Token Validation**: API Gateway validates all requests
-- **Scope-based Access**: Services validate token scopes
-
-### Keycloak Setup
-
-**Keycloak** is the centralized identity provider for all services. It handles OAuth2, OpenID Connect, and JWT authentication.
-
-#### Access Keycloak Admin Console
-- **URL**: http://localhost:8080/admin
-- **Username**: admin
-- **Password**: admin
-- **Realm**: sus-connect
-
-#### Configured Clients
-1. **api-gateway** (Public) - For external API requests
-2. **auth-service** (Confidential) - Auth Service client
-3. **triage-service** (Confidential) - Triage Service client
-4. **appointment-service** (Confidential) - Appointment Service client
-5. **medical-record-service** (Confidential) - Medical Record Service client
-6. **frontend-client** (Public) - For frontend applications
-
-#### Default Test Users
-- **admin** / admin (Admin role)
-- **patient01** / patient123 (Patient role)
-- **doctor01** / doctor123 (Professional role)
-
-#### Token Lifespan
-- Access Token: 15 minutes (900 seconds)
-- Refresh Token: 90 days
-
-#### JWT Token Validation
-- Issuer URI: `http://keycloak:8080/realms/sus-connect`
-- JWK Set: `http://keycloak:8080/realms/sus-connect/protocol/openid-connect/certs`
-- Token Type: Bearer
-
----
-
-## 📡 Event-Driven Architecture
-
-### Kafka Topics
-
-#### 1. `triage.risk-classification`
-**Producer**: Triage Service
-**Consumers**: Appointment Service, Medical Record Service
-**Payload**:
-```json
-{
-  "triagedId": "uuid",
-  "patientId": "uuid",
-  "riskLevel": "RED|ORANGE|YELLOW|GREEN|BLUE",
-  "timestamp": "2024-05-31T10:00:00"
-}
-```
-
-#### 2. `appointment.confirmed`
-**Producer**: Appointment Service
-**Consumers**: Medical Record Service
-**Payload**:
-```json
-{
-  "appointmentId": "uuid",
-  "patientId": "uuid",
-  "professionalId": "uuid",
-  "dateTime": "2024-05-31T14:30:00",
-  "status": "CONFIRMED"
-}
-```
-
-#### 3. `medical-record.created`
-**Producer**: Medical Record Service
-**Payload**:
-```json
-{
-  "recordId": "uuid",
-  "appointmentId": "uuid",
-  "patientId": "uuid",
-  "diagnosis": "...",
-  "timestamp": "2024-05-31T15:00:00"
-}
-```
-
----
-
-## 🧪 Testing
-
-### Unit Tests
-```bash
-# Run unit tests (core domain)
-mvn test
-```
-
-### Integration Tests
-```bash
-# Run integration tests with TestContainers
-mvn verify
-```
-
-### Test Coverage
-```bash
-# Generate coverage report
-mvn jacoco:report
-open target/site/jacoco/index.html
-```
-
----
-
-## 🛠️ Development
-
-### Local Development Setup
+## Testes
 
 ```bash
-# 1. Start infrastructure only
-docker-compose up -d keycloak zookeeper kafka triage-postgres appointment-postgres medical-record-postgres
-
-# 2. Run services directly from IDE
-# In VS Code: F5 or debug task
-
-# 3. Or use Spring Boot dev tools
-mvn spring-boot:run -pl triagem-service -Dspring-boot.devtools.restart.enabled=true
+mvn -q -pl appointment-service -am test
 ```
-
-### Code Formatting
-```bash
-# Apply Google Java Format
-mvn spotless:apply
-
-# Check formatting
-mvn spotless:check
-```
-
-### Environment Variables
-```bash
-# Triage Service
-SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/triage_db
-SPRING_DATASOURCE_USERNAME=postgres
-SPRING_DATASOURCE_PASSWORD=password
-SPRING_KAFKA_BOOTSTRAP_SERVERS=localhost:9092
-EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://localhost:8762/eureka/
-
-# Appointment Service
-SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5433/appointment_db
-# ... same pattern as above
-
-# Medical Record Service
-SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5434/medical_record_db
-# ... same pattern as above
-```
-
----
-
-## 🔄 API Examples
-
-### Authentication Workflow
-
-**1. Register New User**
-```bash
-curl -X POST http://localhost:8761/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "newuser",
-    "email": "newuser@sus-connect.local",
-    "firstName": "New",
-    "lastName": "User",
-    "password": "password123"
-  }'
-```
-
-**2. Login (Get Tokens)**
-```bash
-curl -X POST http://localhost:8761/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "patient01",
-    "password": "patient123"
-  }'
-```
-
-Response:
-```json
-{
-  "accessToken": "eyJhbGciOiJSUzI1NiIsInR5cC...",
-  "refreshToken": "eyJhbGciOiJSUzI1NiIsInR5cC...",
-  "expiresIn": 900,
-  "tokenType": "Bearer"
-}
-```
-
-**3. Use Token for Protected Endpoints**
-```bash
-curl -X GET http://localhost:8761/triage \
-  -H "Authorization: Bearer <ACCESS_TOKEN>"
-```
-
-**4. Refresh Token**
-```bash
-curl -X POST http://localhost:8761/auth/refresh \
-  -H "Content-Type: application/json" \
-  -d '{
-    "refreshToken": "<REFRESH_TOKEN>"
-  }'
-```
-
-**5. Logout**
-```bash
-curl -X POST http://localhost:8761/auth/logout \
-  -H "Authorization: Bearer <ACCESS_TOKEN>"
-```
-
-### Triage Operations
-
-### Create Triage
-```bash
-curl -X POST http://localhost:8761/triage \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <JWT_TOKEN>" \
-  -d '{}'
-```
-
-### Get Triage
-```bash
-curl -X GET http://localhost:8761/triage/{id} \
-  -H "Authorization: Bearer <JWT_TOKEN>"
-```
-
-### Appointment Operations
-```bash
-curl -X POST http://localhost:8761/appointment \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <JWT_TOKEN>" \
-  -d '{
-    "triageId": "uuid",
-    "patientId": "uuid",
-    "dateTime": "2024-06-15T14:30:00"
-  }'
-```
-
-### Get Medical Record
-```bash
-curl -X GET http://localhost:8761/medical-record/{id} \
-  -H "Authorization: Bearer <JWT_TOKEN>"
-```
-
----
-
-## 📊 Monitoring
-
-### Health Endpoints
-```bash
-# Gateway health
-curl http://localhost:8761/actuator/health
-
-# Detailed health
-curl http://localhost:8761/actuator/health/details
-
-# Metrics
-curl http://localhost:8761/actuator/metrics
-
-# Gateway routes
-curl http://localhost:8761/actuator/gateway/routes
-```
-
-### Logging
-- **Default Level**: INFO
-- **Debug Services**: Set `LOGGING_LEVEL_BR_COM_FIAP_SUSCONNECT=DEBUG`
-- **SQL Logging**: Set `SPRING_JPA_SHOW_SQL=true`
-
----
-
-## 🚨 Troubleshooting
-
-### Services won't start
-```bash
-# Check logs
-docker-compose logs -f triage-service
-
-# Verify all services are up
-docker-compose ps
-
-# Check port conflicts
-lsof -i :8761  # API Gateway
-lsof -i :8762  # Eureka
-lsof -i :8080  # Keycloak
-```
-
-### Database connection errors
-```bash
-# Verify PostgreSQL is running
-docker-compose logs -f triage-postgres
-
-# Check credentials in application.yml
-cat triagem-service/src/main/resources/application.yml
-
-# Reset databases
-docker-compose down -v
-docker-compose up -d
-```
-
-### Keycloak not accessible
-```bash
-# Restart Keycloak
-docker-compose restart keycloak
-
-# Check logs
-docker-compose logs -f keycloak
-
-# Access admin console
-http://localhost:8080/admin (admin/admin)
-```
-
----
-
-## 📋 Project Structure
-
-```
-tech-challenge-fase-05/
-├── .agent/
-│   ├── context/
-│   │   ├── architecture.md
-│   │   ├── business_rules.md
-│   │   ├── best_practices.md
-│   │   ├── technologies.md
-│   │   └── tech_history.md
-│   └── instructions.md
-├── docs/
-│   ├── event-storm.md
-│   ├── protocol_manchester.md
-│   └── Hackaton-9ADJT.md
-├── service-registry/
-│   ├── src/main/java
-│   ├── src/test/java
-│   ├── pom.xml
-│   └── Dockerfile
-├── api-gateway/
-│   ├── src/main/java
-│   ├── src/test/java
-│   ├── pom.xml
-│   └── Dockerfile
-├── triage-service/
-│   ├── src/main/java
-│   │   └── br/com/fiap/susconnect/triage/
-│   │       ├── core/
-│   │       │   ├── domain/entity/
-│   │       │   ├── gateway/
-│   │       │   ├── usecase/
-│   │       │   └── dto/
-│   │       └── infra/
-│   │           ├── entity/
-│   │           ├── repository/
-│   │           ├── gateway/
-│   │           ├── web/
-│   │           ├── config/
-│   │           └── exception/
-│   ├── src/main/resources/
-│   │   ├── application.yml
-│   │   └── db/migration/
-│   ├── src/test/java
-│   ├── pom.xml
-│   └── Dockerfile
-├── appointment-service/ (similar to triage-service)
-├── medical-record-service/ (similar to triage-service)
-├── docker-compose.yml
-├── docker-compose.dev.yml
-├── pom.xml (parent)
-├── README.md
-├── LICENSE
-└── .gitignore
-```
-
----
-
-## 🤝 Contributing
-
-### Code Style
-- Google Java Format (enforced via Spotless)
-- Maximum line length: 100 characters
-- 2-space indentation
-
-### Git Workflow
-```bash
-# Create feature branch
-git checkout -b feature/your-feature
-
-# Commit with conventional commits
-git commit -m "feat: add new feature"
-
-# Push and create pull request
-git push origin feature/your-feature
-```
-
-### Conventional Commits
-- `feat:` New feature
-- `fix:` Bug fix
-- `refactor:` Code refactoring
-- `test:` Test additions
-- `docs:` Documentation
-- `chore:` Build/dependency updates
-
----
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 📞 Support
-
-For issues and questions:
-- Create a GitHub Issue: https://github.com/eps364/tech-challenge-fase-05/issues
-- Contact: tech-challenge@fiap.com.br
-
----
-
-## 🎓 References
-
-- [Manchester Protocol v3.0](https://pt.wikipedia.org/wiki/Protocolo_de_Manchester)
-- [Spring Boot Documentation](https://spring.io/projects/spring-boot)
-- [Spring Cloud Documentation](https://spring.io/projects/spring-cloud)
-- [Keycloak Documentation](https://www.keycloak.org/documentation)
-- [Apache Kafka Documentation](https://kafka.apache.org/documentation/)
-
----
-
-**Last Updated**: May 31, 2026  
-**Version**: 1.0.0  
-**Maintainers**: FIAP Tech Challenge Team
-
----
-
-**Status**: Development Phase  
-**Version**: 1.0.0  
-**Last Updated**: May 31, 2024

@@ -1,0 +1,35 @@
+meta {
+  name: 01 Schedule Closer Exam
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{appointmentBaseUrl}}/api/v1/appointments
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+body:json {
+  {
+    "patientId": "{{scenarioCloserPatientId}}",
+    "professionalId": "99999999-9999-9999-9999-999999999991",
+    "dateTime": "{{scenarioCloserDateTime}}",
+    "appointmentType": "EXAM",
+    "serviceName": "{{scenarioServiceName}}",
+    "facilityName": "{{scenarioFacilityName}}",
+    "preparationNotes": "Jejum de 8 horas. Beber agua normalmente."
+  }
+}
+
+script:post-response {
+  if (res.status === 201 && res.body && res.body.id) {
+    bru.setEnvVar("scenarioAppointmentId", res.body.id);
+    console.log("Closer appointment created: " + res.body.id);
+  }
+}

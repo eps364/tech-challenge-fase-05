@@ -38,7 +38,6 @@ class GetAppointmentUseCaseTest {
         Appointment.reconstruct(
             id,
             UUID.randomUUID(),
-            UUID.randomUUID(),
             null,
             LocalDateTime.now().plusHours(1),
             AppointmentStatus.CONFIRMED,

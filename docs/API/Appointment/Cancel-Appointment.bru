@@ -7,11 +7,7 @@ meta {
 patch {
   url: {{appointmentBaseUrl}}/api/v1/appointments/{{appointmentId}}/cancel
   body: none
-  auth: bearer
-}
-
-auth:bearer {
-  token: {{accessToken}}
+  auth: none
 }
 
 headers {
@@ -20,6 +16,6 @@ headers {
 
 script:post-response {
   if (res.status === 200) {
-    console.log("Appointment " + res.body.id + " cancelled — status: " + res.body.status);
+    console.log("Appointment " + res.body.id + " cancelled - status: " + res.body.status);
   }
 }

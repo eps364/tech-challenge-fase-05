@@ -36,17 +36,15 @@ class ScheduleAppointmentUseCaseTest {
 
   @Test
   void shouldScheduleAppointmentSuccessfully() {
-    UUID triageId = UUID.randomUUID();
     UUID patientId = UUID.randomUUID();
     LocalDateTime future = LocalDateTime.now().plusHours(2);
 
     when(appointmentGateway.existsByDateTimeAndStatus(eq(future), eq(AppointmentStatus.CONFIRMED)))
         .thenReturn(false);
 
-    AppointmentOutput output = useCase.execute(triageId, patientId, future);
+    AppointmentOutput output = useCase.execute(patientId, future);
 
     assertThat(output).isNotNull();
-    assertThat(output.triageId()).isEqualTo(triageId);
     assertThat(output.patientId()).isEqualTo(patientId);
     assertThat(output.status()).isEqualTo("CONFIRMED");
     verify(appointmentGateway).save(any());
@@ -54,11 +52,10 @@ class ScheduleAppointmentUseCaseTest {
 
   @Test
   void shouldThrowValidationExceptionWhenDateTimeIsInThePast() {
-    UUID triageId = UUID.randomUUID();
     UUID patientId = UUID.randomUUID();
     LocalDateTime past = LocalDateTime.now().minusHours(1);
 
-    assertThatThrownBy(() -> useCase.execute(triageId, patientId, past))
+    assertThatThrownBy(() -> useCase.execute(patientId, past))
         .isInstanceOf(AppointmentValidationDomainException.class)
         .hasMessageContaining("past");
 
@@ -67,14 +64,13 @@ class ScheduleAppointmentUseCaseTest {
 
   @Test
   void shouldThrowConflictExceptionWhenSlotAlreadyBooked() {
-    UUID triageId = UUID.randomUUID();
     UUID patientId = UUID.randomUUID();
     LocalDateTime future = LocalDateTime.now().plusHours(1);
 
     when(appointmentGateway.existsByDateTimeAndStatus(eq(future), eq(AppointmentStatus.CONFIRMED)))
         .thenReturn(true);
 
-    assertThatThrownBy(() -> useCase.execute(triageId, patientId, future))
+    assertThatThrownBy(() -> useCase.execute(patientId, future))
         .isInstanceOf(AppointmentConflictDomainException.class);
 
     verify(appointmentGateway, never()).save(any());

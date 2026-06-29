@@ -1,0 +1,21 @@
+meta {
+  name: 05 Accept Offer
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{appointmentBaseUrl}}/api/v1/appointments/offers/{{scenarioOfferId}}/accept
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+script:post-response {
+  if (res.status === 200) {
+    console.log("Offer accepted: " + res.body.id);
+  }
+}

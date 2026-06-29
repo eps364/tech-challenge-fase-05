@@ -32,7 +32,6 @@ class ListAppointmentsByPatientUseCaseTest {
   @Test
   void shouldReturnAppointmentsForPatient() {
     UUID patientId = UUID.randomUUID();
-    UUID triageId = UUID.randomUUID();
     UUID professionalId = UUID.randomUUID();
     LocalDateTime dateTime = LocalDateTime.now().plusHours(1);
     LocalDateTime createdAt = LocalDateTime.now();
@@ -40,7 +39,6 @@ class ListAppointmentsByPatientUseCaseTest {
     Appointment appointment =
         Appointment.reconstruct(
             UUID.randomUUID(),
-            triageId,
             patientId,
             professionalId,
             dateTime,
@@ -53,7 +51,6 @@ class ListAppointmentsByPatientUseCaseTest {
 
     assertThat(result).hasSize(1);
     assertThat(result.get(0).patientId()).isEqualTo(patientId);
-    assertThat(result.get(0).triageId()).isEqualTo(triageId);
     assertThat(result.get(0).status()).isEqualTo("CONFIRMED");
   }
 
@@ -75,7 +72,6 @@ class ListAppointmentsByPatientUseCaseTest {
     Appointment a1 =
         Appointment.reconstruct(
             UUID.randomUUID(),
-            UUID.randomUUID(),
             patientId,
             null,
             now.plusHours(1),
@@ -83,7 +79,6 @@ class ListAppointmentsByPatientUseCaseTest {
             now);
     Appointment a2 =
         Appointment.reconstruct(
-            UUID.randomUUID(),
             UUID.randomUUID(),
             patientId,
             null,

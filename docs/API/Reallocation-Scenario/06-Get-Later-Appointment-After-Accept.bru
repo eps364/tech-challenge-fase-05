@@ -1,0 +1,22 @@
+meta {
+  name: 06 Get Later Appointment After Accept
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{appointmentBaseUrl}}/api/v1/appointments/{{scenarioFutureAppointmentId}}
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+script:post-response {
+  if (res.status === 200) {
+    console.log("Rescheduled appointment date: " + res.body.dateTime);
+    console.log("Previous date: " + res.body.rescheduledFrom);
+  }
+}

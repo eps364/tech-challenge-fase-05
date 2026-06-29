@@ -7,11 +7,7 @@ meta {
 get {
   url: {{appointmentBaseUrl}}/api/v1/appointments?patientId={{patientId}}
   body: none
-  auth: bearer
-}
-
-auth:bearer {
-  token: {{accessToken}}
+  auth: none
 }
 
 headers {

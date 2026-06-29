@@ -3,6 +3,7 @@ package br.com.fiap.susconnect.appointment.core.gateway;
 
 import br.com.fiap.susconnect.appointment.core.domain.entity.Appointment;
 import br.com.fiap.susconnect.appointment.core.domain.entity.AppointmentStatus;
+import br.com.fiap.susconnect.appointment.core.domain.entity.AppointmentType;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,14 @@ public interface AppointmentGateway {
   Optional<Appointment> findById(UUID id);
 
   List<Appointment> findByPatientId(UUID patientId);
+
+  List<Appointment> findConfirmedBetween(LocalDateTime start, LocalDateTime end);
+
+  Optional<Appointment> findNextConfirmedAfter(
+      LocalDateTime dateTime,
+      AppointmentType appointmentType,
+      String serviceName,
+      UUID excludedPatientId);
 
   boolean existsByDateTimeAndStatus(LocalDateTime dateTime, AppointmentStatus status);
 

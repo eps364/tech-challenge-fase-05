@@ -1,0 +1,21 @@
+meta {
+  name: List Patients
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{appointmentBaseUrl}}/api/v1/patients
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+script:post-response {
+  if (res.status === 200) {
+    console.log("Patients found: " + res.body.length);
+  }
+}

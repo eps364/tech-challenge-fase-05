@@ -3,6 +3,7 @@ package br.com.fiap.susconnect.appointment.infra.gateway;
 
 import br.com.fiap.susconnect.appointment.core.domain.entity.Appointment;
 import br.com.fiap.susconnect.appointment.core.domain.entity.AppointmentStatus;
+import br.com.fiap.susconnect.appointment.core.domain.entity.AppointmentType;
 import br.com.fiap.susconnect.appointment.core.gateway.AppointmentGateway;
 import br.com.fiap.susconnect.appointment.infra.entity.AppointmentJpa;
 import br.com.fiap.susconnect.appointment.infra.repository.AppointmentRepository;
@@ -39,6 +40,31 @@ public class AppointmentRepositoryAdapter implements AppointmentGateway {
   }
 
   @Override
+  public List<Appointment> findConfirmedBetween(LocalDateTime start, LocalDateTime end) {
+    return appointmentRepository
+        .findByStatusAndDateTimeBetween(AppointmentStatus.CONFIRMED, start, end)
+        .stream()
+        .map(this::toDomain)
+        .toList();
+  }
+
+  @Override
+  public Optional<Appointment> findNextConfirmedAfter(
+      LocalDateTime dateTime,
+      AppointmentType appointmentType,
+      String serviceName,
+      UUID excludedPatientId) {
+    return appointmentRepository
+        .findFirstByStatusAndAppointmentTypeAndServiceNameAndPatientIdNotAndDateTimeAfterOrderByDateTimeAsc(
+            AppointmentStatus.CONFIRMED,
+            appointmentType,
+            serviceName,
+            excludedPatientId,
+            dateTime)
+        .map(this::toDomain);
+  }
+
+  @Override
   public boolean existsByDateTimeAndStatus(LocalDateTime dateTime, AppointmentStatus status) {
     return appointmentRepository.existsByDateTimeAndStatus(dateTime, status);
   }
@@ -54,11 +80,18 @@ public class AppointmentRepositoryAdapter implements AppointmentGateway {
   private AppointmentJpa toJpa(Appointment a) {
     return AppointmentJpa.builder()
         .id(a.getId())
-        .triageId(a.getTriageId())
         .patientId(a.getPatientId())
         .professionalId(a.getProfessionalId())
         .dateTime(a.getDateTime())
         .status(a.getStatus())
+        .appointmentType(a.getAppointmentType())
+        .serviceName(a.getServiceName())
+        .facilityName(a.getFacilityName())
+        .preparationNotes(a.getPreparationNotes())
+        .patientNotification(a.getPatientNotification())
+        .lastNotifiedAt(a.getLastNotifiedAt())
+        .rescheduledFrom(a.getRescheduledFrom())
+        .cancellationReason(a.getCancellationReason())
         .createdAt(a.getCreatedAt())
         .build();
   }
@@ -66,11 +99,18 @@ public class AppointmentRepositoryAdapter implements AppointmentGateway {
   private Appointment toDomain(AppointmentJpa jpa) {
     return Appointment.reconstruct(
         jpa.getId(),
-        jpa.getTriageId(),
         jpa.getPatientId(),
         jpa.getProfessionalId(),
         jpa.getDateTime(),
         jpa.getStatus(),
+        jpa.getAppointmentType(),
+        jpa.getServiceName(),
+        jpa.getFacilityName(),
+        jpa.getPreparationNotes(),
+        jpa.getPatientNotification(),
+        jpa.getLastNotifiedAt(),
+        jpa.getRescheduledFrom(),
+        jpa.getCancellationReason(),
         jpa.getCreatedAt());
   }
 }

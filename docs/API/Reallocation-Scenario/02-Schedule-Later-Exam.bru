@@ -1,0 +1,35 @@
+meta {
+  name: 02 Schedule Later Exam
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{appointmentBaseUrl}}/api/v1/appointments
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+body:json {
+  {
+    "patientId": "{{scenarioLaterPatientId}}",
+    "professionalId": "99999999-9999-9999-9999-999999999991",
+    "dateTime": "{{scenarioLaterDateTime}}",
+    "appointmentType": "EXAM",
+    "serviceName": "{{scenarioServiceName}}",
+    "facilityName": "{{scenarioFacilityName}}",
+    "preparationNotes": "Jejum de 8 horas. Beber agua normalmente."
+  }
+}
+
+script:post-response {
+  if (res.status === 201 && res.body && res.body.id) {
+    bru.setEnvVar("scenarioFutureAppointmentId", res.body.id);
+    console.log("Later appointment created: " + res.body.id);
+  }
+}

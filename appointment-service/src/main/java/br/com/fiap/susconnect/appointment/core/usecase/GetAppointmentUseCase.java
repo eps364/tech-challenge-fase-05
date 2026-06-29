@@ -4,6 +4,7 @@ package br.com.fiap.susconnect.appointment.core.usecase;
 import br.com.fiap.susconnect.appointment.core.domain.AppointmentNotFoundDomainException;
 import br.com.fiap.susconnect.appointment.core.domain.entity.Appointment;
 import br.com.fiap.susconnect.appointment.core.dto.AppointmentOutput;
+import br.com.fiap.susconnect.appointment.core.dto.AppointmentOutputMapper;
 import br.com.fiap.susconnect.appointment.core.gateway.AppointmentGateway;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -24,17 +25,6 @@ public class GetAppointmentUseCase {
             .findById(id)
             .orElseThrow(
                 () -> new AppointmentNotFoundDomainException("Appointment not found: " + id));
-    return toOutput(appointment);
-  }
-
-  private AppointmentOutput toOutput(Appointment a) {
-    return new AppointmentOutput(
-        a.getId(),
-        a.getTriageId(),
-        a.getPatientId(),
-        a.getProfessionalId(),
-        a.getDateTime(),
-        a.getStatus().name(),
-        a.getCreatedAt());
+    return AppointmentOutputMapper.toOutput(appointment);
   }
 }
