@@ -10,8 +10,8 @@
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>SUS-Connect Healthcare Platform - Parent</name>
-  <description>Intelligent Triage with Manchester Protocol v3.0</description>
+  <name>SUS-Connect APS Prioritization - Parent</name>
+  <description>Territorial active outreach prioritization for Primary Health Care</description>
   <url>https://github.com/eps364/tech-challenge-fase-05</url>
 
   <parent>
@@ -23,7 +23,6 @@
 
   <modules>
     <module>common-lib</module>
-    <module>appointment-service</module>
     <module>aps-prioritization-service</module>
   </modules>
 

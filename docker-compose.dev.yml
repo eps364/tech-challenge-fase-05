@@ -1,22 +1,4 @@
 services:
-  appointment-postgres:
-    image: postgres:15-alpine
-    container_name: appointment-postgres-dev
-    restart: on-failure
-    environment:
-      POSTGRES_DB: appointment_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5433:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d appointment_db"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    volumes:
-      - appointment_postgres_dev_data:/var/lib/postgresql/data
-
   aps-prioritization-postgres:
     image: postgres:15-alpine
     container_name: aps-prioritization-postgres-dev
@@ -36,5 +18,4 @@ services:
       - aps_priority_postgres_dev_data:/var/lib/postgresql/data
 
 volumes:
-  appointment_postgres_dev_data:
   aps_priority_postgres_dev_data:

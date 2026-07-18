@@ -5,7 +5,6 @@
 | Module | Role |
 | --- | --- |
 | `common-lib` | Shared RFC 9457 error handling and validation support. |
-| `appointment-service` | Existing appointment-focused service kept in the active Maven build. |
 | `aps-prioritization-service` | Current APS MVP vertical slice. |
 
 Other repository modules are historical and are not part of the principal Maven

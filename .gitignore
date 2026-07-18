@@ -58,3 +58,6 @@ ehthumbs.db
 
 # Docker override files (local only)
 docker-compose.override.yml
+
+# Local legacy environment retained only on existing worktrees
+docs/API/environments/local.bru

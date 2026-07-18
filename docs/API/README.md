@@ -1,56 +1,30 @@
-# Appointment Service API Collection
+# Colecoes da API APS
 
-Colecao Bruno reduzida para o escopo atual de agendamentos.
+As colecoes ativas demonstram o fluxo de priorizacao territorial e busca ativa
+preventiva. Elas nao usam pacientes, prontuarios ou agendamentos.
 
-## Ambiente Local
+## Bruno
 
-Use `docs/API/environments/local.bru`.
+Abra a pasta `docs/API/Aps-Prioritization/` no Bruno e selecione o ambiente
+`docs/API/environments/aps-local.bru`.
 
-Variaveis principais:
+Ordem sugerida:
 
-| Variavel | Valor |
-| --- | --- |
-| `appointmentBaseUrl` | `http://localhost:8202` |
-| `appointmentId` | ID de agendamento para testes |
-| `offerId` | ID de oferta gerada pelo fluxo `Cannot Attend` |
-| `patientId` | Paciente principal da massa local |
-| `futurePatientId` | Paciente que pode receber oferta de antecipacao |
+1. `01-Health`
+2. `02-Get-Dashboard`
+3. `03-List-High-Priority-Territories`
+4. `04-Get-Territory-Details`
+5. `05-Create-Search-Action`
+6. `06-Update-Search-Action-Progress`
+7. `07-Replace-Territory-Indicators`
 
-## Fluxo Recomendado
+A requisicao de criacao guarda o ID retornado para que a atualizacao de
+progresso execute o fluxo ponta a ponta.
 
-1. `List Patients`
-2. `Get Appointment By Id`
-3. `Cannot Attend`
-4. `List Offers By Patient`
-5. `Accept Offer` ou `Decline Offer`
-6. `Notify Upcoming`
+## Insomnia
 
-O caso de massa mais direto e cancelar o agendamento
-`aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1`; ele abre uma vaga de
-`Hemograma completo` e deve gerar oferta para o paciente
-`44444444-4444-4444-4444-444444444444`.
+Importe `docs/API/aps-prioritization-insomnia.json`. A collection aponta para
+`http://localhost:8205/api/v1` e usa os mesmos IDs demonstrativos do Bruno.
 
-## Cenario Guiado: Duas Pessoas Para o Mesmo Exame
-
-A pasta `Reallocation Scenario` cria um caso isolado, sem depender da massa
-seedada:
-
-1. `01 Schedule Closer Exam`
-2. `02 Schedule Later Exam`
-3. `03 Closer Cannot Attend`
-4. `04 List Later Patient Offers`
-5. `05 Accept Offer`
-6. `06 Get Later Appointment After Accept`
-
-As datas e pacientes ficam no environment `local`:
-
-| Variavel | Uso |
-| --- | --- |
-| `scenarioCloserPatientId` | Paciente com exame mais proximo |
-| `scenarioLaterPatientId` | Paciente com exame mais distante |
-| `scenarioCloserDateTime` | Horario que sera liberado |
-| `scenarioLaterDateTime` | Horario original do segundo paciente |
-| `scenarioServiceName` | Nome do exame usado para casar a oferta |
-
-Se rodar o mesmo cenario mais de uma vez e houver conflito de horario, altere
-`scenarioCloserDateTime` e `scenarioLaterDateTime` no environment.
+Consulte `docs/API/aps-prioritization-service.md` para contratos e massa de
+demonstracao.
