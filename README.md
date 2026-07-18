@@ -14,6 +14,15 @@ podera comparecer.
 Os demais modulos permanecem no repositorio para historico, mas foram removidos
 do build Maven e do Docker Compose principal.
 
+## Contexto para Agentes
+
+O ponto de entrada para agentes de IA e colaboradores automatizados e
+[`AGENTS.md`](AGENTS.md). O contexto atual do MVP, as habilidades especializadas,
+os fluxos de entrega e os modelos de verificacao estao em
+[`.agents/`](.agents/README.md). A pasta `.agent/` permanece apenas como
+referencia historica da versao anterior de triagem e nao deve orientar novos
+desenvolvimentos.
+
 ## Funcionalidades
 
 - Agendar consulta ou exame.
