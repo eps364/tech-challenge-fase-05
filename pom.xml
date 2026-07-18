@@ -24,6 +24,7 @@
   <modules>
     <module>common-lib</module>
     <module>appointment-service</module>
+    <module>aps-prioritization-service</module>
   </modules>
 
   <properties>

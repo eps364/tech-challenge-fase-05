@@ -1,0 +1,117 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-07-18T21:00:00.000Z",
+  "__export_source": "codex",
+  "resources": [
+    {
+      "_id": "wrk_aps_prioritization",
+      "_type": "workspace",
+      "name": "APS Prioritization",
+      "description": "Territorial active outreach flow with aggregated APS data"
+    },
+    {
+      "_id": "env_aps_prioritization_base",
+      "parentId": "wrk_aps_prioritization",
+      "_type": "environment",
+      "name": "Base Environment",
+      "data": {
+        "apsServiceUrl": "http://localhost:8205",
+        "apsBaseUrl": "http://localhost:8205/api/v1",
+        "apsTerritoryId": "10000000-0000-0000-0000-000000000001",
+        "apsActionId": "20000000-0000-0000-0000-000000000001"
+      }
+    },
+    {
+      "_id": "fld_aps_prioritization",
+      "parentId": "wrk_aps_prioritization",
+      "_type": "request_group",
+      "name": "APS Prioritization Flow",
+      "description": "Run the requests in order to demonstrate territorial prioritization and aggregate outreach progress."
+    },
+    {
+      "_id": "req_aps_health",
+      "parentId": "fld_aps_prioritization",
+      "_type": "request",
+      "name": "01 - Health",
+      "method": "GET",
+      "url": "{{ _.apsServiceUrl }}/actuator/health",
+      "headers": [{"name": "Accept", "value": "application/json"}]
+    },
+    {
+      "_id": "req_aps_dashboard",
+      "parentId": "fld_aps_prioritization",
+      "_type": "request",
+      "name": "02 - Get Dashboard",
+      "method": "GET",
+      "url": "{{ _.apsBaseUrl }}/dashboard",
+      "headers": [{"name": "Accept", "value": "application/json"}]
+    },
+    {
+      "_id": "req_aps_priorities",
+      "parentId": "fld_aps_prioritization",
+      "_type": "request",
+      "name": "03 - List High Priority Territories",
+      "method": "GET",
+      "url": "{{ _.apsBaseUrl }}/territories?priority=HIGH",
+      "headers": [{"name": "Accept", "value": "application/json"}]
+    },
+    {
+      "_id": "req_aps_territory",
+      "parentId": "fld_aps_prioritization",
+      "_type": "request",
+      "name": "04 - Get Territory Details",
+      "method": "GET",
+      "url": "{{ _.apsBaseUrl }}/territories/{{ _.apsTerritoryId }}",
+      "headers": [{"name": "Accept", "value": "application/json"}]
+    },
+    {
+      "_id": "req_aps_create_action",
+      "parentId": "fld_aps_prioritization",
+      "_type": "request",
+      "name": "05 - Create Search Action",
+      "method": "POST",
+      "url": "{{ _.apsBaseUrl }}/territories/{{ _.apsTerritoryId }}/actions",
+      "headers": [
+        {"name": "Content-Type", "value": "application/json"},
+        {"name": "Accept", "value": "application/json"}
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"focus\": \"CHRONIC_CONDITIONS\",\n  \"objective\": \"Reconnect people with chronic conditions to preventive follow-up\",\n  \"responsibleTeam\": \"ESF Jardim Esperanca\",\n  \"plannedStart\": \"2026-07-18\",\n  \"plannedEnd\": \"2026-07-25\",\n  \"targetCount\": 80,\n  \"notes\": \"Demonstration action with aggregate counts only\"\n}"
+      }
+    },
+    {
+      "_id": "req_aps_update_action",
+      "parentId": "fld_aps_prioritization",
+      "_type": "request",
+      "name": "06 - Update Search Action Progress",
+      "method": "PATCH",
+      "url": "{{ _.apsBaseUrl }}/actions/{{ _.apsActionId }}/progress",
+      "headers": [
+        {"name": "Content-Type", "value": "application/json"},
+        {"name": "Accept", "value": "application/json"}
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"IN_PROGRESS\",\n  \"performedCount\": 54,\n  \"resultNotes\": \"54 contacts made and 31 people reconnected to follow-up\"\n}"
+      }
+    },
+    {
+      "_id": "req_aps_replace_indicators",
+      "parentId": "fld_aps_prioritization",
+      "_type": "request",
+      "name": "07 - Replace Territory Indicators",
+      "method": "PUT",
+      "url": "{{ _.apsBaseUrl }}/territories/{{ _.apsTerritoryId }}/indicators",
+      "headers": [
+        {"name": "Content-Type", "value": "application/json"},
+        {"name": "Accept", "value": "application/json"}
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"linkedPopulationPercent\": 42.00,\n  \"dataCompetence\": \"2026-06\",\n  \"indicators\": [\n    {\"focus\": \"CHRONIC_CONDITIONS\", \"score\": 32.00, \"target\": 60.00},\n    {\"focus\": \"PRENATAL_CARE\", \"score\": 72.00, \"target\": 85.00}\n  ]\n}"
+      }
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+meta {
+  name: Update Search Action Progress
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{apsBaseUrl}}/actions/{{apsActionId}}/progress
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+body:json {
+  {
+    "status": "IN_PROGRESS",
+    "performedCount": 54,
+    "resultNotes": "54 contacts made and 31 people reconnected to follow-up"
+  }
+}

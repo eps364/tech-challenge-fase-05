@@ -7,8 +7,9 @@ podera comparecer.
 ## Escopo Atual
 
 - `appointment-service`: API principal de agendamentos.
+- `aps-prioritization-service`: priorizacao territorial e acompanhamento de busca ativa na APS.
 - `common-lib`: suporte compartilhado de erros RFC 9457 e validacao.
-- PostgreSQL local para dados de pacientes, agendamentos e ofertas de vaga.
+- PostgreSQL local para dados de agendamentos e para a massa agregada de APS.
 
 Os demais modulos permanecem no repositorio para historico, mas foram removidos
 do build Maven e do Docker Compose principal.
@@ -39,6 +40,47 @@ Subir apenas o banco para rodar o servico pela IDE/Maven:
 docker compose -f docker-compose.dev.yml up -d
 mvn -pl appointment-service -am spring-boot:run
 ```
+
+## Priorizacao APS
+
+O `aps-prioritization-service` apoia o coordenador de APS a decidir onde iniciar
+uma busca ativa preventiva. Ele trabalha somente com dados territoriais
+agregados: vinculo da populacao, indicadores preventivos e progresso agregado
+das acoes. Nao armazena prontuarios, dados pessoais ou decisoes clinicas.
+
+O primeiro fluxo demonstravel usa o caso ficticio de Joao: um territorio com
+baixo vinculo e acompanhamento fragil de condicoes cronicas recebe prioridade,
+a coordenacao registra uma acao e a equipe acompanha o numero agregado de
+contatos realizados.
+
+Rodar somente o banco do novo servico e iniciar pela IDE/Maven:
+
+```bash
+docker compose -f docker-compose.dev.yml up -d aps-prioritization-postgres
+mvn -pl aps-prioritization-service -am spring-boot:run
+```
+
+URLs:
+
+- API: `http://localhost:8205/api/v1`
+- Swagger: `http://localhost:8205/swagger-ui/index.html`
+- Health: `http://localhost:8205/actuator/health`
+
+A massa de demonstracao e carregada automaticamente, com quatro territorios e
+tres acoes territoriais. O territorio `Jardim Esperanca` inicia em prioridade
+alta porque combina vinculo APS de 42% com indicadores preventivos abaixo da
+meta. Os IDs de teste e os passos de execucao estao em
+[`docs/API/aps-prioritization-service.md`](docs/API/aps-prioritization-service.md).
+
+Testes e cobertura:
+
+```bash
+mvn -pl aps-prioritization-service -am verify
+```
+
+O build verifica cobertura de linha minima de 90% para o modulo e para cada
+classe de producao. O relatorio fica em
+`aps-prioritization-service/target/site/jacoco/index.html`.
 
 URLs principais:
 

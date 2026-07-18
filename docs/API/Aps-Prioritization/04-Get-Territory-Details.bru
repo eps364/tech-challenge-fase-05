@@ -1,0 +1,15 @@
+meta {
+  name: Get Jardim Esperanca Details
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{apsBaseUrl}}/territories/{{apsTerritoryId}}
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}

@@ -1,0 +1,34 @@
+meta {
+  name: Create Search Action
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{apsBaseUrl}}/territories/{{apsTerritoryId}}/actions
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+body:json {
+  {
+    "focus": "CHRONIC_CONDITIONS",
+    "objective": "Reconnect people with chronic conditions to preventive follow-up",
+    "responsibleTeam": "ESF Jardim Esperanca",
+    "plannedStart": "2026-07-18",
+    "plannedEnd": "2026-07-25",
+    "targetCount": 80,
+    "notes": "Demonstration action with aggregate counts only"
+  }
+}
+
+script:post-response {
+  if (res.status === 201 && res.body && res.body.id) {
+    bru.setEnvVar("apsActionId", res.body.id);
+  }
+}

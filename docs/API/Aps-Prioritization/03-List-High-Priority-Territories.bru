@@ -1,0 +1,15 @@
+meta {
+  name: List High Priority Territories
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{apsBaseUrl}}/territories?priority=HIGH
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
