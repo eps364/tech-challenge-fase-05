@@ -67,7 +67,7 @@ O banco mantem somente tres grupos de dados: `territories`,
 recalculada a cada consulta para refletir as metas configuradas e os indicadores
 mais recentes.
 
-## Evidencias da execucao
+## Evidencias tecnicas e fluxo observavel
 
 Ambiente iniciado com:
 
@@ -115,6 +115,12 @@ Trechos relevantes dos logs do container APS:
 2026-07-19T00:08:10.308Z  INFO  Tomcat started on port 8205 (http)
 2026-07-19T00:08:10.319Z  INFO  Started ApsPrioritizationServiceApplication in 4.723 seconds
 ```
+
+Esses logs comprovam que a infraestrutura iniciou, mas nao demonstram um fluxo
+de negocio. A evidencia de ponta a ponta fica em
+`docs/e2e/relatorio_execucao_e2e.md`, gerado pelo executor HTTP real. Ele
+registra cada payload recebido, o caso de uso/regra aplicado e a resposta da
+API persistida no PostgreSQL dedicado.
 
 ## Mensagem final da demonstracao
 

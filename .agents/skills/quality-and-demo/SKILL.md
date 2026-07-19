@@ -19,6 +19,17 @@ docker compose up -d --build aps-prioritization-service
 Confirm that the health endpoint responds `UP`, then exercise the primary flow
 against the running service.
 
+For a reproducible end-to-end proof, run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\run-e2e.ps1
+```
+
+The runner uses `docker-compose.e2e.yml`, an isolated PostgreSQL volume, and
+real HTTP requests. It writes `docs/e2e/relatorio_execucao_e2e.md` with the
+received payload, the applied use case or rule, the API output, and assertions
+for each flow step.
+
 ## Versioning
 
 After validation, create one atomic Git commit for each completed change. Use a

@@ -75,6 +75,9 @@ docker compose up -d --build aps-prioritization-service
 
 # Check the live API
 curl http://localhost:8205/actuator/health
+
+# Run the isolated HTTP E2E flow against Docker and PostgreSQL
+powershell -ExecutionPolicy Bypass -File .\scripts\run-e2e.ps1
 ```
 
 The full `verify` lifecycle also runs Spotless. On machines where Maven cannot
