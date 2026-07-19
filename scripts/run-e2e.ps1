@@ -305,7 +305,10 @@ try {
   Add-ReportLine "PASS: o fluxo E2E executou contra a aplicacao Docker e PostgreSQL dedicados."
   Add-ReportLine "O relatorio mostra, para cada etapa, o que a API recebeu, a regra/caso de uso aplicado e o output efetivamente retornado."
 
-  Set-Content -LiteralPath $reportPath -Value $report.ToString().TrimEnd() -Encoding utf8
+  [System.IO.File]::WriteAllText(
+    $reportPath,
+    $report.ToString().TrimEnd(),
+    [System.Text.UTF8Encoding]::new($false))
   Write-Host "E2E completed successfully. Report: $reportPath"
 } finally {
   $httpClient.Dispose()

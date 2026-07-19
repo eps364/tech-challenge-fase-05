@@ -1,6 +1,6 @@
 # Relatorio de execucao E2E - APS
 
-Gerado em: 2026-07-18T21:54:30-03:00
+Gerado em: 2026-07-19T13:31:22-03:00
 
 Este fluxo usa a API real no Docker em `http://localhost:8215`, PostgreSQL dedicado e uma base limpa.
 Nenhum dado individual, prontuario ou identificador de paciente e enviado.
@@ -50,7 +50,7 @@ Nenhum dado individual, prontuario ou identificador de paciente e enviado.
 HTTP 201
 ```json
 {
-    "id":  "9b6adb56-8d69-4cb2-9f1f-440edca56726",
+    "id":  "f05dc515-7997-4213-b6d2-db23a5df810b",
     "code":  "E2E-APS-001",
     "name":  "Territorio E2E Gestao Ativa",
     "unitName":  "UBS E2E",
@@ -102,8 +102,8 @@ HTTP 201
     "focus":  "CHRONIC_CONDITIONS",
     "objective":  "Reconnect people with chronic conditions to preventive follow-up",
     "responsibleTeam":  "ESF E2E",
-    "plannedStart":  "2026-07-18",
-    "plannedEnd":  "2026-07-25",
+    "plannedStart":  "2026-07-19",
+    "plannedEnd":  "2026-07-26",
     "targetCount":  80,
     "notes":  "E2E aggregate demonstration. No patient records."
 }
@@ -118,22 +118,22 @@ HTTP 201
 HTTP 201
 ```json
 {
-    "id":  "62d69975-19c3-4af0-96e5-268110259e90",
-    "territoryId":  "9b6adb56-8d69-4cb2-9f1f-440edca56726",
+    "id":  "d0e178e2-0e9d-484c-8ea9-b3554e87fecf",
+    "territoryId":  "f05dc515-7997-4213-b6d2-db23a5df810b",
     "focus":  "CHRONIC_CONDITIONS",
     "focusLabel":  "Condicoes cronicas",
     "objective":  "Reconnect people with chronic conditions to preventive follow-up",
     "responsibleTeam":  "ESF E2E",
-    "plannedStart":  "2026-07-18",
-    "plannedEnd":  "2026-07-25",
+    "plannedStart":  "2026-07-19",
+    "plannedEnd":  "2026-07-26",
     "targetCount":  80,
     "performedCount":  0,
     "progressPercent":  0.00,
     "status":  "PLANNED",
     "notes":  "E2E aggregate demonstration. No patient records.",
     "resultNotes":  null,
-    "createdAt":  "2026-07-19T00:54:30.269759191",
-    "updatedAt":  "2026-07-19T00:54:30.269759191"
+    "createdAt":  "2026-07-19T16:31:22.358134875",
+    "updatedAt":  "2026-07-19T16:31:22.358134875"
 }
 ```
 
@@ -164,22 +164,22 @@ HTTP 201
 HTTP 200
 ```json
 {
-    "id":  "62d69975-19c3-4af0-96e5-268110259e90",
-    "territoryId":  "9b6adb56-8d69-4cb2-9f1f-440edca56726",
+    "id":  "d0e178e2-0e9d-484c-8ea9-b3554e87fecf",
+    "territoryId":  "f05dc515-7997-4213-b6d2-db23a5df810b",
     "focus":  "CHRONIC_CONDITIONS",
     "focusLabel":  "Condicoes cronicas",
     "objective":  "Reconnect people with chronic conditions to preventive follow-up",
     "responsibleTeam":  "ESF E2E",
-    "plannedStart":  "2026-07-18",
-    "plannedEnd":  "2026-07-25",
+    "plannedStart":  "2026-07-19",
+    "plannedEnd":  "2026-07-26",
     "targetCount":  80,
     "performedCount":  54,
     "progressPercent":  67.50,
     "status":  "IN_PROGRESS",
     "notes":  "E2E aggregate demonstration. No patient records.",
     "resultNotes":  "54 aggregate contacts completed.",
-    "createdAt":  "2026-07-19T00:54:30.269759",
-    "updatedAt":  "2026-07-19T00:54:30.301028181"
+    "createdAt":  "2026-07-19T16:31:22.358135",
+    "updatedAt":  "2026-07-19T16:31:22.39600341"
 }
 ```
 
@@ -214,7 +214,7 @@ HTTP 422
     "title":  "Invalid APS prioritization data",
     "status":  422,
     "detail":  "A completed action must have a performed count",
-    "instance":  "/api/v1/actions/62d69975-19c3-4af0-96e5-268110259e90/progress"
+    "instance":  "/api/v1/actions/d0e178e2-0e9d-484c-8ea9-b3554e87fecf/progress"
 }
 ```
 
@@ -242,7 +242,7 @@ HTTP 422
 HTTP 200
 ```json
 {
-    "id":  "9b6adb56-8d69-4cb2-9f1f-440edca56726",
+    "id":  "f05dc515-7997-4213-b6d2-db23a5df810b",
     "code":  "E2E-APS-001",
     "name":  "Territorio E2E Gestao Ativa",
     "unitName":  "UBS E2E",
@@ -275,22 +275,22 @@ HTTP 200
                    ],
     "actions":  [
                     {
-                        "id":  "62d69975-19c3-4af0-96e5-268110259e90",
-                        "territoryId":  "9b6adb56-8d69-4cb2-9f1f-440edca56726",
+                        "id":  "d0e178e2-0e9d-484c-8ea9-b3554e87fecf",
+                        "territoryId":  "f05dc515-7997-4213-b6d2-db23a5df810b",
                         "focus":  "CHRONIC_CONDITIONS",
                         "focusLabel":  "Condicoes cronicas",
                         "objective":  "Reconnect people with chronic conditions to preventive follow-up",
                         "responsibleTeam":  "ESF E2E",
-                        "plannedStart":  "2026-07-18",
-                        "plannedEnd":  "2026-07-25",
+                        "plannedStart":  "2026-07-19",
+                        "plannedEnd":  "2026-07-26",
                         "targetCount":  80,
                         "performedCount":  54,
                         "progressPercent":  67.50,
                         "status":  "IN_PROGRESS",
                         "notes":  "E2E aggregate demonstration. No patient records.",
                         "resultNotes":  "54 aggregate contacts completed.",
-                        "createdAt":  "2026-07-19T00:54:30.269759",
-                        "updatedAt":  "2026-07-19T00:54:30.301028"
+                        "createdAt":  "2026-07-19T16:31:22.358135",
+                        "updatedAt":  "2026-07-19T16:31:22.396003"
                     }
                 ]
 }
@@ -327,7 +327,7 @@ HTTP 200
     "completedActionCount":  0,
     "topPriorities":  [
                           {
-                              "id":  "9b6adb56-8d69-4cb2-9f1f-440edca56726",
+                              "id":  "f05dc515-7997-4213-b6d2-db23a5df810b",
                               "code":  "E2E-APS-001",
                               "name":  "Territorio E2E Gestao Ativa",
                               "unitName":  "UBS E2E",
@@ -341,10 +341,10 @@ HTTP 200
                       ],
     "attentionActions":  [
                              {
-                                 "actionId":  "62d69975-19c3-4af0-96e5-268110259e90",
-                                 "territoryId":  "9b6adb56-8d69-4cb2-9f1f-440edca56726",
+                                 "actionId":  "d0e178e2-0e9d-484c-8ea9-b3554e87fecf",
+                                 "territoryId":  "f05dc515-7997-4213-b6d2-db23a5df810b",
                                  "territoryName":  "Territorio E2E Gestao Ativa",
-                                 "plannedEnd":  "2026-07-25",
+                                 "plannedEnd":  "2026-07-26",
                                  "reason":  "DUE_SOON"
                              }
                          ]
@@ -361,26 +361,26 @@ HTTP 200
 Os logs abaixo comprovam inicializacao e migracao. A trilha de negocio acima e produzida pelo executor HTTP, pois o dominio nao registra dados operacionais sensiveis em logs.
 
 ```text
-aps-e2e-service-1  | 2026-07-19T00:54:26.724625918Z 2026-07-19T00:54:26.724Z  INFO 1 --- [aps-prioritization-service] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.13.Final
-aps-e2e-service-1  | 2026-07-19T00:54:26.742435424Z 2026-07-19T00:54:26.742Z  INFO 1 --- [aps-prioritization-service] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-aps-e2e-service-1  | 2026-07-19T00:54:26.896594586Z 2026-07-19T00:54:26.896Z  INFO 1 --- [aps-prioritization-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-aps-e2e-service-1  | 2026-07-19T00:54:26.932024868Z 2026-07-19T00:54:26.931Z  WARN 1 --- [aps-prioritization-service] [           main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-aps-e2e-service-1  | 2026-07-19T00:54:26.940409481Z 2026-07-19T00:54:26.940Z  INFO 1 --- [aps-prioritization-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
-aps-e2e-service-1  | 2026-07-19T00:54:26.940430583Z 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
-aps-e2e-service-1  | 2026-07-19T00:54:26.940433303Z 	Database driver: undefined/unknown
-aps-e2e-service-1  | 2026-07-19T00:54:26.940435163Z 	Database version: 15.18
-aps-e2e-service-1  | 2026-07-19T00:54:26.940436843Z 	Autocommit mode: undefined/unknown
-aps-e2e-service-1  | 2026-07-19T00:54:26.940438513Z 	Isolation level: undefined/unknown
-aps-e2e-service-1  | 2026-07-19T00:54:26.940440343Z 	Minimum pool size: undefined/unknown
-aps-e2e-service-1  | 2026-07-19T00:54:26.940454044Z 	Maximum pool size: undefined/unknown
-aps-e2e-service-1  | 2026-07-19T00:54:27.575435792Z 2026-07-19T00:54:27.574Z  INFO 1 --- [aps-prioritization-service] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-aps-e2e-service-1  | 2026-07-19T00:54:27.602991910Z 2026-07-19T00:54:27.602Z  INFO 1 --- [aps-prioritization-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-aps-e2e-service-1  | 2026-07-19T00:54:28.521955726Z 2026-07-19T00:54:28.521Z  INFO 1 --- [aps-prioritization-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoints beneath base path '/actuator'
-aps-e2e-service-1  | 2026-07-19T00:54:28.574703465Z 2026-07-19T00:54:28.574Z  INFO 1 --- [aps-prioritization-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8205 (http) with context path '/'
-aps-e2e-service-1  | 2026-07-19T00:54:28.586726074Z 2026-07-19T00:54:28.586Z  INFO 1 --- [aps-prioritization-service] [           main] .s.a.ApsPrioritizationServiceApplication : Started ApsPrioritizationServiceApplication in 4.467 seconds (process running for 4.858)
-aps-e2e-service-1  | 2026-07-19T00:54:29.884183034Z 2026-07-19T00:54:29.883Z  INFO 1 --- [aps-prioritization-service] [nio-8205-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-aps-e2e-service-1  | 2026-07-19T00:54:29.884430578Z 2026-07-19T00:54:29.884Z  INFO 1 --- [aps-prioritization-service] [nio-8205-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-aps-e2e-service-1  | 2026-07-19T00:54:29.885469348Z 2026-07-19T00:54:29.885Z  INFO 1 --- [aps-prioritization-service] [nio-8205-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+aps-e2e-service-1  | 2026-07-19T16:31:17.387916774Z 2026-07-19T16:31:17.387Z  INFO 1 --- [aps-prioritization-service] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.13.Final
+aps-e2e-service-1  | 2026-07-19T16:31:17.409032093Z 2026-07-19T16:31:17.408Z  INFO 1 --- [aps-prioritization-service] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+aps-e2e-service-1  | 2026-07-19T16:31:17.617294521Z 2026-07-19T16:31:17.616Z  INFO 1 --- [aps-prioritization-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+aps-e2e-service-1  | 2026-07-19T16:31:17.656345596Z 2026-07-19T16:31:17.655Z  WARN 1 --- [aps-prioritization-service] [           main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+aps-e2e-service-1  | 2026-07-19T16:31:17.664942001Z 2026-07-19T16:31:17.664Z  INFO 1 --- [aps-prioritization-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+aps-e2e-service-1  | 2026-07-19T16:31:17.664969882Z 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+aps-e2e-service-1  | 2026-07-19T16:31:17.664972722Z 	Database driver: undefined/unknown
+aps-e2e-service-1  | 2026-07-19T16:31:17.664974872Z 	Database version: 15.18
+aps-e2e-service-1  | 2026-07-19T16:31:17.664976802Z 	Autocommit mode: undefined/unknown
+aps-e2e-service-1  | 2026-07-19T16:31:17.664978732Z 	Isolation level: undefined/unknown
+aps-e2e-service-1  | 2026-07-19T16:31:17.664980652Z 	Minimum pool size: undefined/unknown
+aps-e2e-service-1  | 2026-07-19T16:31:17.664995202Z 	Maximum pool size: undefined/unknown
+aps-e2e-service-1  | 2026-07-19T16:31:18.442534601Z 2026-07-19T16:31:18.442Z  INFO 1 --- [aps-prioritization-service] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+aps-e2e-service-1  | 2026-07-19T16:31:18.474703868Z 2026-07-19T16:31:18.474Z  INFO 1 --- [aps-prioritization-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+aps-e2e-service-1  | 2026-07-19T16:31:19.702125044Z 2026-07-19T16:31:19.701Z  INFO 1 --- [aps-prioritization-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoints beneath base path '/actuator'
+aps-e2e-service-1  | 2026-07-19T16:31:19.773806828Z 2026-07-19T16:31:19.773Z  INFO 1 --- [aps-prioritization-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8205 (http) with context path '/'
+aps-e2e-service-1  | 2026-07-19T16:31:19.787514525Z 2026-07-19T16:31:19.787Z  INFO 1 --- [aps-prioritization-service] [           main] .s.a.ApsPrioritizationServiceApplication : Started ApsPrioritizationServiceApplication in 5.983 seconds (process running for 6.529)
+aps-e2e-service-1  | 2026-07-19T16:31:21.852690146Z 2026-07-19T16:31:21.852Z  INFO 1 --- [aps-prioritization-service] [nio-8205-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+aps-e2e-service-1  | 2026-07-19T16:31:21.852962526Z 2026-07-19T16:31:21.852Z  INFO 1 --- [aps-prioritization-service] [nio-8205-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+aps-e2e-service-1  | 2026-07-19T16:31:21.854226625Z 2026-07-19T16:31:21.853Z  INFO 1 --- [aps-prioritization-service] [nio-8205-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
 ```
 
 ## Resultado
