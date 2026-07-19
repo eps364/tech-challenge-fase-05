@@ -1,190 +1,289 @@
-# Roteiro de pitch - SUS Conecta
+# Roteiro completo de apresentacao - SUS Conecta
 
-Duracao sugerida: 5 minutos e 45 segundos.
+Duracao sugerida: 7 a 8 minutos.
 
-Publico: banca do hackathon, gestores de APS e pessoas interessadas na
-operacao do SUS.
+Publico: banca do hackathon, gestores de APS e pessoas que ainda nao conhecem
+o problema ou a proposta.
 
 Material de apoio: `docs/apresentacao/apresentacao_aps.html`.
 
-## Mensagem central
+## Como usar este roteiro
 
-O SUS Conecta apoia a coordenacao da APS a transformar indicadores territoriais
-dispersos em uma prioridade explicavel de busca ativa. A proposta nao decide o
-tratamento de uma pessoa e nao promete evitar internacoes. Ela ajuda a equipe a
-organizar uma resposta preventiva, acompanhar sua execucao agregada e dar
-visibilidade ao proximo ciclo de decisao.
+Este texto foi escrito para ser lido no telefone durante a gravacao. Cada
+bloco corresponde a um slide. Leia com calma, faca uma pequena pausa ao fim de
+cada bloco e avance apenas quando encontrar a indicacao **[AVANCE]**.
 
-## Preparacao
+O roteiro evita detalhes de linguagem de programacao, infraestrutura e testes
+tecnicos. A mensagem deve ser entendida por qualquer pessoa: qual problema foi
+observado, quais dados deram contexto a ele e como o SUS Conecta apoia uma
+decisao operacional.
 
-- Abra `docs/apresentacao/apresentacao_aps.html` em tela cheia.
-- Apresente os oito slides usando as setas do teclado.
-- Fale "dados demonstrativos" ao chegar ao painel de Jardim Esperanca.
-- Reserve os ultimos 15 segundos para a frase de encerramento, sem avancar o
-  slide final antes dela.
+## Colinha de fontes para consulta rapida
 
-## Roteiro falado
+| Base | Fonte oficial | Ano ou competencia | Uso na analise |
+| --- | --- | --- | --- |
+| Estimativas de populacao | IBGE | 2025, referencia em 01/07/2025 | Comparar municipios de tamanhos diferentes. |
+| Cadastro vinculado | Ministerio da Saude, SISAB | 202412 | Estimar um sinal aproximado de vinculo com a APS. |
+| Indicadores de desempenho | Ministerio da Saude, SISAB/Previne Brasil | 2024Q3 | Observar sinais agregados de acompanhamento preventivo. |
+| Unidades Basicas de Saude | Ministerio da Saude, Dados Abertos do SUS | Atualizacao indicada em julho/2026 | Contextualizar a oferta territorial de UBS. |
+| Hospitais e leitos | Ministerio da Saude, Dados Abertos do SUS | 202605, ou maio/2026 | Contextualizar a analise exploratoria da rede. |
 
-### Slide 1 - A oportunidade antes da urgencia (35 segundos)
+Importante: as bases possuem competencias diferentes. Elas nao representam uma
+fotografia em tempo real e nao permitem conclusao clinica sobre uma pessoa. No
+projeto, elas sao evidencias agregadas para orientar uma investigacao e uma
+decisao territorial.
 
-> Pense em Joao, um personagem ficticio que perdeu a continuidade do
-> acompanhamento de hipertensao e diabetes. Anos depois, ele procura uma UPA
-> com um quadro mais grave. Nao estamos dizendo que uma ferramenta teria
-> evitado esse desfecho. O que existe antes da urgencia e uma oportunidade de
-> organizacao: perceber que um territorio pode estar desconectado do cuidado
-> preventivo e agir antes, de forma coordenada.
+## Slide 1 - Abertura: antes da urgencia existe uma oportunidade de cuidado
+
+Tempo sugerido: 55 segundos.
+
+> Ola, eu sou Luiz Saraiva e este projeto foi desenvolvido em dupla com
+> Emerson Silva, para a Fase 5 do Tech Challenge.
 >
-> O SUS Conecta nasce para isso. Ele ajuda a coordenacao da Atencao Primaria a
-> decidir onde comecar uma busca ativa territorial, com clareza, explicacao e
-> responsabilidade.
-
-Transicao: "E essa nao e uma dor isolada. Os dados mostram a escala da
-oportunidade."
-
-### Slide 2 - A evidencia que orientou a escolha (45 segundos)
-
-> Na analise de bases abertas, observamos um vinculo aproximado de 38,11% da
-> populacao na APS. Encontramos 1.091 municipios com mais de 20 mil habitantes
-> e vinculo abaixo de 50%, alem de 276 municipios nessa faixa populacional com
-> media de indicadores abaixo de 40.
+> Nossa proposta se chama SUS Conecta. Antes de mostrar a solucao, eu quero
+> explicar, de maneira simples, o problema que estamos tentando resolver.
 >
-> Processamos 100.242 registros de indicadores, dados de 5.571 municipios e a
-> estimativa populacional municipal do IBGE para 2025. Esses numeros nao diagnosticam pessoas e nao provam
-> uma causa clinica. Eles mostram, com evidencias agregadas, onde a coordenacao
-> pode precisar investigar e organizar uma resposta preventiva.
-
-Transicao: "Mas dado sem uma decisao clara ainda vira mais uma planilha para a
-rotina da equipe."
-
-### Slide 3 - A dor operacional (40 segundos)
-
-> Hoje, um coordenador pode precisar cruzar cobertura, indicadores, planilhas e
-> historico de acoes para decidir a proxima prioridade. Com tempo e equipe
-> limitados, a busca ativa corre o risco de ser reativa, dificil de explicar e
-> ainda mais dificil de acompanhar.
+> Na Atencao Primaria a Saude, ou APS, os coordenadores precisam decidir onde
+> comecar uma acao preventiva. Eles lidam com varios territorios, indicadores,
+> planilhas e equipes com capacidade limitada. A pergunta nao e apenas quais
+> numeros estao baixos. A pergunta pratica e: em qual territorio devemos agir
+> primeiro, por que devemos agir ali e como vamos acompanhar essa acao?
 >
-> Nosso problema nao e a ausencia de esforco das equipes. E a falta de uma
-> leitura unica, simples e territorial para transformar esse esforco em uma
-> rotina preventiva mais coordenada.
+> O SUS Conecta apoia essa decisao. Ele organiza sinais territoriais agregados
+> em uma prioridade clara para a busca ativa preventiva. Depois, ajuda a
+> transformar essa prioridade em uma acao com equipe, prazo, meta e
+> acompanhamento.
+>
+> A proposta nao identifica pacientes, nao diagnostica pessoas e nao substitui
+> a decisao da equipe de saude. Ela ajuda a coordenacao a enxergar onde vale
+> organizar o proximo esforco territorial.
 
-Transicao: "Por isso, o MVP reduz a decisao a uma pergunta objetiva: onde agir
-primeiro e por qual motivo?"
+**[AVANCE]**
 
-### Slide 4 - O dashboard e a prioridade explicavel (60 segundos)
+## Slide 2 - Evidencia nacional: quais bases foram utilizadas
 
-> Este e o painel do MVP com dados demonstrativos agregados. O territorio
-> Jardim Esperanca aparece primeiro porque tem tres sinais claros: 42% de
-> populacao vinculada, abaixo da meta de 50%; 32% no indicador de condicoes
-> cronicas, abaixo da meta de 60%; e 72% no acompanhamento pre-natal, abaixo da
+Tempo sugerido: 1 minuto e 20 segundos.
+
+> Para entender se esse problema tinha relevancia alem de uma percepcao
+> isolada, nos partimos de bases publicas e oficiais.
+>
+> A primeira fonte foi o IBGE, com a estimativa municipal de populacao de
+> 2025, cuja referencia e primeiro de julho de 2025. Essa base informa o
+> tamanho estimado da populacao de cada municipio. Ela foi importante porque
+> permite comparar territorios de tamanhos diferentes de forma proporcional.
+>
+> A segunda fonte foi o cadastro vinculado do SISAB, do Ministerio da Saude,
+> na competencia de dezembro de 2024. Essa base foi usada como um sinal
+> aproximado de vinculo da populacao com a APS.
+>
+> A terceira fonte foi a base de indicadores de desempenho do SISAB, ligada ao
+> periodo do Previne Brasil, no terceiro quadrimestre de 2024. Ela trouxe
+> dados agregados sobre acompanhamento preventivo, como condicoes cronicas e
+> pre-natal.
+>
+> Tambem analisamos a base de UBS, atualizada no portal em julho de 2026, e a
+> base de hospitais e leitos, com competencia de maio de 2026. Elas ajudaram a
+> entender o contexto mais amplo da oferta de saude no territorio.
+>
+> Nesta tela, os numeros mostram a escala da analise: 5.571 municipios,
+> aproximadamente 213,4 milhoes de habitantes na estimativa de 2025 e 100.242
+> registros brutos de indicadores processados. Esses dados nao representam
+> pessoas individualmente. Eles representam sinais agregados que merecem ser
+> investigados pela gestao local.
+
+**[AVANCE]**
+
+## Slide 3 - Da base bruta a uma oportunidade de gestao
+
+Tempo sugerido: 1 minuto e 20 segundos.
+
+> Depois de reunir as fontes, realizamos a analise em etapas simples.
+>
+> Primeiro, organizamos os dados por municipio, para que informacoes de fontes
+> diferentes pudessem ser comparadas no mesmo territorio. Depois, usamos a
+> estimativa populacional do IBGE para calcular proporcoes e evitar que um
+> municipio grande parecesse comparavel a um municipio pequeno apenas pelo
+> numero absoluto de registros.
+>
+> Em seguida, observamos tres grupos de sinais: vinculo aproximado com a APS,
+> indicadores preventivos e disponibilidade territorial de UBS. Na analise
+> exploratoria, tambem olhamos leitos para compreender o contexto mais amplo
+> da rede. Os leitos nao fazem parte da regra do MVP; eles ajudaram apenas a
+> entender a oportunidade inicial.
+>
+> Encontramos um vinculo aproximado de 38,11% da populacao na APS. Entre os
+> municipios com mais de 20 mil habitantes, identificamos 1.091 com vinculo
+> abaixo de 50%. Tambem encontramos 276 municipios nessa faixa populacional
+> com media de indicadores abaixo de 40, em uma escala de zero a cem.
+>
+> A conclusao responsavel nao e que esses municipios possuem um problema
+> clinico provado. A conclusao e que existem sinais territoriais que podem
+> justificar uma verificacao local e uma melhor organizacao da busca ativa.
+> Os volumes exibidos neste slide representam registros processados, e nao
+> qualidade do atendimento ou quantidade de pessoas atendidas.
+
+**[AVANCE]**
+
+## Slide 4 - Dashboard: uma prioridade que pode ser explicada
+
+Tempo sugerido: 1 minuto e 15 segundos.
+
+> Agora eu apresento como o SUS Conecta transforma essa ideia em uma rotina
+> simples de gestao.
+>
+> Os territorios deste painel sao demonstrativos. Jardim Esperanca, Parque das
+> Flores, Vila Nova e Centro nao representam municipios reais nem pacientes
+> reais. Eles foram criados apenas para demonstrar a decisao de forma segura.
+>
+> Jardim Esperanca aparece como prioridade alta por tres motivos visiveis.
+> Primeiro, possui 42% de populacao vinculada a APS, abaixo da referencia de
+> 50%. Segundo, apresenta 32% no indicador de condicoes cronicas, abaixo da
+> meta de 60%. Terceiro, possui 72% no acompanhamento pre-natal, abaixo da
 > meta de 85%.
 >
-> A regra e transparente: quando o vinculo fica abaixo da meta e pelo menos um
-> indicador preventivo tambem fica abaixo da sua meta, a prioridade e alta. Se
-> apenas um sinal fica abaixo, a prioridade e media. Quando todos atendem as
-> referencias, ela e baixa.
+> A regra e transparente. Se o vinculo esta abaixo da meta e pelo menos um
+> indicador preventivo tambem esta abaixo da sua meta, o territorio recebe
+> prioridade alta. Se apenas um sinal esta abaixo, a prioridade e media. Se os
+> sinais atendem as referencias, a prioridade e baixa.
 >
-> Isso nao e score clinico e nao e lista de pacientes. E uma fila territorial
-> explicavel para que a coordenacao saiba por que aquele territorio deve receber
-> atencao primeiro.
+> Isso nao e uma classificacao de risco clinico. E uma fila de trabalho para a
+> coordenacao saber onde pode ser mais util iniciar uma conversa com a equipe e
+> organizar uma acao preventiva.
 
-Transicao: "Priorizar e importante, mas so gera valor quando a decisao vira uma
-acao acompanhavel."
+**[AVANCE]**
 
-### Slide 5 - Da prioridade para a acao (55 segundos)
+## Slide 5 - Da prioridade para a acao acompanhavel
 
-> Para Jardim Esperanca, a coordenacao cria uma acao de reconexao ao
-> acompanhamento de condicoes cronicas. Ela define foco, equipe responsavel,
-> prazo e uma meta agregada de 80 contatos. A equipe atualiza o que foi feito,
-> e o painel mostra 54 contatos realizados: 67,5% do objetivo operacional.
+Tempo sugerido: 1 minuto.
+
+> Priorizar, por si so, nao resolve o problema. A prioridade precisa virar uma
+> acao que a equipe consiga executar e acompanhar.
 >
-> O sistema acompanha a execucao, nao o prontuario de cada pessoa. E a regra
-> protege a qualidade do processo: uma acao nao pode ser concluida sem uma
-> quantidade realizada. Isso foi validado no fluxo ponta a ponta, com resposta
-> 422 para a tentativa invalida e persistencia no PostgreSQL para a atualizacao
-> valida.
+> No exemplo de Jardim Esperanca, a coordenacao cria uma acao focada em
+> reconectar pessoas ao acompanhamento preventivo de condicoes cronicas. A
+> acao recebe uma equipe responsavel, um prazo de sete dias e uma meta agregada
+> de 80 contatos.
 >
-> Assim, a gestao deixa de acompanhar apenas intencao e passa a enxergar a
-> execucao da busca ativa.
-
-Transicao: "E fizemos isso mantendo a arquitetura proporcional ao problema."
-
-### Slide 6 - Como a solucao funciona (45 segundos)
-
-> A entrada e exclusivamente territorial e agregada: vinculo, competencia dos
-> dados e indicadores preventivos. Uma regra configuravel calcula a prioridade
-> e exibe os motivos. A coordenacao enxerga a fila, decide a proxima acao e a
-> equipe registra o progresso agregado. O painel fecha o ciclo com acoes
-> abertas, concluidas e alertas de prazo.
+> A equipe registra que realizou 54 contatos. Por isso, o painel mostra um
+> progresso de 67,5% da meta. O que esta sendo acompanhado e a execucao da
+> acao territorial, e nao a vida clinica ou o prontuario de cada pessoa.
 >
-> O nucleo e Java, com Spring, JPA e PostgreSQL na infraestrutura. O fluxo foi
-> exercitado de ponta a ponta em containers dedicados e o projeto atingiu 98,94%
-> de cobertura de linhas. Mais importante do que a tecnologia: a decisao humana
-> continua no centro.
-
-Transicao: "Essa escolha de escopo gera valor para quem gerencia, para quem
-executa e para quem depende da rede."
-
-### Slide 7 - Valor para o SUS e para a populacao (40 segundos)
-
-> Para a gestao de APS, o SUS Conecta reduz a consolidacao manual e oferece uma
-> fila territorial comparavel. Para as equipes de UBS, transforma uma lacuna em
-> uma acao com foco, prazo e meta claros. Para a populacao, a hipotese de valor
-> e uma rede mais atenta a continuidade preventiva, sem expor dados pessoais no
-> mecanismo de priorizacao.
+> Existe tambem uma regra simples de qualidade: uma acao nao pode ser marcada
+> como concluida se nenhum resultado foi registrado. Isso evita que a gestao
+> confunda uma acao planejada com uma acao efetivamente executada.
 >
-> Nao vendemos uma promessa clinica. Entregamos uma forma mais simples de
-> explicar, executar e acompanhar uma decisao territorial que hoje pode estar
-> espalhada em planilhas.
+> Os pequenos numeros no rodape deste slide sao apenas evidencias de que o
+> fluxo foi validado. Nao e necessario le-los na gravacao. A mensagem
+> importante e que a solucao acompanha a acao do inicio ate o retorno ao
+> painel.
 
-Transicao: "Em uma frase, esta e a mudanca que queremos levar para a APS."
+**[AVANCE]**
 
-### Slide 8 - Encerramento e convite (25 segundos)
+## Slide 6 - Como a solucao funciona, sem complexidade desnecessaria
 
-> O SUS Conecta transforma sinal em acao e acao em acompanhamento. O MVP ja
-> demonstra que e possivel priorizar um territorio com regras claras, criar uma
-> busca ativa e acompanhar seu progresso de forma agregada e rastreavel.
+Tempo sugerido: 55 segundos.
+
+> O funcionamento do SUS Conecta pode ser resumido em cinco etapas.
 >
-> O proximo passo e validar com coordenadores de APS se essa explicacao
-> territorial torna a preparacao da busca ativa mais rapida e mais util. Porque
-> cuidar melhor tambem e conseguir enxergar, com tempo, onde a rede precisa se
-> organizar primeiro.
+> Primeiro, entram dados agregados por territorio: vinculo, competencia dos
+> dados e indicadores preventivos.
+>
+> Segundo, uma regra clara classifica o territorio como alta, media ou baixa
+> prioridade e mostra os motivos dessa classificacao.
+>
+> Terceiro, a coordenacao enxerga a fila de territorios e decide qual merece
+> uma acao primeiro.
+>
+> Quarto, a equipe recebe uma acao com foco, responsavel, prazo e meta.
+>
+> Quinto, o progresso volta para o painel em forma agregada, permitindo que a
+> coordenacao enxergue o que esta aberto, em andamento, concluido ou proximo
+> do prazo.
+>
+> O ponto central e que a decisao humana continua no centro. O sistema nao
+> toma uma decisao clinica. Ele organiza a informacao para que a equipe tenha
+> mais clareza antes de agir.
+
+**[AVANCE]**
+
+## Slide 7 - Valor para o SUS e para a populacao
+
+Tempo sugerido: 55 segundos.
+
+> O valor da proposta aparece em quatro frentes.
+>
+> Para a gestao da APS, o SUS Conecta reduz a necessidade de reunir varias
+> planilhas antes de decidir. Em vez de apenas observar muitos numeros, a
+> coordenacao recebe uma fila territorial explicavel.
+>
+> Para as equipes de UBS e Estrategia Saude da Familia, a solucao transforma
+> uma lacuna percebida em uma acao com foco, meta, prazo e responsavel claros.
+>
+> Para a populacao, a hipotese de valor e uma rede mais atenta a continuidade
+> preventiva, sem expor dados pessoais no mecanismo de priorizacao.
+>
+> E para o SUS, a proposta mostra uma forma de transformar dados agregados em
+> coordenacao local, respeitando limites de interpretacao e a responsabilidade
+> da equipe de saude.
+>
+> Nos nao prometemos evitar internacoes, prever agravamentos ou provar um
+> impacto clinico. Entregamos uma forma mais clara de explicar, organizar e
+> acompanhar uma decisao territorial.
+
+**[AVANCE]**
+
+## Slide 8 - Encerramento
+
+Tempo sugerido: 40 segundos.
+
+> Para encerrar, o SUS Conecta transforma sinal em acao e acao em
+> acompanhamento.
+>
+> O MVP demonstra que e possivel identificar um territorio prioritario com
+> regras claras, explicar o motivo da prioridade, criar uma acao preventiva e
+> acompanhar sua execucao de forma agregada.
+>
+> O proximo passo nao e ampliar a complexidade. E validar a utilidade dessa
+> leitura territorial com coordenadores de APS e equipes de UBS: ela torna a
+> preparacao da busca ativa mais rapida, mais clara e mais util para a rotina?
+>
+> Porque cuidar melhor tambem e conseguir enxergar, com antecedencia, onde a
+> rede precisa se organizar primeiro.
+>
+> Muito obrigado.
 
 ## Respostas curtas para perguntas da banca
 
-### "O sistema identifica pacientes em risco?"
+### O sistema identifica pacientes em risco?
 
-> Nao. A unidade de priorizacao e o territorio ou a UBS. O MVP nao armazena
-> dados pessoais, prontuarios, diagnosticos ou risco clinico individual. A
-> abordagem e humana e operacional: a equipe local continua responsavel por
-> qualquer contato e decisao assistencial.
+> Nao. A prioridade e sempre territorial ou por UBS. O MVP nao armazena nome,
+> CPF, endereco, prontuario, diagnostico ou risco clinico individual.
 
-### "Como voces definiram a prioridade?"
+### Como voces definiram a prioridade?
 
-> Usamos uma regra explicavel: vinculo abaixo da meta mais pelo menos um
-> indicador preventivo abaixo da sua meta resulta em prioridade alta. Um unico
-> sinal abaixo gera prioridade media. As metas sao configuraveis e o painel
-> mostra os motivos da classificacao.
+> A prioridade usa uma regra explicavel: vinculo abaixo da meta mais pelo
+> menos um indicador preventivo abaixo da meta resulta em prioridade alta. O
+> painel sempre mostra quais sinais levaram a essa classificacao.
 
-### "Voces conseguem provar que isso reduz internacoes?"
+### Voces conseguem provar que a solucao reduz internacoes?
 
-> Ainda nao, e nao fazemos essa afirmacao. O MVP comprova o fluxo de
-> priorizacao e acompanhamento operacional. O impacto assistencial precisa ser
-> avaliado em uma validacao posterior com equipes e indicadores definidos pelo
-> gestor.
+> Ainda nao. Essa nao e uma afirmacao do projeto. O MVP demonstra uma forma de
+> organizar e acompanhar a busca ativa territorial. Impacto assistencial exige
+> validacao posterior com gestores, equipes e indicadores definidos localmente.
 
-### "Por que nao integrar logo com e-SUS ou prontuarios?"
+### Por que nao integrar imediatamente com prontuarios ou sistemas do SUS?
 
-> Para o hackathon, escolhemos um MVP demonstravel e seguro. A solucao funciona
-> com dados agregados e nao depende de integracao externa em tempo real. Uma
-> integracao futura so faz sentido depois de validar utilidade, governanca e
-> requisitos de privacidade com a rede local.
+> Porque o objetivo desta fase e validar uma rotina simples, demonstravel e
+> segura. O MVP funciona com dados agregados e nao depende de dados pessoais.
+> Qualquer integracao futura deve ser discutida com a rede local, considerando
+> utilidade, governanca e privacidade.
 
-## Frases a evitar no pitch
+## Frases a evitar na gravacao
 
+- "O sistema diagnostica pessoas."
 - "O sistema preve agravamento clinico."
 - "O sistema evita internacoes."
-- "Joao e um registro do sistema."
 - "Os dados nacionais mostram a situacao atual de cada UBS."
 
-Prefira: "apoia uma priorizacao territorial", "indica uma hipotese operacional"
-e "acompanha a execucao agregada da busca ativa".
+Prefira dizer: "apoia uma priorizacao territorial", "mostra um sinal agregado
+para investigacao" e "acompanha a execucao da busca ativa".
