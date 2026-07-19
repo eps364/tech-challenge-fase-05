@@ -26,7 +26,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\run-e2e.ps1
 ```
 
 The runner uses `docker-compose.e2e.yml`, an isolated PostgreSQL volume, and
-real HTTP requests. It writes `docs/e2e/relatorio_execucao_e2e.md` with the
+real HTTP requests. It writes `docs/tecnico/e2e/relatorio_execucao_e2e.md` with the
 received payload, the applied use case or rule, the API output, and assertions
 for each flow step.
 
@@ -41,8 +41,8 @@ changes into the commit.
 
 For each endpoint added or modified:
 
-1. Update `docs/API/aps-prioritization-service.md`.
-2. Add or update a Bruno request in `docs/API/Aps-Prioritization/`.
+1. Update `docs/tecnico/api/aps-prioritization-service.md`.
+2. Add or update a Bruno request in `docs/tecnico/api/Aps-Prioritization/`.
 3. Add or update the Insomnia export.
 4. Use a stable demo ID or have the collection capture a newly created ID.
 5. Confirm both success and at least one meaningful invalid request are covered

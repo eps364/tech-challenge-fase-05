@@ -27,9 +27,9 @@ code.
 
 ## Authority And Maintenance
 
-- The product specification in `docs/pesquisa/` is authoritative for the MVP.
+- The product specification in `docs/produto/` is authoritative for the MVP.
 - Source code and API documentation are authoritative for implemented behavior.
 - Update this directory only when a durable decision changes. Do not log routine
   implementation details here.
-- The legacy `.agent/` directory describes the former triage project and must
-  not steer APS decisions.
+- The repository contains only the APS MVP; do not expand it with the former
+  triage project patterns.

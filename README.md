@@ -1,80 +1,83 @@
-# SUS-Connect APS - Priorizacao de Busca Ativa
+# SUS-Connect APS
 
-MVP do hackathon para apoiar coordenadores de Atencao Primaria a Saude (APS) a
-decidir em quais territorios ou UBS iniciar uma acao de busca ativa preventiva.
+MVP de priorizacao territorial de busca ativa preventiva na Atencao Primaria a
+Saude (APS). Ele ajuda a coordenacao a responder: **qual territorio ou UBS
+deve receber uma acao primeiro, e por qual motivo?**
 
-O produto usa somente indicadores territoriais agregados. Ele nao gerencia
-pacientes, prontuarios, agendamentos, prescricoes ou decisoes clinicas.
+O sistema trabalha exclusivamente com indicadores e resultados agregados. Nao
+armazena pacientes, prontuarios, diagnosticos, prescricoes, agendamentos ou
+risco clinico individual. A prioridade e um sinal operacional explicavel, nao
+uma decisao assistencial automatica.
 
-## O Fluxo Demonstravel
+## Fluxo do MVP
 
-1. O coordenador abre o painel e identifica os territorios prioritarios.
-2. Ele consulta o detalhe de um territorio e entende os indicadores que geraram
-   a prioridade.
-3. Ele cria uma acao territorial de busca ativa com foco, equipe, prazo e meta.
+1. A coordenacao consulta o painel e identifica territorios prioritarios.
+2. Abre o detalhe e entende os sinais agregados e metas que justificam a
+   prioridade.
+3. Cria uma acao territorial de busca ativa com foco, equipe, prazo e meta.
 4. A equipe atualiza apenas o progresso agregado da acao.
-5. O painel mostra prioridades, acoes abertas, concluidas e alertas de prazo.
+5. O painel devolve a visao do trabalho aberto, concluido e proximo do prazo.
 
-O caso ficticio de Joao e os requisitos completos estao em
-[`docs/pesquisa/especificacao_requisitos_mvp_gestao_ativa_aps.md`](docs/pesquisa/especificacao_requisitos_mvp_gestao_ativa_aps.md).
+## Estrutura ativa
 
-## Modulos Ativos
+```text
+aps-prioritization-service/  # API Java 21 / Spring Boot 3.4.5
+analytics/                   # Processamento e relatorios de dados agregados
+data/                        # Fontes preservadas e saidas processadas
+docs/                        # Contexto, produto, dados, tecnica e apresentacao
+scripts/                     # Automacao de demonstracao E2E
+```
 
-- `aps-prioritization-service`: API do MVP de priorizacao territorial e busca
-  ativa.
+O build Maven e o Compose principal possuem somente o
+`aps-prioritization-service` e seu PostgreSQL.
 
-Os demais materiais do repositorio pertencem a iteracoes anteriores e nao fazem
-parte do build Maven ou do Docker Compose atual.
+## Executar localmente
 
-## Rodando Localmente
-
-Subir o banco e a API do MVP:
+Suba o banco e a API:
 
 ```bash
 docker compose up -d --build aps-prioritization-service
 ```
 
-Ou subir apenas o banco para executar a API na IDE/Maven:
+Ou suba apenas o banco para executar a API pela IDE ou Maven:
 
 ```bash
-docker compose -f docker-compose.dev.yml up -d aps-prioritization-postgres
+docker compose up -d aps-prioritization-postgres
 mvn -pl aps-prioritization-service -am spring-boot:run
 ```
 
-URLs locais:
+| Recurso | Endereco |
+| --- | --- |
+| API | `http://localhost:8205/api/v1` |
+| Swagger | `http://localhost:8205/swagger-ui/index.html` |
+| Health | `http://localhost:8205/actuator/health` |
+| PostgreSQL | `localhost:5434` |
 
-- API: `http://localhost:8205/api/v1`
-- Swagger: `http://localhost:8205/swagger-ui/index.html`
-- Health: `http://localhost:8205/actuator/health`
-- PostgreSQL: `localhost:5434`
-
-A massa demonstrativa e carregada automaticamente: quatro territorios
-ficticios e tres acoes agregadas. `Jardim Esperanca` inicia em alta prioridade
-por combinar vinculo APS de 42% com indicadores abaixo da meta.
-
-## API e Testes
-
-A documentacao detalhada e as massas de teste estao em
-[`docs/API/aps-prioritization-service.md`](docs/API/aps-prioritization-service.md).
+## Validacao
 
 ```bash
 # Testes unitarios e de integracao HTTP
 mvn -q -pl aps-prioritization-service -am test
 
-# Garante no minimo 90% de cobertura de linhas no modulo e em cada classe
+# Cobertura minima de 90% por modulo e classe de producao
 mvn -q -pl aps-prioritization-service jacoco:check@coverage-check
+
+# Fluxo HTTP real com Docker e PostgreSQL dedicado
+powershell -ExecutionPolicy Bypass -File .\scripts\run-e2e.ps1
 ```
 
-As colecoes de demonstracao estao em:
+## Documentacao
 
-- Bruno: `docs/API/Aps-Prioritization/`, usando o ambiente `aps-local`.
-- Insomnia: `docs/API/aps-prioritization-insomnia.json`.
+O [indice da documentacao](docs/README.md) organiza os materiais por objetivo:
 
-## Contexto para Agentes
+- [Contexto do hackathon](docs/contexto/README.md)
+- [Produto, requisitos e caso tangivel](docs/produto/README.md)
+- [Dados, fontes e analises](docs/dados/README.md)
+- [Contexto tecnico, API, Bruno, Insomnia e E2E](docs/tecnico/README.md)
+- [Deck e roteiro de pitch](docs/apresentacao/README.md)
 
-O ponto de entrada para agentes de IA e colaboradores automatizados e
-[`AGENTS.md`](AGENTS.md). O contexto atual do MVP, as habilidades especializadas,
-os fluxos de entrega e os modelos de verificacao estao em
-[`.agents/`](.agents/README.md). A pasta `.agent/` permanece apenas como
-referencia historica da versao anterior de triagem e nao deve orientar novos
-desenvolvimentos.
+## Contexto para agentes
+
+[AGENTS.md](AGENTS.md) e o ponto de entrada para colaboradores automatizados.
+Ele descreve os limites de produto, a arquitetura limpa, os comandos de
+qualidade e a regra de commits atomicos.

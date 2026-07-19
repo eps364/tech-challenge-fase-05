@@ -11,8 +11,8 @@ documentation connected to the SUS problem.
 ## Inputs To Read
 
 1. `.agents/context/product-scope.md`
-2. `docs/pesquisa/especificacao_requisitos_mvp_gestao_ativa_aps.md`
-3. `docs/pesquisa/oportunidades_descobertas_para_avaliacao.md` when a change
+2. `docs/produto/especificacao-requisitos.md`
+3. `docs/dados/oportunidades-descobertas.md` when a change
    refers to evidence or impact.
 
 ## Working Method

@@ -41,6 +41,6 @@ explanation of the contributing signals.
 
 ## References
 
-- `docs/pesquisa/especificacao_requisitos_mvp_gestao_ativa_aps.md`
-- `docs/pesquisa/oportunidades_descobertas_para_avaliacao.md`
+- `docs/produto/especificacao-requisitos.md`
+- `docs/dados/oportunidades-descobertas.md`
 - `.agents/context/product-scope.md`

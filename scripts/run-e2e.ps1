@@ -8,7 +8,7 @@ Add-Type -AssemblyName System.Net.Http
 
 $repositoryRoot = Split-Path -Parent $PSScriptRoot
 $composeFile = Join-Path $repositoryRoot "docker-compose.e2e.yml"
-$reportDirectory = Join-Path $repositoryRoot "docs\e2e"
+$reportDirectory = Join-Path $repositoryRoot "docs\tecnico\e2e"
 $reportPath = Join-Path $reportDirectory "relatorio_execucao_e2e.md"
 $httpClient = [System.Net.Http.HttpClient]::new()
 $report = [System.Text.StringBuilder]::new()

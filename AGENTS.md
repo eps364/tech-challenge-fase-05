@@ -15,13 +15,12 @@ The current vertical slice lives in `aps-prioritization-service`.
 Read these sources of truth in this order:
 
 1. `.agents/context/product-scope.md`
-2. `docs/pesquisa/especificacao_requisitos_mvp_gestao_ativa_aps.md`
+2. `docs/produto/especificacao-requisitos.md`
 3. `.agents/context/architecture-and-runtime.md`
 4. the relevant skill in `.agents/skills/`
 
-The `.agent/` directory is historical material for the former triage-focused
-project. Do not use it to define current scope, services, ports, or business
-rules.
+The repository contains only the APS MVP. Do not reintroduce the former
+triage-focused architecture, patient records, scheduling, or gateway services.
 
 ## Non-Negotiable Scope Boundaries
 

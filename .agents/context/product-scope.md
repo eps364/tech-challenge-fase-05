@@ -76,5 +76,5 @@ as proof of an individual-level cause. Preserve this language:
 - Say: "hypothesis to validate with the local team".
 - Do not say: "predicts deterioration" or "prevents hospitalization".
 
-See `docs/pesquisa/especificacao_requisitos_mvp_gestao_ativa_aps.md` for the
+See `docs/produto/especificacao-requisitos.md` for the
 complete requirements, constraints, and acceptance criteria.

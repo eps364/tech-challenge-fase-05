@@ -42,7 +42,7 @@ the hackathon story while avoiding unnecessary scope growth.
 
 ## Avoid
 
-- Rewriting unrelated legacy services.
+- Reintroducing unrelated services or subsystems.
 - Treating an aggregate indicator as individual clinical truth.
 - Introducing external real-time data dependencies into the demonstration path.
 - Staging or reverting another contributor's changes.

@@ -6,8 +6,8 @@
 | --- | --- |
 | `aps-prioritization-service` | Current APS MVP vertical slice. |
 
-Other repository modules are historical and are not part of the principal Maven
-build or current Docker Compose flow.
+The repository intentionally contains only this active module and its support
+artifacts for data analysis, API demonstration, and E2E verification.
 
 ## APS Service Structure
 
@@ -49,9 +49,9 @@ types. New dependency injection wiring belongs in `infra/config/UseCaseConfig`.
 | Swagger | `http://localhost:8205/swagger-ui/index.html` |
 | Health | `http://localhost:8205/actuator/health` |
 | PostgreSQL host port | `5434` |
-| Main API documentation | `docs/API/aps-prioritization-service.md` |
-| Bruno collection | `docs/API/Aps-Prioritization/` |
-| Insomnia export | `docs/API/aps-prioritization-insomnia.json` |
+| Main API documentation | `docs/tecnico/api/aps-prioritization-service.md` |
+| Bruno collection | `docs/tecnico/api/Aps-Prioritization/` |
+| Insomnia export | `docs/tecnico/api/aps-prioritization-insomnia.json` |
 
 ## Verification Commands
 
