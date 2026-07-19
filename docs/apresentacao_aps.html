@@ -1,0 +1,1659 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Apresentação de gestão ativa territorial para a Atenção Primária à Saúde."
+    />
+    <title>SUS Conecta | Gestão ativa na APS</title>
+    <style>
+      :root {
+        --ink: #173a3d;
+        --muted: #597073;
+        --canvas: #f3faf8;
+        --surface: #ffffff;
+        --line: #d5e6e1;
+        --teal: #087b70;
+        --teal-soft: #d9f0e9;
+        --blue: #327eb2;
+        --blue-soft: #dcecf8;
+        --coral: #cf5b41;
+        --coral-soft: #f8dfd7;
+        --gold: #c78b18;
+        --gold-soft: #f8edca;
+        --mint: #60ad88;
+        --shadow: 0 18px 44px rgba(23, 58, 61, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        background: var(--canvas);
+      }
+
+      body {
+        min-width: 320px;
+        margin: 0;
+        color: var(--ink);
+        background: var(--canvas);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .topbar {
+        position: fixed;
+        z-index: 20;
+        top: 0;
+        right: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 72px;
+        padding: 0 44px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(243, 250, 248, 0.96);
+        backdrop-filter: blur(10px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        font-weight: 800;
+        letter-spacing: 0;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 29px;
+        height: 29px;
+        place-items: center;
+        border: 2px solid var(--teal);
+        color: var(--teal);
+        font-size: 17px;
+        line-height: 1;
+      }
+
+      .topbar-meta {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .deck {
+        min-height: 100vh;
+        padding-top: 72px;
+        padding-bottom: 86px;
+      }
+
+      .slide {
+        display: none;
+        min-height: calc(100vh - 158px);
+        padding: 42px clamp(26px, 6vw, 96px);
+        animation: enter 320ms ease-out;
+      }
+
+      .slide.active {
+        display: grid;
+      }
+
+      @keyframes enter {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .eyebrow {
+        margin: 0 0 12px;
+        color: var(--teal);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 760px;
+        margin-bottom: 20px;
+        font-size: 76px;
+        line-height: 0.98;
+        letter-spacing: 0;
+      }
+
+      h2 {
+        max-width: 760px;
+        margin-bottom: 14px;
+        font-size: 50px;
+        line-height: 1.04;
+        letter-spacing: 0;
+      }
+
+      h3 {
+        margin-bottom: 7px;
+        font-size: 16px;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        max-width: 670px;
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: 19px;
+        line-height: 1.55;
+      }
+
+      .source-note {
+        max-width: 960px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .hero-slide {
+        position: relative;
+        align-content: space-between;
+        overflow: hidden;
+        background: var(--surface);
+      }
+
+      .hero-slide::before {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 36%;
+        height: 100%;
+        content: "";
+        background: var(--teal-soft);
+      }
+
+      .hero-content,
+      .hero-evidence,
+      .hero-footer {
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-content {
+        align-self: center;
+      }
+
+      .hero-evidence {
+        display: grid;
+        width: min(100%, 500px);
+        margin-left: auto;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1px;
+        border: 1px solid rgba(23, 58, 61, 0.16);
+        background: rgba(23, 58, 61, 0.16);
+      }
+
+      .evidence-cell {
+        min-height: 128px;
+        padding: 22px;
+        background: rgba(255, 255, 255, 0.86);
+      }
+
+      .evidence-cell strong {
+        display: block;
+        margin-bottom: 10px;
+        color: var(--teal);
+        font-size: 32px;
+        letter-spacing: 0;
+      }
+
+      .evidence-cell span {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1.35;
+      }
+
+      .hero-footer {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .promise {
+        max-width: 590px;
+        margin: 0;
+        color: var(--ink);
+        font-size: 17px;
+        font-weight: 750;
+        line-height: 1.45;
+      }
+
+      .slide-number {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .content-slide {
+        align-content: space-between;
+        gap: 28px;
+      }
+
+      .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .metric {
+        min-height: 156px;
+        padding: 20px;
+        border-top: 5px solid var(--teal);
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .metric.blue {
+        border-color: var(--blue);
+      }
+
+      .metric.coral {
+        border-color: var(--coral);
+      }
+
+      .metric.gold {
+        border-color: var(--gold);
+      }
+
+      .metric-value {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--ink);
+        font-size: 39px;
+        font-weight: 900;
+        letter-spacing: 0;
+        line-height: 1;
+      }
+
+      .metric-label {
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1.35;
+      }
+
+      .insight-strip {
+        display: grid;
+        grid-template-columns: 44px minmax(0, 1fr);
+        gap: 18px;
+        align-items: start;
+        max-width: 930px;
+        padding: 20px 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .insight-index {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        place-items: center;
+        background: var(--coral);
+        color: white;
+        font-size: 15px;
+        font-weight: 900;
+      }
+
+      .insight-strip p {
+        margin: 0;
+        color: var(--ink);
+        font-size: 18px;
+        font-weight: 750;
+        line-height: 1.45;
+      }
+
+      .split-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(330px, 0.82fr);
+        gap: 56px;
+        align-items: center;
+      }
+
+      .decision-path {
+        display: grid;
+        gap: 1px;
+        border: 1px solid var(--line);
+        background: var(--line);
+      }
+
+      .path-step {
+        display: grid;
+        grid-template-columns: 42px minmax(0, 1fr) auto;
+        gap: 14px;
+        align-items: center;
+        min-height: 82px;
+        padding: 15px 17px;
+        background: var(--surface);
+      }
+
+      .path-step strong {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border: 1px solid var(--teal);
+        color: var(--teal);
+        font-size: 13px;
+      }
+
+      .path-step p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.35;
+      }
+
+      .path-outcome {
+        color: var(--teal);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .data-frame {
+        padding: 28px;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .frame-label {
+        margin-bottom: 21px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+      }
+
+      .bar-row {
+        display: grid;
+        grid-template-columns: 126px minmax(0, 1fr) 70px;
+        gap: 12px;
+        align-items: center;
+        margin: 17px 0;
+        font-size: 13px;
+        font-weight: 750;
+      }
+
+      .bar-track {
+        height: 14px;
+        overflow: hidden;
+        background: #e8f0ee;
+      }
+
+      .bar-fill {
+        width: var(--fill);
+        height: 100%;
+        background: var(--teal);
+      }
+
+      .bar-fill.coral {
+        background: var(--coral);
+      }
+
+      .bar-fill.gold {
+        background: var(--gold);
+      }
+
+      .bar-value {
+        color: var(--ink);
+        text-align: right;
+      }
+
+      .caption {
+        margin: 22px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .dashboard-slide {
+        align-content: space-between;
+        gap: 24px;
+      }
+
+      .dashboard-header {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .dashboard-header h2 {
+        margin-bottom: 0;
+      }
+
+      .data-badge {
+        padding: 7px 10px;
+        border: 1px solid var(--line);
+        color: var(--muted);
+        background: var(--surface);
+        font-size: 12px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .priority-dashboard {
+        display: grid;
+        grid-template-columns: minmax(0, 0.86fr) minmax(390px, 1.14fr);
+        gap: 18px;
+      }
+
+      .territory-list {
+        border: 1px solid var(--line);
+        background: var(--surface);
+      }
+
+      .list-heading {
+        display: flex;
+        justify-content: space-between;
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .territory-row {
+        display: grid;
+        grid-template-columns: 12px minmax(0, 1fr) auto;
+        gap: 13px;
+        align-items: center;
+        padding: 17px 20px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .territory-row:last-child {
+        border-bottom: 0;
+      }
+
+      .priority-dot {
+        width: 10px;
+        height: 10px;
+        background: var(--coral);
+      }
+
+      .priority-dot.medium {
+        background: var(--gold);
+      }
+
+      .priority-dot.low {
+        background: var(--mint);
+      }
+
+      .territory-name {
+        display: block;
+        margin-bottom: 3px;
+        font-size: 15px;
+        font-weight: 850;
+      }
+
+      .territory-meta {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .priority-word {
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .priority-word.high {
+        color: var(--coral);
+      }
+
+      .priority-word.medium {
+        color: var(--gold);
+      }
+
+      .priority-word.low {
+        color: var(--mint);
+      }
+
+      .territory-detail {
+        display: grid;
+        gap: 19px;
+        padding: 24px;
+        border: 1px solid var(--teal);
+        background: #f7fffc;
+        box-shadow: var(--shadow);
+      }
+
+      .detail-topline {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .detail-topline h3 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .high-badge {
+        padding: 7px 9px;
+        background: var(--coral);
+        color: white;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .comparison-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .comparison {
+        padding: 14px 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .comparison-label {
+        display: block;
+        min-height: 34px;
+        margin-bottom: 7px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        line-height: 1.3;
+      }
+
+      .comparison-value {
+        display: block;
+        font-size: 27px;
+        font-weight: 900;
+      }
+
+      .comparison-value small {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .reason-list {
+        display: grid;
+        gap: 9px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .reason-list li {
+        display: grid;
+        grid-template-columns: 18px minmax(0, 1fr);
+        gap: 9px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1.35;
+      }
+
+      .reason-list li::before {
+        content: "+";
+        color: var(--teal);
+        font-size: 16px;
+        font-weight: 900;
+      }
+
+      .mvp-slide {
+        align-content: space-between;
+        gap: 24px;
+      }
+
+      .mvp-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(330px, 0.85fr);
+        gap: 20px;
+      }
+
+      .signal-board {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        border: 1px solid var(--line);
+        background: var(--surface);
+      }
+
+      .signal {
+        padding: 25px;
+        border-right: 1px solid var(--line);
+      }
+
+      .signal:last-child {
+        border-right: 0;
+      }
+
+      .signal small {
+        display: block;
+        margin-bottom: 14px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .signal strong {
+        display: block;
+        margin-bottom: 7px;
+        font-size: 38px;
+        line-height: 1;
+      }
+
+      .signal span {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .action-board {
+        display: grid;
+        gap: 18px;
+        padding: 25px;
+        background: var(--ink);
+        color: white;
+      }
+
+      .action-board .eyebrow {
+        margin-bottom: 0;
+        color: #9ed9cd;
+      }
+
+      .action-board h3 {
+        margin: 0;
+        color: white;
+        font-size: 24px;
+      }
+
+      .progress-copy {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+      }
+
+      .progress-copy strong {
+        font-size: 45px;
+        letter-spacing: 0;
+      }
+
+      .progress-copy span {
+        color: #c9e5df;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .progress-track {
+        height: 16px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.22);
+      }
+
+      .progress-fill {
+        width: 67.5%;
+        height: 100%;
+        background: var(--gold);
+      }
+
+      .action-board p {
+        margin: 0;
+        color: #dcece8;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .architecture-slide {
+        align-content: space-between;
+        gap: 28px;
+      }
+
+      .flow-map {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 1px;
+        border: 1px solid var(--line);
+        background: var(--line);
+      }
+
+      .flow-node {
+        min-height: 188px;
+        padding: 22px;
+        background: var(--surface);
+      }
+
+      .flow-node:nth-child(2) {
+        background: var(--teal-soft);
+      }
+
+      .flow-node:nth-child(3) {
+        background: var(--blue-soft);
+      }
+
+      .flow-node:nth-child(4) {
+        background: var(--gold-soft);
+      }
+
+      .flow-node:nth-child(5) {
+        background: var(--coral-soft);
+      }
+
+      .flow-node span {
+        display: block;
+        margin-bottom: 25px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+      }
+
+      .flow-node strong {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 19px;
+        line-height: 1.14;
+      }
+
+      .flow-node p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .proof-row {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .proof {
+        padding-top: 15px;
+        border-top: 2px solid var(--teal);
+      }
+
+      .proof:nth-child(2) {
+        border-color: var(--blue);
+      }
+
+      .proof:nth-child(3) {
+        border-color: var(--gold);
+      }
+
+      .proof:nth-child(4) {
+        border-color: var(--coral);
+      }
+
+      .proof strong {
+        display: block;
+        margin-bottom: 7px;
+        font-size: 26px;
+      }
+
+      .proof span {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1.35;
+      }
+
+      .value-slide {
+        align-content: space-between;
+        gap: 30px;
+      }
+
+      .value-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 24px;
+      }
+
+      .value-column {
+        padding-top: 18px;
+        border-top: 4px solid var(--teal);
+      }
+
+      .value-column:nth-child(2) {
+        border-color: var(--blue);
+      }
+
+      .value-column:nth-child(3) {
+        border-color: var(--gold);
+      }
+
+      .value-column:nth-child(4) {
+        border-color: var(--coral);
+      }
+
+      .value-column h3 {
+        font-size: 20px;
+      }
+
+      .value-column p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.5;
+      }
+
+      .commercial-line {
+        max-width: 1030px;
+        margin: 0;
+        color: var(--ink);
+        font-size: 38px;
+        font-weight: 850;
+        line-height: 1.18;
+      }
+
+      .closing-slide {
+        align-content: space-between;
+        background: var(--surface);
+      }
+
+      .closing-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+        gap: 50px;
+        align-items: end;
+      }
+
+      .closing-statement {
+        max-width: 780px;
+        margin: 0;
+        font-size: 62px;
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .claim-box {
+        padding: 26px;
+        border-left: 8px solid var(--teal);
+        background: var(--teal-soft);
+      }
+
+      .claim-box h3 {
+        margin-bottom: 10px;
+      }
+
+      .claim-box p {
+        margin: 0;
+        color: var(--ink);
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 1.48;
+      }
+
+      .closing-notes {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        padding-top: 22px;
+        border-top: 1px solid var(--line);
+      }
+
+      .closing-notes p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .controlbar {
+        position: fixed;
+        z-index: 20;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: grid;
+        min-height: 86px;
+        padding: 0 44px;
+        border-top: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(10px);
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+      }
+
+      .control-group {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .control-group.end {
+        justify-content: flex-end;
+      }
+
+      .icon-button {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        padding: 0;
+        place-items: center;
+        border: 1px solid var(--line);
+        color: var(--ink);
+        background: var(--surface);
+        cursor: pointer;
+        font-size: 20px;
+      }
+
+      .icon-button:hover,
+      .icon-button:focus-visible {
+        border-color: var(--teal);
+        color: var(--teal);
+        outline: 2px solid var(--teal-soft);
+        outline-offset: 2px;
+      }
+
+      .pager {
+        display: flex;
+        gap: 7px;
+        align-items: center;
+      }
+
+      .pager-dot {
+        width: 9px;
+        height: 9px;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: #bdd0cb;
+        cursor: pointer;
+      }
+
+      .pager-dot.active {
+        width: 24px;
+        border-radius: 0;
+        background: var(--teal);
+      }
+
+      .pager-dot:focus-visible {
+        outline: 2px solid var(--teal);
+        outline-offset: 3px;
+      }
+
+      .shortcut-hint {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 750;
+      }
+
+      @media (max-width: 860px) {
+        .topbar,
+        .controlbar {
+          padding-right: 20px;
+          padding-left: 20px;
+        }
+
+        .topbar-meta,
+        .shortcut-hint {
+          display: none;
+        }
+
+        .slide {
+          min-height: calc(100vh - 146px);
+          padding: 31px 20px;
+        }
+
+        h1 {
+          font-size: 56px;
+        }
+
+        h2 {
+          font-size: 42px;
+        }
+
+        .commercial-line {
+          font-size: 32px;
+        }
+
+        .closing-statement {
+          font-size: 50px;
+        }
+
+        .hero-slide::before {
+          top: auto;
+          width: 100%;
+          height: 27%;
+          bottom: 0;
+        }
+
+        .hero-evidence {
+          margin: 18px 0;
+        }
+
+        .hero-footer {
+          display: block;
+        }
+
+        .slide-number {
+          display: block;
+          margin-top: 14px;
+        }
+
+        .metric-grid,
+        .value-grid,
+        .proof-row {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .split-layout,
+        .priority-dashboard,
+        .mvp-grid,
+        .closing-layout {
+          grid-template-columns: 1fr;
+          gap: 22px;
+        }
+
+        .flow-map {
+          grid-template-columns: 1fr;
+        }
+
+        .flow-node {
+          min-height: 0;
+        }
+
+        .dashboard-header {
+          display: block;
+        }
+
+        .data-badge {
+          display: inline-block;
+          margin-top: 10px;
+        }
+
+        .territory-detail {
+          min-width: 0;
+        }
+
+        .comparison-grid,
+        .signal-board {
+          grid-template-columns: 1fr;
+        }
+
+        .signal {
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .signal:last-child {
+          border-bottom: 0;
+        }
+
+        .closing-notes {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+      }
+
+      @media (max-width: 520px) {
+        h1 {
+          font-size: 42px;
+        }
+
+        h2 {
+          font-size: 31px;
+        }
+
+        .commercial-line {
+          font-size: 26px;
+        }
+
+        .closing-statement {
+          font-size: 40px;
+        }
+
+        .lead {
+          font-size: 16px;
+        }
+
+        .hero-evidence,
+        .metric-grid,
+        .value-grid,
+        .proof-row {
+          grid-template-columns: 1fr;
+        }
+
+        .evidence-cell {
+          min-height: 0;
+        }
+
+        .bar-row {
+          grid-template-columns: 96px minmax(0, 1fr) 58px;
+          gap: 8px;
+          font-size: 11px;
+        }
+
+        .controlbar {
+          grid-template-columns: 1fr auto;
+        }
+
+        .pager {
+          display: none;
+        }
+      }
+
+      @media print {
+        .topbar,
+        .controlbar {
+          display: none;
+        }
+
+        .deck {
+          padding: 0;
+        }
+
+        .slide,
+        .slide.active {
+          display: grid;
+          min-height: 100vh;
+          break-after: page;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">+</span>
+        <span>SUS CONECTA</span>
+      </div>
+      <span class="topbar-meta"><span id="slideStatus">Slide 1 de 8</span> | Gestão ativa territorial na Atenção Primária à Saúde</span>
+    </header>
+
+    <main class="deck" id="deck">
+      <section class="slide hero-slide active" data-slide aria-label="Abertura">
+        <div class="hero-content">
+          <p class="eyebrow">Hackathon SUS | APS baseada em evidência</p>
+          <h1>Antes da urgência, existe uma oportunidade de cuidado.</h1>
+          <p class="lead">
+            O SUS Conecta transforma sinais territoriais dispersos em uma prioridade clara para a
+            busca ativa preventiva. Menos ruído para quem coordena. Mais continuidade para quem
+            depende da rede.
+          </p>
+        </div>
+
+        <div class="hero-evidence" aria-label="Três evidências nacionais">
+          <div class="evidence-cell">
+            <strong>38,11%</strong>
+            <span>vínculo aproximado da população na APS, na análise nacional</span>
+          </div>
+          <div class="evidence-cell">
+            <strong>1.071</strong>
+            <span>municípios 20k+ com vínculo abaixo de 50%</span>
+          </div>
+          <div class="evidence-cell">
+            <strong>273</strong>
+            <span>municípios 20k+ com média de indicadores abaixo de 40</span>
+          </div>
+        </div>
+
+        <div class="hero-footer">
+          <p class="promise">
+            A proposta não é diagnosticar pessoas. É dar à coordenação uma forma simples,
+            explicável e responsável de decidir onde organizar o próximo esforço territorial.
+          </p>
+          <span class="slide-number" id="slideNumber">01 / 08</span>
+        </div>
+      </section>
+
+      <section class="slide content-slide" data-slide aria-label="Evidência nacional">
+        <div>
+          <p class="eyebrow">Evidência nacional</p>
+          <h2>O problema aparece em escala, mas a decisão ainda acontece território a território.</h2>
+          <p class="lead">
+            A análise consolidou bases abertas de UBS, cadastro vinculado e indicadores da APS.
+            O resultado não prova causa clínica, mas mostra onde vale investigar e agir de forma
+            organizada.
+          </p>
+        </div>
+
+        <div class="metric-grid" aria-label="Indicadores da análise nacional">
+          <article class="metric">
+            <span class="metric-value">5.570</span>
+            <span class="metric-label">municípios avaliados na análise territorial</span>
+          </article>
+          <article class="metric blue">
+            <span class="metric-value">203,1 mi</span>
+            <span class="metric-label">habitantes considerados no Censo 2022</span>
+          </article>
+          <article class="metric coral">
+            <span class="metric-value">47,38</span>
+            <span class="metric-label">média ponderada dos indicadores analisados, escala 0 a 100</span>
+          </article>
+          <article class="metric gold">
+            <span class="metric-value">100.242</span>
+            <span class="metric-label">registros brutos de indicadores de desempenho processados</span>
+          </article>
+        </div>
+
+        <div class="insight-strip">
+          <span class="insight-index">01</span>
+          <p>
+            Quando vínculo e acompanhamento preventivo ficam abaixo da referência, a equipe perde
+            visibilidade sobre onde concentrar uma ação de retorno antes que a lacuna se prolongue.
+          </p>
+        </div>
+
+        <p class="source-note">
+          Fontes da análise: Ministério da Saúde, SISAB/Previne Brasil e IBGE. Competências
+          distintas: população 2022, cadastro vinculado 202412 e indicadores 2024Q3.
+        </p>
+      </section>
+
+      <section class="slide content-slide" data-slide aria-label="Do dado à decisão">
+        <div class="split-layout">
+          <div>
+            <p class="eyebrow">A dor operacional</p>
+            <h2>Não falta esforço. Falta uma leitura única para orientar o esforço.</h2>
+            <p class="lead">
+              Hoje, o coordenador precisa reunir planilhas, indicadores e histórico de ações antes
+              de decidir. O resultado pode ser uma busca ativa mais reativa, menos comparável e
+              difícil de acompanhar.
+            </p>
+          </div>
+
+          <div class="decision-path" aria-label="Caminho da decisão atual e proposta">
+            <div class="path-step">
+              <strong>01</strong>
+              <p>Indicadores territoriais dispersos entre fontes e planilhas.</p>
+              <span class="path-outcome">Ruído</span>
+            </div>
+            <div class="path-step">
+              <strong>02</strong>
+              <p>Decisão baseada em consolidação manual e percepção isolada.</p>
+              <span class="path-outcome">Esforço</span>
+            </div>
+            <div class="path-step">
+              <strong>03</strong>
+              <p>Ação de busca ativa sem critério territorial comparável.</p>
+              <span class="path-outcome">Variação</span>
+            </div>
+            <div class="path-step">
+              <strong>04</strong>
+              <p>Progresso registrado de forma fragmentada ou não acompanhado.</p>
+              <span class="path-outcome">Baixa visão</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="data-frame" aria-label="Volumes de dados processados na análise">
+          <p class="frame-label">Base analítica processada</p>
+          <div class="bar-row">
+            <span>Indicadores</span>
+            <div class="bar-track"><div class="bar-fill" style="--fill: 100%"></div></div>
+            <span class="bar-value">100.242</span>
+          </div>
+          <div class="bar-row">
+            <span>Registros UBS</span>
+            <div class="bar-track"><div class="bar-fill gold" style="--fill: 48%"></div></div>
+            <span class="bar-value">47.839</span>
+          </div>
+          <div class="bar-row">
+            <span>Cadastro vinculado</span>
+            <div class="bar-track"><div class="bar-fill coral" style="--fill: 46%"></div></div>
+            <span class="bar-value">46.086</span>
+          </div>
+          <p class="caption">
+            Barras representam o volume relativo de registros processados, não cobertura
+            assistencial ou qualidade de atendimento.
+          </p>
+        </div>
+      </section>
+
+      <section class="slide dashboard-slide" data-slide aria-label="Dashboard territorial">
+        <div class="dashboard-header">
+          <div>
+            <p class="eyebrow">Dashboard do MVP</p>
+            <h2>Uma fila territorial que explica por que agir primeiro.</h2>
+          </div>
+          <span class="data-badge">Massa demonstrativa agregada</span>
+        </div>
+
+        <div class="priority-dashboard">
+          <div class="territory-list" aria-label="Lista de territórios por prioridade">
+            <div class="list-heading"><span>Território / UBS</span><span>Prioridade</span></div>
+            <div class="territory-row">
+              <span class="priority-dot"></span>
+              <div>
+                <span class="territory-name">Jardim Esperança</span>
+                <span class="territory-meta">UBS Jardim Esperança | 1 ação aberta</span>
+              </div>
+              <span class="priority-word high">ALTA</span>
+            </div>
+            <div class="territory-row">
+              <span class="priority-dot medium"></span>
+              <div>
+                <span class="territory-name">Parque das Flores</span>
+                <span class="territory-meta">UBS Parque das Flores | 0 ações abertas</span>
+              </div>
+              <span class="priority-word medium">MÉDIA</span>
+            </div>
+            <div class="territory-row">
+              <span class="priority-dot medium"></span>
+              <div>
+                <span class="territory-name">Vila Nova</span>
+                <span class="territory-meta">UBS Vila Nova | 1 ação aberta</span>
+              </div>
+              <span class="priority-word medium">MÉDIA</span>
+            </div>
+            <div class="territory-row">
+              <span class="priority-dot low"></span>
+              <div>
+                <span class="territory-name">Centro</span>
+                <span class="territory-meta">UBS Centro | 0 ações abertas</span>
+              </div>
+              <span class="priority-word low">BAIXA</span>
+            </div>
+          </div>
+
+          <article class="territory-detail">
+            <div class="detail-topline">
+              <div>
+                <p class="eyebrow">Detalhe da prioridade</p>
+                <h3>Jardim Esperança</h3>
+              </div>
+              <span class="high-badge">ALTA</span>
+            </div>
+
+            <div class="comparison-grid" aria-label="Indicadores do território Jardim Esperança">
+              <div class="comparison">
+                <span class="comparison-label">População vinculada à APS</span>
+                <span class="comparison-value">42% <small>meta 50%</small></span>
+              </div>
+              <div class="comparison">
+                <span class="comparison-label">Condições crônicas</span>
+                <span class="comparison-value">32% <small>meta 60%</small></span>
+              </div>
+              <div class="comparison">
+                <span class="comparison-label">Acompanhamento pré-natal</span>
+                <span class="comparison-value">72% <small>meta 85%</small></span>
+              </div>
+            </div>
+
+            <ul class="reason-list">
+              <li>Vínculo territorial abaixo da referência configurada.</li>
+              <li>Dois indicadores preventivos abaixo de suas metas.</li>
+              <li>Uma ação aberta para acompanhamento operacional.</li>
+            </ul>
+          </article>
+        </div>
+
+        <p class="source-note">
+          Jardim Esperança, Vila Nova, Parque das Flores e Centro são territórios demonstrativos.
+          O painel não classifica risco clínico individual e não armazena dados de pacientes.
+        </p>
+      </section>
+
+      <section class="slide mvp-slide" data-slide aria-label="Ação e resultado operacional">
+        <div>
+          <p class="eyebrow">Do alerta à execução</p>
+          <h2>Prioridade só gera valor quando vira uma ação possível de acompanhar.</h2>
+          <p class="lead">
+            A solução transforma a leitura territorial em uma rotina simples: escolher foco,
+            definir equipe, prazo e meta agregada, registrar progresso e voltar ao painel.
+          </p>
+        </div>
+
+        <div class="mvp-grid">
+          <div class="signal-board" aria-label="Sinais usados na prioridade">
+            <div class="signal">
+              <small>Foco</small>
+              <strong>Crônicos</strong>
+              <span>Condições crônicas abaixo da meta territorial.</span>
+            </div>
+            <div class="signal">
+              <small>Equipe</small>
+              <strong>ESF</strong>
+              <span>Responsável pela ação de busca ativa.</span>
+            </div>
+            <div class="signal">
+              <small>Prazo</small>
+              <strong>7 dias</strong>
+              <span>Janela operacional para acompanhar execução.</span>
+            </div>
+          </div>
+
+          <aside class="action-board" aria-label="Progresso de ação demonstrativa">
+            <p class="eyebrow">Ação em andamento</p>
+            <h3>Reconectar pessoas ao acompanhamento preventivo</h3>
+            <div class="progress-copy"><strong>54 / 80</strong><span>contatos agregados</span></div>
+            <div class="progress-track" aria-label="67,50 por cento concluído"><div class="progress-fill"></div></div>
+            <p>
+              Progresso operacional de 67,50%. O sistema mostra execução da ação; não afirma
+              impacto clínico ou causalidade.
+            </p>
+          </aside>
+        </div>
+
+        <div class="proof-row" aria-label="Resultados do teste ponta a ponta">
+          <div class="proof"><strong>201</strong><span>território prioritário criado por HTTP real</span></div>
+          <div class="proof"><strong>54 / 80</strong><span>progresso persistido no PostgreSQL E2E</span></div>
+          <div class="proof"><strong>422</strong><span>conclusão sem contatos bloqueada pela regra</span></div>
+          <div class="proof"><strong>98,94%</strong><span>cobertura de linhas validada pelo JaCoCo</span></div>
+        </div>
+      </section>
+
+      <section class="slide architecture-slide" data-slide aria-label="Como a solução funciona">
+        <div>
+          <p class="eyebrow">Solução construída</p>
+          <h2>Uma arquitetura enxuta para uma decisão que precisa ser confiável.</h2>
+          <p class="lead">
+            O MVP combina uma regra transparente de prioridade, registro de ações e rastreio de
+            execução. Não depende de prontuário nem de integração externa em tempo real para a
+            demonstração principal.
+          </p>
+        </div>
+
+        <div class="flow-map" aria-label="Fluxo de dados e decisão do SUS Conecta">
+          <div class="flow-node">
+            <span>01 | Entrada</span>
+            <strong>Dados agregados por território</strong>
+            <p>Vínculo, competência e indicadores preventivos.</p>
+          </div>
+          <div class="flow-node">
+            <span>02 | Regra</span>
+            <strong>Prioridade explicável</strong>
+            <p>Alta, média ou baixa conforme metas configuradas.</p>
+          </div>
+          <div class="flow-node">
+            <span>03 | Decisão</span>
+            <strong>Fila para a coordenação</strong>
+            <p>Territórios ordenados com o motivo da prioridade.</p>
+          </div>
+          <div class="flow-node">
+            <span>04 | Ação</span>
+            <strong>Busca ativa territorial</strong>
+            <p>Foco, equipe, prazo, meta e observação agregada.</p>
+          </div>
+          <div class="flow-node">
+            <span>05 | Retorno</span>
+            <strong>Painel operacional</strong>
+            <p>Progresso, ações abertas, concluídas e alertas de prazo.</p>
+          </div>
+        </div>
+
+        <p class="source-note">
+          A prioridade é recalculada em cada consulta. O core da aplicação é Java puro; Spring,
+          JPA e PostgreSQL ficam na infraestrutura. O fluxo E2E usa containers e banco dedicados.
+        </p>
+      </section>
+
+      <section class="slide value-slide" data-slide aria-label="Valor para o SUS e população">
+        <div>
+          <p class="eyebrow">Proposta de valor</p>
+          <h2>Mais clareza para gerir. Mais continuidade para cuidar.</h2>
+        </div>
+
+        <div class="value-grid">
+          <article class="value-column">
+            <h3>Gestão APS</h3>
+            <p>
+              Troca consolidação manual por uma fila territorial explicável, comparável e pronta
+              para orientar a próxima decisão.
+            </p>
+          </article>
+          <article class="value-column">
+            <h3>Equipes UBS</h3>
+            <p>
+              Recebem uma ação com foco, meta e prazo definidos, reduzindo a ambiguidade entre
+              saber que existe uma lacuna e conseguir organizá-la.
+            </p>
+          </article>
+          <article class="value-column">
+            <h3>População</h3>
+            <p>
+              Pode se beneficiar de uma rede mais atenta à continuidade preventiva, sem expor
+              dados pessoais no mecanismo de priorização.
+            </p>
+          </article>
+          <article class="value-column">
+            <h3>SUS</h3>
+            <p>
+              Ganha uma forma demonstrável de transformar dados agregados em coordenação local,
+              com governança e limites de interpretação claros.
+            </p>
+          </article>
+        </div>
+
+        <p class="commercial-line">
+          Não vendemos uma promessa clínica. Entregamos uma decisão territorial mais simples de
+          explicar, mais fácil de executar e mais responsável de acompanhar.
+        </p>
+      </section>
+
+      <section class="slide closing-slide" data-slide aria-label="Encerramento">
+        <div class="closing-layout">
+          <div>
+            <p class="eyebrow">SUS Conecta</p>
+            <p class="closing-statement">Transformar sinal em ação. Transformar ação em acompanhamento.</p>
+          </div>
+          <aside class="claim-box">
+            <h3>O que o MVP já prova</h3>
+            <p>
+              É possível priorizar um território com regras claras, criar uma ação territorial,
+              acompanhar seu progresso agregado e manter uma trilha validada de ponta a ponta.
+            </p>
+          </aside>
+        </div>
+
+        <div class="closing-notes">
+          <p>
+            <strong>Limite responsável:</strong> o produto não diagnostica pessoas, não substitui
+            prontuário e não comprova que uma ação evitou internação ou alterou um indicador.
+          </p>
+          <p>
+            <strong>Próxima conversa com o SUS:</strong> validar com coordenadores de APS se a
+            explicação territorial torna a preparação de busca ativa mais rápida e útil.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="controlbar" aria-label="Navegação da apresentação">
+      <div class="control-group">
+        <button class="icon-button" id="previous" type="button" aria-label="Slide anterior" title="Slide anterior">
+          &#8592;
+        </button>
+        <button class="icon-button" id="next" type="button" aria-label="Próximo slide" title="Próximo slide">
+          &#8594;
+        </button>
+      </div>
+      <div class="pager" id="pager" aria-label="Selecionar slide"></div>
+      <div class="control-group end"><span class="shortcut-hint">Use as setas do teclado</span></div>
+    </footer>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll("[data-slide]"));
+      const pager = document.getElementById("pager");
+      const previous = document.getElementById("previous");
+      const next = document.getElementById("next");
+      const slideStatus = document.getElementById("slideStatus");
+      const slideNumber = document.getElementById("slideNumber");
+      let currentSlide = 0;
+
+      function updateSlide(nextIndex) {
+        currentSlide = (nextIndex + slides.length) % slides.length;
+        slides.forEach((slide, index) => {
+          slide.classList.toggle("active", index === currentSlide);
+          slide.setAttribute("aria-hidden", String(index !== currentSlide));
+        });
+
+        Array.from(pager.children).forEach((dot, index) => {
+          dot.classList.toggle("active", index === currentSlide);
+          dot.setAttribute("aria-current", String(index === currentSlide));
+        });
+
+        slideStatus.textContent = `Slide ${currentSlide + 1} de ${slides.length}`;
+        slideNumber.textContent = `${String(currentSlide + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
+      }
+
+      slides.forEach((slide, index) => {
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = "pager-dot";
+        dot.setAttribute("aria-label", `Ir para o slide ${index + 1}`);
+        dot.title = `Ir para o slide ${index + 1}`;
+        dot.addEventListener("click", () => updateSlide(index));
+        pager.appendChild(dot);
+      });
+
+      previous.addEventListener("click", () => updateSlide(currentSlide - 1));
+      next.addEventListener("click", () => updateSlide(currentSlide + 1));
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight" || event.key === "PageDown" || event.key === " ") {
+          event.preventDefault();
+          updateSlide(currentSlide + 1);
+        }
+        if (event.key === "ArrowLeft" || event.key === "PageUp") {
+          event.preventDefault();
+          updateSlide(currentSlide - 1);
+        }
+        if (event.key === "Home") {
+          event.preventDefault();
+          updateSlide(0);
+        }
+        if (event.key === "End") {
+          event.preventDefault();
+          updateSlide(slides.length - 1);
+        }
+      });
+
+      updateSlide(0);
+    </script>
+  </body>
+</html>
