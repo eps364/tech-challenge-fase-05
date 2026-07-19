@@ -57,6 +57,9 @@ rules.
 - Update API documentation and both Bruno and Insomnia assets whenever an API
   contract changes.
 - Do not alter unrelated working-tree changes.
+- After every completed and validated change, create an atomic Git commit with a
+  clear conventional message. Stage only files belonging to that change; never
+  include unrelated working-tree changes.
 
 ## Quick Commands
 
@@ -86,5 +89,6 @@ preferred fallback for a clean Maven environment.
 - State which verification commands passed and which environment limitations
   remain.
 - Preserve the distinction between evidence, hypothesis, and product claim.
+- Report the commit hash created for the completed change.
 
 For task-specific guidance, see `.agents/README.md`.

@@ -19,6 +19,13 @@ docker compose up -d --build aps-prioritization-service
 Confirm that the health endpoint responds `UP`, then exercise the primary flow
 against the running service.
 
+## Versioning
+
+After validation, create one atomic Git commit for each completed change. Use a
+clear conventional commit message, stage only files related to the change, and
+report the resulting commit hash. Never fold unrelated existing worktree
+changes into the commit.
+
 ## Contract Synchronization
 
 For each endpoint added or modified:
