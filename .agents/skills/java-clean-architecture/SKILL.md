@@ -28,7 +28,8 @@ Use this skill for Java, Spring, persistence, REST, and migration changes in
 4. Implement the JPA adapter and migration only after the core shape is clear.
 5. Add request validation at the HTTP boundary.
 6. Wire the use case in `UseCaseConfig`.
-7. Map known errors through `common-lib`; do not invent a response envelope.
+7. Map known errors in `infra/web` with Spring `ProblemDetail`; do not leak
+   HTTP or framework types into the core.
 
 ## Tests
 

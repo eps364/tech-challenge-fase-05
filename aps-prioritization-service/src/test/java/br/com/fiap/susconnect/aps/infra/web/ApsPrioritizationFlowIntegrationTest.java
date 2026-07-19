@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -95,12 +96,38 @@ class ApsPrioritizationFlowIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"status\":\"COMPLETED\",\"performedCount\":0}"))
         .andExpect(status().isUnprocessableEntity())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+        .andExpect(
+            jsonPath("$.type").value("https://api.example.com/problems/aps-prioritization/validation-error"))
         .andExpect(jsonPath("$.status").value(422));
 
     mockMvc
         .perform(get("/api/v1/territories/{territoryId}", UUID.randomUUID()))
         .andExpect(status().isNotFound())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+        .andExpect(
+            jsonPath("$.type").value("https://api.example.com/problems/aps-prioritization/territory-not-found"))
         .andExpect(jsonPath("$.status").value(404));
+
+    mockMvc
+        .perform(
+            patch("/api/v1/actions/{actionId}/progress", UUID.randomUUID())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"status\":\"IN_PROGRESS\",\"performedCount\":1}"))
+        .andExpect(status().isNotFound())
+        .andExpect(
+            jsonPath("$.type").value("https://api.example.com/problems/aps-prioritization/search-action-not-found"));
+
+    mockMvc
+        .perform(
+            get("/api/v1/dashboard").param("from", today.plusDays(1).toString()).param("to", today.toString()))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status").value(400));
+
+    mockMvc
+        .perform(post("/api/v1/territories").contentType(MediaType.APPLICATION_JSON).content("{}"))
+        .andExpect(status().isUnprocessableEntity())
+        .andExpect(jsonPath("$.errors.code").exists());
 
     String createTerritoryBody =
         """
@@ -127,6 +154,15 @@ class ApsPrioritizationFlowIntegrationTest {
     JsonNode createdTerritory =
         objectMapper.readTree(createdTerritoryResult.getResponse().getContentAsString());
     String createdTerritoryId = createdTerritory.path("id").asText();
+
+    mockMvc
+        .perform(
+            post("/api/v1/territories")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(createTerritoryBody))
+        .andExpect(status().isConflict())
+        .andExpect(
+            jsonPath("$.type").value("https://api.example.com/problems/aps-prioritization/territory-conflict"));
 
     mockMvc
         .perform(

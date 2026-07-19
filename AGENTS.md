@@ -45,8 +45,8 @@ rules.
   in `infra`.
 - Add a Flyway migration for persistent schema changes. Do not rely on Hibernate
   schema generation.
-- Reuse `common-lib` error handling instead of introducing a parallel response
-  format.
+- Map HTTP errors in `infra/web` with Spring `ProblemDetail`; keep the domain
+  unaware of HTTP and framework types.
 
 ## Quality Gate
 

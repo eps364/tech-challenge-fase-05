@@ -22,7 +22,6 @@ O caso ficticio de Joao e os requisitos completos estao em
 
 - `aps-prioritization-service`: API do MVP de priorizacao territorial e busca
   ativa.
-- `common-lib`: respostas de erro RFC 9457 e suporte compartilhado.
 
 Os demais materiais do repositorio pertencem a iteracoes anteriores e nao fazem
 parte do build Maven ou do Docker Compose atual.

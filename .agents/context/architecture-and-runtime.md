@@ -4,7 +4,6 @@
 
 | Module | Role |
 | --- | --- |
-| `common-lib` | Shared RFC 9457 error handling and validation support. |
 | `aps-prioritization-service` | Current APS MVP vertical slice. |
 
 Other repository modules are historical and are not part of the principal Maven
@@ -77,6 +76,7 @@ creation, and action-progress update.
 - Priority rule stays explicit and deterministic.
 - Indicator replacement must preserve the unique territory/focus constraint.
 - A completed action requires a non-negative performed count.
-- Error responses remain in the common RFC 9457 format.
+- Error responses use Spring `ProblemDetail` in `infra/web`; the core stays
+  framework-free.
 - Any new endpoint needs request validation, tests, API documentation, Bruno,
   and Insomnia coverage.
