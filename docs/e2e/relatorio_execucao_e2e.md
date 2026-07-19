@@ -1,4 +1,4 @@
-﻿# Relatorio de execucao E2E - APS
+# Relatorio de execucao E2E - APS
 
 Gerado em: 2026-07-18T21:54:30-03:00
 
