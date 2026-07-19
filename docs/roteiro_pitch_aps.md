@@ -44,12 +44,12 @@ oportunidade."
 ### Slide 2 - A evidencia que orientou a escolha (45 segundos)
 
 > Na analise de bases abertas, observamos um vinculo aproximado de 38,11% da
-> populacao na APS. Encontramos 1.071 municipios com mais de 20 mil habitantes
-> e vinculo abaixo de 50%, alem de 273 municipios nessa faixa populacional com
+> populacao na APS. Encontramos 1.091 municipios com mais de 20 mil habitantes
+> e vinculo abaixo de 50%, alem de 276 municipios nessa faixa populacional com
 > media de indicadores abaixo de 40.
 >
-> Processamos 100.242 registros de indicadores, dados de 5.570 municipios e a
-> populacao do Censo 2022. Esses numeros nao diagnosticam pessoas e nao provam
+> Processamos 100.242 registros de indicadores, dados de 5.571 municipios e a
+> estimativa populacional municipal do IBGE para 2025. Esses numeros nao diagnosticam pessoas e nao provam
 > uma causa clinica. Eles mostram, com evidencias agregadas, onde a coordenacao
 > pode precisar investigar e organizar uma resposta preventiva.
 

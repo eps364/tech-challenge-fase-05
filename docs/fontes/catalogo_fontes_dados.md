@@ -2,7 +2,7 @@
 
 Data de acesso: 2026-07-18
 
-## Fontes usadas na primeira analise Python
+## Fontes usadas na analise Python atualizada
 
 ### Hospitais e Leitos
 
@@ -21,18 +21,19 @@ Data de acesso: 2026-07-18
 - Limitacoes declaradas pelo portal: os dados dependem da forma de captura e envio pelos gestores locais de saude; a base representa registros agregados e nao deve permitir rastreio ou identificacao de cidadaos.
 - Uso nesta fase: investigar desigualdade territorial de leitos SUS e UTI SUS por populacao.
 
-### IBGE - Censo Demografico 2022 / SIDRA
+### IBGE - Estimativas da Populacao 2025
 
 - Orgao responsavel: IBGE.
-- Pagina do Censo 2022: https://www.ibge.gov.br/estatisticas/sociais/populacao/22827-censo-demografico-2022.html?edicao=37225&t=resultados
-- Endpoint UF usado: https://apisidra.ibge.gov.br/values/t/4714/n3/all/v/93/p/2022
-- Endpoint municipio usado: https://apisidra.ibge.gov.br/values/t/4714/n6/all/v/93/p/2022
-- Tabela: 4714.
-- Variavel: 93, populacao residente.
-- Periodo: 2022.
-- Arquivos preservados: `data/raw/ibge_populacao_uf_2022_tabela_4714.json` e `data/raw/ibge_populacao_municipio_2022_tabela_4714.json`.
-- Uso nesta fase: criar denominadores populacionais para indicadores proporcionais.
-- Limitacao: a populacao e de 2022, enquanto os leitos analisados sao de maio/2026; os indicadores sao aproximacoes comparativas, nao taxas oficiais finalisticas.
+- Pagina oficial: https://www.ibge.gov.br/estatisticas/sociais/populacao/9103-estimativas-de-populacao.html
+- Arquivo de processamento: https://ftp.ibge.gov.br/Estimativas_de_Populacao/Estimativas_2025/POP2025_20260113.ods
+- Copia publicada em XLS: https://ftp.ibge.gov.br/Estimativas_de_Populacao/Estimativas_2025/POP2025_20260113.xls
+- Referencia populacional: 01/07/2025.
+- Revisao divulgada pelo IBGE: 13/01/2026.
+- Arquivos preservados: `data/raw/ibge_estimativa_populacao_municipio_2025.ods` e `data/raw/ibge_estimativa_populacao_municipio_2025.xls`.
+- SHA-256 ODS: `33dc6f79def9522e282cd69b87a9ce75327a81239d6060d9c8f9f5a49bd2a1b5`.
+- SHA-256 XLS: `af63966d2ca32b285fac81994e243b822c096f3ad51106adc7689b6f74cabd05`.
+- Uso nesta fase: criar denominadores populacionais municipais atualizados para indicadores proporcionais de APS, UBS e leitos.
+- Limitacao: estimativa populacional nao substitui um novo Censo. Nao existe Censo Demografico 2026 publicado pelo IBGE; os arquivos do Censo 2022 foram preservados apenas como referencia historica.
 
 ### IBGE - API de Localidades
 

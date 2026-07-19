@@ -9,6 +9,8 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from populacao_ibge import aggregate_population_by_uf, load_municipality_population_estimates
+
 
 ROOT = Path(__file__).resolve().parents[2]
 RAW = ROOT / "data" / "raw"
@@ -16,8 +18,7 @@ PROCESSED = ROOT / "data" / "processed"
 REPORTS = ROOT / "analytics" / "reports"
 
 LEITOS_ZIP = RAW / "leitos_sus_2026_csv.zip"
-POP_MUNICIPIO_JSON = RAW / "ibge_populacao_municipio_2022_tabela_4714.json"
-POP_UF_JSON = RAW / "ibge_populacao_uf_2022_tabela_4714.json"
+POP_MUNICIPIO_ODS = RAW / "ibge_estimativa_populacao_municipio_2025.ods"
 ESTADOS_JSON = RAW / "ibge_localidades_estados.json"
 
 
@@ -28,7 +29,7 @@ class Aggregate:
     uf_nome: str = ""
     co_ibge6: str = ""
     municipio: str = ""
-    populacao_2022: int = 0
+    populacao_2025: int = 0
     registros: int = 0
     cnes: set[str] = field(default_factory=set)
     municipios_com_registro: set[str] = field(default_factory=set)
@@ -90,24 +91,35 @@ def load_estados() -> dict[str, dict[str, str]]:
     return estados
 
 
-def load_populacao(path: Path, estados: dict[str, dict[str, str]], municipal: bool) -> dict[str, dict[str, str | int]]:
-    data = read_json(path)
-    rows = data[1:]
-    out: dict[str, dict[str, str | int]] = {}
-    for row in rows:
-        code = str(row["D1C"])
-        key = code[:6] if municipal else code
-        uf_code = code[:2] if municipal else code
-        estado = estados.get(uf_code, {})
-        out[key] = {
+def load_populations_2025(
+    estados: dict[str, dict[str, str]],
+) -> tuple[dict[str, dict[str, str | int]], dict[str, dict[str, str | int]]]:
+    estimates = load_municipality_population_estimates(POP_MUNICIPIO_ODS)
+    by_uf_population = aggregate_population_by_uf(estimates)
+
+    pop_municipio: dict[str, dict[str, str | int]] = {}
+    for code, estimate in estimates.items():
+        estado = estados.get(code[:2], {})
+        pop_municipio[code] = {
             "codigo": code,
-            "nome": row["D1N"],
-            "populacao": parse_int(row["V"]),
+            "nome": estimate.municipio,
+            "populacao": estimate.populacao_2025,
             "uf": estado.get("sigla", ""),
             "uf_nome": estado.get("nome", ""),
             "regiao": estado.get("regiao", ""),
         }
-    return out
+
+    pop_uf: dict[str, dict[str, str | int]] = {}
+    for code, estado in estados.items():
+        pop_uf[code] = {
+            "codigo": code,
+            "nome": estado["nome"],
+            "populacao": by_uf_population.get(code, 0),
+            "uf": estado["sigla"],
+            "uf_nome": estado["nome"],
+            "regiao": estado["regiao"],
+        }
+    return pop_municipio, pop_uf
 
 
 def read_leitos_rows() -> list[dict[str, str]]:
@@ -151,7 +163,7 @@ def aggregate_data(
             uf_nome=str(pop["uf_nome"]),
             co_ibge6=code6,
             municipio=str(pop["nome"]),
-            populacao_2022=int(pop["populacao"]),
+            populacao_2025=int(pop["populacao"]),
         )
 
     for uf_code, pop in pop_uf.items():
@@ -160,7 +172,7 @@ def aggregate_data(
             regiao=str(pop["regiao"]),
             uf=uf,
             uf_nome=str(pop["nome"]),
-            populacao_2022=int(pop["populacao"]),
+            populacao_2025=int(pop["populacao"]),
         )
 
     for row in rows:
@@ -191,15 +203,15 @@ def aggregate_data(
     for agg in by_uf.values():
         if agg.regiao not in by_regiao:
             by_regiao[agg.regiao] = Aggregate(regiao=agg.regiao)
-        by_regiao[agg.regiao].populacao_2022 += agg.populacao_2022
+        by_regiao[agg.regiao].populacao_2025 += agg.populacao_2025
 
     return by_municipio, by_uf, by_regiao, competencias, selected_competencia
 
 
 def agg_to_row(agg: Aggregate, level: str, national_rates: dict[str, float] | None = None) -> dict[str, str | int | float]:
     national_rates = national_rates or {}
-    leitos_sus_10k = rate(agg.leitos_sus, agg.populacao_2022, 10_000)
-    uti_sus_100k = rate(agg.uti_total_sus, agg.populacao_2022, 100_000)
+    leitos_sus_10k = rate(agg.leitos_sus, agg.populacao_2025, 10_000)
+    uti_sus_100k = rate(agg.uti_total_sus, agg.populacao_2025, 100_000)
     gap_leitos = max(0.0, national_rates.get("leitos_sus_10k", 0.0) - leitos_sus_10k)
     gap_uti = max(0.0, national_rates.get("uti_sus_100k", 0.0) - uti_sus_100k)
     return {
@@ -209,7 +221,7 @@ def agg_to_row(agg: Aggregate, level: str, national_rates: dict[str, float] | No
         "uf_nome": agg.uf_nome,
         "co_ibge6": agg.co_ibge6,
         "municipio": agg.municipio,
-        "populacao_2022": agg.populacao_2022,
+        "populacao_2025": agg.populacao_2025,
         "registros": agg.registros,
         "estabelecimentos_cnes": len({c for c in agg.cnes if c}),
         "municipios_com_registro": len(agg.municipios_com_registro),
@@ -219,12 +231,12 @@ def agg_to_row(agg: Aggregate, level: str, national_rates: dict[str, float] | No
         "uti_total_sus": agg.uti_total_sus,
         "pct_leitos_sus": pct(agg.leitos_sus, agg.leitos_existentes),
         "pct_uti_sus": pct(agg.uti_total_sus, agg.uti_total_exist),
-        "leitos_existentes_por_10k_hab": rate(agg.leitos_existentes, agg.populacao_2022, 10_000),
+        "leitos_existentes_por_10k_hab": rate(agg.leitos_existentes, agg.populacao_2025, 10_000),
         "leitos_sus_por_10k_hab": leitos_sus_10k,
-        "uti_existente_por_100k_hab": rate(agg.uti_total_exist, agg.populacao_2022, 100_000),
+        "uti_existente_por_100k_hab": rate(agg.uti_total_exist, agg.populacao_2025, 100_000),
         "uti_sus_por_100k_hab": uti_sus_100k,
-        "gap_estimado_leitos_sus_para_media_nacional": gap_leitos * agg.populacao_2022 / 10_000,
-        "gap_estimado_uti_sus_para_media_nacional": gap_uti * agg.populacao_2022 / 100_000,
+        "gap_estimado_leitos_sus_para_media_nacional": gap_leitos * agg.populacao_2025 / 10_000,
+        "gap_estimado_uti_sus_para_media_nacional": gap_uti * agg.populacao_2025 / 100_000,
     }
 
 
@@ -241,7 +253,7 @@ def write_csv(path: Path, rows: list[dict[str, str | int | float]]) -> None:
 def classify_opportunities(rows: list[dict[str, str | int | float]], national: dict[str, float]) -> list[dict[str, str | int | float]]:
     out: list[dict[str, str | int | float]] = []
     for row in rows:
-        pop = int(row["populacao_2022"])
+        pop = int(row["populacao_2025"])
         if pop < 50_000:
             continue
         leitos_sus = int(row["leitos_sus"])
@@ -277,7 +289,7 @@ def classify_opportunities(rows: list[dict[str, str | int | float]], national: d
         key=lambda r: (
             -int(r["score_heuristico_oportunidade"]),
             -float(r["gap_estimado_leitos_sus_para_media_nacional"]),
-            -int(r["populacao_2022"]),
+            -int(r["populacao_2025"]),
         ),
     )
 
@@ -353,15 +365,15 @@ def write_reports(
     national: dict[str, float],
 ) -> None:
     REPORTS.mkdir(parents=True, exist_ok=True)
-    total_pop = sum(int(row["populacao_2022"]) for row in uf_rows)
+    total_pop = sum(int(row["populacao_2025"]) for row in uf_rows)
     total_leitos = sum(int(row["leitos_sus"]) for row in uf_rows)
     total_uti = sum(int(row["uti_total_sus"]) for row in uf_rows)
     total_cnes = sum(int(row["estabelecimentos_cnes"]) for row in uf_rows)
     municipios_50k_zero = sum(
-        1 for row in municipio_rows if int(row["populacao_2022"]) >= 50_000 and int(row["leitos_sus"]) == 0
+        1 for row in municipio_rows if int(row["populacao_2025"]) >= 50_000 and int(row["leitos_sus"]) == 0
     )
     municipios_100k_sem_uti = sum(
-        1 for row in municipio_rows if int(row["populacao_2022"]) >= 100_000 and int(row["uti_total_sus"]) == 0
+        1 for row in municipio_rows if int(row["populacao_2025"]) >= 100_000 and int(row["uti_total_sus"]) == 0
     )
 
     uf_low_leitos = sorted(uf_rows, key=lambda r: float(r["leitos_sus_por_10k_hab"]))
@@ -379,19 +391,19 @@ Investigar, com dados publicos oficiais, sinais de desigualdade de capacidade ho
 ## Bases utilizadas
 
 - Ministerio da Saude / Portal de Dados Abertos do SUS: Hospitais e Leitos, recurso Leitos 2026 CSV.
-- IBGE / SIDRA: Censo Demografico 2022, tabela 4714, variavel 93, populacao residente por municipio e UF.
+- IBGE: Estimativas da Populacao Residente para municipios, referencia em 01/07/2025, revisadas em 13/01/2026.
 - IBGE / API de Localidades: lista de estados para compatibilizar codigos e siglas.
 
 ## Escopo dos dados
 
 - Competencias encontradas no CSV de leitos: {", ".join(sorted(competencias)) or "nao identificada"}.
 - Competencia analisada: {selected_competencia or "nao identificada"} (maior competencia disponivel no arquivo).
-- Populacao usada como denominador: Censo 2022.
+- Populacao usada como denominador: estimativa municipal IBGE com referencia em 01/07/2025.
 - Abrangencia geografica: Brasil, UFs e municipios.
 
 ## Indicadores principais
 
-- Populacao 2022 considerada: {fmt_int(total_pop)} pessoas.
+- Populacao 2025 considerada: {fmt_int(total_pop)} pessoas.
 - Estabelecimentos hospitalares com registro no arquivo de leitos: {fmt_int(total_cnes)}.
 - Leitos SUS: {fmt_int(total_leitos)}.
 - UTI SUS: {fmt_int(total_uti)}.
@@ -402,19 +414,19 @@ Investigar, com dados publicos oficiais, sinais de desigualdade de capacidade ho
 
 ## UFs com menor taxa de leitos SUS por 10 mil habitantes
 
-{table_md(uf_low_leitos, ["uf", "uf_nome", "populacao_2022", "leitos_sus", "leitos_sus_por_10k_hab"], 10)}
+{table_md(uf_low_leitos, ["uf", "uf_nome", "populacao_2025", "leitos_sus", "leitos_sus_por_10k_hab"], 10)}
 
 ## UFs com menor taxa de UTI SUS por 100 mil habitantes
 
-{table_md(uf_low_uti, ["uf", "uf_nome", "populacao_2022", "uti_total_sus", "uti_sus_por_100k_hab"], 10)}
+{table_md(uf_low_uti, ["uf", "uf_nome", "populacao_2025", "uti_total_sus", "uti_sus_por_100k_hab"], 10)}
 
 ## Comparacao regional
 
-{table_md(regiao_rank, ["regiao", "populacao_2022", "leitos_sus", "leitos_sus_por_10k_hab", "uti_total_sus", "uti_sus_por_100k_hab"], 10)}
+{table_md(regiao_rank, ["regiao", "populacao_2025", "leitos_sus", "leitos_sus_por_10k_hab", "uti_total_sus", "uti_sus_por_100k_hab"], 10)}
 
 ## Municipios priorizados pela heuristica de oportunidade
 
-{table_md(oportunidades, ["uf", "municipio", "populacao_2022", "leitos_sus", "leitos_sus_por_10k_hab", "uti_total_sus", "uti_sus_por_100k_hab", "sinais_de_oportunidade", "score_heuristico_oportunidade"], 15)}
+{table_md(oportunidades, ["uf", "municipio", "populacao_2025", "leitos_sus", "leitos_sus_por_10k_hab", "uti_total_sus", "uti_sus_por_100k_hab", "sinais_de_oportunidade", "score_heuristico_oportunidade"], 15)}
 
 ## Interpretacao inicial
 
@@ -458,7 +470,7 @@ Investigar, com dados publicos oficiais, sinais de desigualdade de capacidade ho
   <h1>Analise exploratoria - Hospitais e Leitos SUS 2026</h1>
   <p><strong>Data de acesso:</strong> 2026-07-18. <strong>Competencia analisada:</strong> {html.escape(selected_competencia or "nao identificada")}. Esta analise identifica oportunidades; nao prova causalidade nem escolhe a solucao final.</p>
   <section class="cards">
-    <div class="card"><div>Populacao 2022</div><div class="metric">{fmt_int(total_pop)}</div></div>
+    <div class="card"><div>Populacao 2025</div><div class="metric">{fmt_int(total_pop)}</div></div>
     <div class="card"><div>Leitos SUS</div><div class="metric">{fmt_int(total_leitos)}</div></div>
     <div class="card"><div>Leitos SUS / 10 mil hab.</div><div class="metric">{fmt_float(national["leitos_sus_10k"])}</div></div>
     <div class="card"><div>UTI SUS / 100 mil hab.</div><div class="metric">{fmt_float(national["uti_sus_100k"])}</div></div>
@@ -473,10 +485,10 @@ Investigar, com dados publicos oficiais, sinais de desigualdade de capacidade ho
   <div class="chart">{bar_svg(uf_low_uti, "uf", "uti_sus_por_100k_hab", "UFs ordenadas por UTI SUS por 100 mil habitantes")}</div>
 
   <h2>Comparacao regional</h2>
-  {html_table(regiao_rank, ["regiao", "populacao_2022", "leitos_sus", "leitos_sus_por_10k_hab", "uti_total_sus", "uti_sus_por_100k_hab"], 10)}
+  {html_table(regiao_rank, ["regiao", "populacao_2025", "leitos_sus", "leitos_sus_por_10k_hab", "uti_total_sus", "uti_sus_por_100k_hab"], 10)}
 
   <h2>Municipios priorizados pela heuristica de oportunidade</h2>
-  {html_table(oportunidades, ["uf", "municipio", "populacao_2022", "leitos_sus", "leitos_sus_por_10k_hab", "uti_total_sus", "uti_sus_por_100k_hab", "sinais_de_oportunidade", "score_heuristico_oportunidade"], 30)}
+  {html_table(oportunidades, ["uf", "municipio", "populacao_2025", "leitos_sus", "leitos_sus_por_10k_hab", "uti_total_sus", "uti_sus_por_100k_hab", "sinais_de_oportunidade", "score_heuristico_oportunidade"], 30)}
 
   <h2>Limites de interpretacao</h2>
   <div class="note">
@@ -492,11 +504,10 @@ Investigar, com dados publicos oficiais, sinais de desigualdade de capacidade ho
 def main() -> None:
     PROCESSED.mkdir(parents=True, exist_ok=True)
     estados = load_estados()
-    pop_municipio = load_populacao(POP_MUNICIPIO_JSON, estados, municipal=True)
-    pop_uf = load_populacao(POP_UF_JSON, estados, municipal=False)
+    pop_municipio, pop_uf = load_populations_2025(estados)
     by_municipio, by_uf, by_regiao, competencias, selected_competencia = aggregate_data(pop_municipio, pop_uf)
 
-    total_pop = sum(agg.populacao_2022 for agg in by_uf.values())
+    total_pop = sum(agg.populacao_2025 for agg in by_uf.values())
     total_leitos_sus = sum(agg.leitos_sus for agg in by_uf.values())
     total_uti_sus = sum(agg.uti_total_sus for agg in by_uf.values())
     national = {

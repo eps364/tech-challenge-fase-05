@@ -13,37 +13,37 @@ Investigar se dados oficiais indicam desigualdades de capacidade hospitalar SUS 
 ## Resultados encontrados
 
 - A base de maio/2026 possui registros de leitos hospitalares por estabelecimento, municipio, UF e regiao.
-- Foram integrados dados populacionais do Censo 2022 do IBGE para criar indicadores proporcionais.
-- Media nacional calculada nesta analise: 17,41 leitos SUS por 10 mil habitantes.
-- Media nacional calculada nesta analise: 15,77 UTI SUS por 100 mil habitantes.
-- Foram sinalizados 172 municipios com algum padrao de oportunidade pela heuristica inicial.
-- Existem 12 municipios com 50 mil habitantes ou mais e zero leitos SUS no arquivo analisado.
-- Existem 40 municipios com 100 mil habitantes ou mais e zero UTI SUS no arquivo analisado.
+- Foram integradas estimativas municipais de populacao 2025 do IBGE para criar indicadores proporcionais.
+- Media nacional calculada nesta analise: 16,56 leitos SUS por 10 mil habitantes.
+- Media nacional calculada nesta analise: 15,00 UTI SUS por 100 mil habitantes.
+- Foram sinalizados 182 municipios com algum padrao de oportunidade pela heuristica inicial.
+- Existem 14 municipios com 50 mil habitantes ou mais e zero leitos SUS no arquivo analisado.
+- Existem 47 municipios com 100 mil habitantes ou mais e zero UTI SUS no arquivo analisado.
 
 ## Evidencias iniciais
 
 UFs com menores taxas de leitos SUS por 10 mil habitantes:
 
-- SP: 13,96.
-- SE: 14,43.
-- RJ: 15,05.
-- AM: 15,66.
-- PA: 15,83.
+- SP: 13,45.
+- SE: 13,87.
+- RJ: 14,03.
+- AM: 14,29.
+- PA: 14,76.
 
 UFs com menores taxas de UTI SUS por 100 mil habitantes:
 
-- AC: 9,76.
-- PI: 10,21.
-- AP: 10,77.
-- AM: 11,19.
-- MA: 11,92.
+- AC: 9,16.
+- AP: 9,80.
+- PI: 9,87.
+- AM: 10,20.
+- BA: 11,39.
 
 Municipios sinalizados no topo da heuristica:
 
-- Palhoca - SC: 222.598 habitantes, zero leitos SUS e zero UTI SUS no arquivo.
-- Almirante Tamandare - PR: 119.825 habitantes, zero leitos SUS e zero UTI SUS no arquivo.
-- Jandira - SP: 118.045 habitantes, zero leitos SUS e zero UTI SUS no arquivo.
-- Poa - SP: 103.765 habitantes, zero leitos SUS e zero UTI SUS no arquivo.
+- Palhoca - SC: 253.469 habitantes, zero leitos SUS e zero UTI SUS no arquivo.
+- Almirante Tamandare - PR: 125.861 habitantes, zero leitos SUS e zero UTI SUS no arquivo.
+- Jandira - SP: 121.550 habitantes, zero leitos SUS e zero UTI SUS no arquivo.
+- Poa - SP: 106.355 habitantes, zero leitos SUS e zero UTI SUS no arquivo.
 
 ## Interpretacao
 
@@ -59,7 +59,7 @@ Municipios sinalizados no topo da heuristica:
 - A base nao mede qualidade do atendimento.
 - A base nao informa diretamente demanda reprimida, filas, deslocamentos ou desfecho clinico.
 - Ausencia de UTI ou leito SUS em um municipio pode ser compensada por rede regional.
-- A populacao usada e de 2022, enquanto os leitos sao de maio/2026.
+- A populacao usada e uma estimativa municipal de 01/07/2025, enquanto os leitos sao de maio/2026.
 - Os dados disponiveis nao permitem afirmar causalidade entre baixa oferta local e pior atendimento.
 
 ## Arquivos gerados

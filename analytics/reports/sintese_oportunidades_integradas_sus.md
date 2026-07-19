@@ -8,101 +8,101 @@ Cruzar capacidade hospitalar SUS, densidade de UBS, vinculo cadastral APS e dese
 
 ## Indicadores nacionais calculados
 
-- UBS por 10 mil habitantes: 2,36.
-- Leitos SUS por 10 mil habitantes: 17,41.
-- UTI SUS por 100 mil habitantes: 15,77.
+- UBS por 10 mil habitantes: 2,24.
+- Leitos SUS por 10 mil habitantes: 16,56.
+- UTI SUS por 100 mil habitantes: 15,00.
 
 ## Sinais integrados
 
-- Municipios com algum sinal integrado: 645.
-- Populacao nesses municipios: 111.457.023.
-- Municipios de alta prioridade heuristica, score >= 14: 214.
-- Populacao em municipios de alta prioridade: 58.607.042.
-- Municipios com APS fragil e leitos SUS baixos: 459.
-- Populacao em municipios com APS fragil e leitos SUS baixos: 45.418.673.
-- Municipios com desempenho APS baixo e UTI SUS critica: 25.
-- Populacao em municipios com desempenho APS baixo e UTI SUS critica: 5.390.795.
+- Municipios com algum sinal integrado: 654.
+- Populacao nesses municipios: 118.173.855.
+- Municipios de alta prioridade heuristica, score >= 14: 221.
+- Populacao em municipios de alta prioridade: 61.899.822.
+- Municipios com APS fragil e leitos SUS baixos: 468.
+- Populacao em municipios com APS fragil e leitos SUS baixos: 48.281.213.
+- Municipios com desempenho APS baixo e UTI SUS critica: 28.
+- Populacao em municipios com desempenho APS baixo e UTI SUS critica: 6.201.548.
 
 ## Municipios priorizados pelo cruzamento
 
-| uf | municipio | populacao_2022 | ubs_por_10k_hab | pct_populacao_vinculada_aps | media_indicadores_previne | leitos_sus_por_10k_hab | uti_sus_por_100k_hab | score_integrado | oportunidades_geradas |
+| uf | municipio | populacao_2025 | ubs_por_10k_hab | pct_populacao_vinculada_aps | media_indicadores_previne | leitos_sus_por_10k_hab | uti_sus_por_100k_hab | score_integrado | oportunidades_geradas |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| RJ | Rio das Ostras - RJ | 156.491 | 0,89 | 22,99 | 35,33 | 6,33 | 0,00 | 35 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| SP | Santana de Parnaíba - SP | 154.105 | 0,91 | 19,69 | 34,00 | 4,80 | 0,00 | 35 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| SP | Jandira - SP | 118.045 | 0,85 | 16,61 | 36,00 | 0,00 | 0,00 | 35 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda;validacao_cadastral_cnes_e_mapa_de_oferta |
-| RJ | São João de Meriti - RJ | 440.962 | 0,50 | 25,59 | 27,83 | 5,65 | 6,80 | 33 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| SP | Hortolândia - SP | 236.641 | 0,97 | 20,54 | 38,33 | 3,97 | 4,23 | 33 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| PR | Paranaguá - PR | 145.829 | 0,89 | 35,15 | 32,83 | 7,95 | 6,86 | 33 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| SP | Ribeirão Pires - SP | 115.559 | 1,12 | 24,16 | 36,00 | 3,72 | 0,00 | 33 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| ES | Cariacica - ES | 353.491 | 1,10 | 33,61 | 31,00 | 6,42 | 1,70 | 31 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| SP | Salto - SP | 134.319 | 0,97 | 22,03 | 33,50 | 9,38 | 7,44 | 31 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| RJ | Duque de Caxias - RJ | 808.161 | 1,04 | 16,07 | 23,50 | 12,66 | 6,06 | 29 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| RJ | Nilópolis - RJ | 146.774 | 1,16 | 21,57 | 39,00 | 10,97 | 7,49 | 29 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| RJ | Belford Roxo - RJ | 483.087 | 1,18 | 25,49 | 22,17 | 7,43 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| PE | Camaragibe - PE | 147.771 | 3,11 | 46,36 | 37,17 | 2,77 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| RJ | Queimados - RJ | 140.523 | 1,64 | 20,45 | 26,83 | 7,90 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| MG | Sabará - MG | 129.380 | 1,70 | 31,45 | 32,67 | 7,65 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| MG | Vespasiano - MG | 129.246 | 1,70 | 28,09 | 25,83 | 3,71 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| BA | Simões Filho - BA | 114.559 | 1,66 | 31,68 | 33,00 | 6,98 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| RJ | São Pedro da Aldeia - RJ | 104.029 | 2,88 | 31,72 | 38,17 | 5,96 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| SP | Itaquaquecetuba - SP | 369.275 | 0,51 | 19,96 | 33,33 | 7,64 | 8,12 | 26 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;regulacao_integrada_aps_e_retaguarda |
-| SP | Praia Grande - SP | 349.935 | 0,91 | 35,25 | 36,83 | 7,34 | 14,29 | 26 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;regulacao_integrada_aps_e_retaguarda |
+| RJ | Rio das Ostras | 168.455 | 0,83 | 22,99 | 35,33 | 5,88 | 0,00 | 35 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| SP | Santana de Parnaíba | 163.787 | 0,85 | 19,69 | 34,00 | 4,52 | 0,00 | 35 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| SP | Jandira | 121.550 | 0,82 | 16,61 | 36,00 | 0,00 | 0,00 | 35 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda;validacao_cadastral_cnes_e_mapa_de_oferta |
+| RJ | Belford Roxo | 518.384 | 1,10 | 25,49 | 22,17 | 6,93 | 0,00 | 33 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| RJ | São João de Meriti | 466.503 | 0,47 | 25,59 | 27,83 | 5,34 | 6,43 | 33 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| SP | Hortolândia | 248.842 | 0,92 | 20,54 | 38,33 | 3,78 | 4,02 | 33 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| PR | Paranaguá | 150.104 | 0,87 | 35,15 | 32,83 | 7,73 | 6,66 | 33 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| SP | Ribeirão Pires | 118.954 | 1,09 | 24,16 | 36,00 | 3,61 | 0,00 | 33 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| RJ | Duque de Caxias | 866.225 | 0,97 | 16,07 | 23,50 | 11,81 | 5,66 | 31 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| ES | Cariacica | 376.200 | 1,04 | 33,61 | 31,00 | 6,03 | 1,59 | 31 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| SP | Salto | 141.111 | 0,92 | 22,03 | 33,50 | 8,93 | 7,09 | 31 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| RJ | Nilópolis | 155.500 | 1,09 | 21,57 | 39,00 | 10,35 | 7,07 | 29 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| PE | Camaragibe | 156.112 | 2,95 | 46,36 | 37,17 | 2,63 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| RJ | Queimados | 149.135 | 1,54 | 20,45 | 26,83 | 7,44 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| MG | Vespasiano | 138.583 | 1,59 | 28,09 | 25,83 | 3,46 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| MG | Sabará | 134.576 | 1,63 | 31,45 | 32,67 | 7,36 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| BA | Simões Filho | 120.419 | 1,58 | 31,68 | 33,00 | 6,64 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| RJ | São Pedro da Aldeia | 110.677 | 2,71 | 31,72 | 38,17 | 5,60 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| PE | Abreu e Lima | 104.248 | 3,45 | 46,85 | 37,83 | 0,38 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| RJ | Japeri | 102.171 | 1,57 | 43,89 | 34,00 | 2,94 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
 
 ## Municipios grandes priorizados
 
-| uf | municipio | populacao_2022 | ubs_por_10k_hab | pct_populacao_vinculada_aps | media_indicadores_previne | leitos_sus_por_10k_hab | uti_sus_por_100k_hab | score_integrado | oportunidades_geradas |
+| uf | municipio | populacao_2025 | ubs_por_10k_hab | pct_populacao_vinculada_aps | media_indicadores_previne | leitos_sus_por_10k_hab | uti_sus_por_100k_hab | score_integrado | oportunidades_geradas |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| RJ | Rio das Ostras - RJ | 156.491 | 0,89 | 22,99 | 35,33 | 6,33 | 0,00 | 35 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| SP | Santana de Parnaíba - SP | 154.105 | 0,91 | 19,69 | 34,00 | 4,80 | 0,00 | 35 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| SP | Jandira - SP | 118.045 | 0,85 | 16,61 | 36,00 | 0,00 | 0,00 | 35 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda;validacao_cadastral_cnes_e_mapa_de_oferta |
-| RJ | São João de Meriti - RJ | 440.962 | 0,50 | 25,59 | 27,83 | 5,65 | 6,80 | 33 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| SP | Hortolândia - SP | 236.641 | 0,97 | 20,54 | 38,33 | 3,97 | 4,23 | 33 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| PR | Paranaguá - PR | 145.829 | 0,89 | 35,15 | 32,83 | 7,95 | 6,86 | 33 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| SP | Ribeirão Pires - SP | 115.559 | 1,12 | 24,16 | 36,00 | 3,72 | 0,00 | 33 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| ES | Cariacica - ES | 353.491 | 1,10 | 33,61 | 31,00 | 6,42 | 1,70 | 31 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| SP | Salto - SP | 134.319 | 0,97 | 22,03 | 33,50 | 9,38 | 7,44 | 31 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| RJ | Duque de Caxias - RJ | 808.161 | 1,04 | 16,07 | 23,50 | 12,66 | 6,06 | 29 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| RJ | Nilópolis - RJ | 146.774 | 1,16 | 21,57 | 39,00 | 10,97 | 7,49 | 29 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| RJ | Belford Roxo - RJ | 483.087 | 1,18 | 25,49 | 22,17 | 7,43 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| PE | Camaragibe - PE | 147.771 | 3,11 | 46,36 | 37,17 | 2,77 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| RJ | Queimados - RJ | 140.523 | 1,64 | 20,45 | 26,83 | 7,90 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| MG | Sabará - MG | 129.380 | 1,70 | 31,45 | 32,67 | 7,65 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| MG | Vespasiano - MG | 129.246 | 1,70 | 28,09 | 25,83 | 3,71 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| BA | Simões Filho - BA | 114.559 | 1,66 | 31,68 | 33,00 | 6,98 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| RJ | São Pedro da Aldeia - RJ | 104.029 | 2,88 | 31,72 | 38,17 | 5,96 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_risco_e_encaminhamento_precoce;regulacao_integrada_aps_e_retaguarda |
-| SP | Itaquaquecetuba - SP | 369.275 | 0,51 | 19,96 | 33,33 | 7,64 | 8,12 | 26 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;regulacao_integrada_aps_e_retaguarda |
-| SP | Praia Grande - SP | 349.935 | 0,91 | 35,25 | 36,83 | 7,34 | 14,29 | 26 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;regulacao_integrada_aps_e_retaguarda |
+| RJ | Rio das Ostras | 168.455 | 0,83 | 22,99 | 35,33 | 5,88 | 0,00 | 35 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| SP | Santana de Parnaíba | 163.787 | 0,85 | 19,69 | 34,00 | 4,52 | 0,00 | 35 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| SP | Jandira | 121.550 | 0,82 | 16,61 | 36,00 | 0,00 | 0,00 | 35 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda;validacao_cadastral_cnes_e_mapa_de_oferta |
+| RJ | Belford Roxo | 518.384 | 1,10 | 25,49 | 22,17 | 6,93 | 0,00 | 33 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| RJ | São João de Meriti | 466.503 | 0,47 | 25,59 | 27,83 | 5,34 | 6,43 | 33 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| SP | Hortolândia | 248.842 | 0,92 | 20,54 | 38,33 | 3,78 | 4,02 | 33 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| PR | Paranaguá | 150.104 | 0,87 | 35,15 | 32,83 | 7,73 | 6,66 | 33 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| SP | Ribeirão Pires | 118.954 | 1,09 | 24,16 | 36,00 | 3,61 | 0,00 | 33 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| RJ | Duque de Caxias | 866.225 | 0,97 | 16,07 | 23,50 | 11,81 | 5,66 | 31 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| ES | Cariacica | 376.200 | 1,04 | 33,61 | 31,00 | 6,03 | 1,59 | 31 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| SP | Salto | 141.111 | 0,92 | 22,03 | 33,50 | 8,93 | 7,09 | 31 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| RJ | Nilópolis | 155.500 | 1,09 | 21,57 | 39,00 | 10,35 | 7,07 | 29 | gestao_de_carteira_e_qualidade_do_registro;gestao_territorial_e_busca_ativa_aps;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| PE | Camaragibe | 156.112 | 2,95 | 46,36 | 37,17 | 2,63 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| RJ | Queimados | 149.135 | 1,54 | 20,45 | 26,83 | 7,44 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| MG | Vespasiano | 138.583 | 1,59 | 28,09 | 25,83 | 3,46 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| MG | Sabará | 134.576 | 1,63 | 31,45 | 32,67 | 7,36 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| BA | Simões Filho | 120.419 | 1,58 | 31,68 | 33,00 | 6,64 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| RJ | São Pedro da Aldeia | 110.677 | 2,71 | 31,72 | 38,17 | 5,60 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| PE | Abreu e Lima | 104.248 | 3,45 | 46,85 | 37,83 | 0,38 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
+| RJ | Japeri | 102.171 | 1,57 | 43,89 | 34,00 | 2,94 | 0,00 | 27 | gestao_de_carteira_e_qualidade_do_registro;monitoramento_territorial_preventivo;regulacao_integrada_aps_e_retaguarda |
 
 ## UFs com maior populacao em municipios de alta prioridade
 
 | uf | regiao | municipios_priorizados | municipios_alta_prioridade | populacao_alta_prioridade | score_medio_ponderado |
 | --- | --- | --- | --- | --- | --- |
-| SP | SUDESTE | 173 | 75 | 26.277.441 | 17,35 |
-| MG | SUDESTE | 91 | 31 | 6.405.093 | 15,84 |
-| RJ | SUDESTE | 49 | 22 | 5.334.194 | 16,02 |
-| BA | NORDESTE | 28 | 7 | 2.982.059 | 15,51 |
-| CE | NORDESTE | 10 | 2 | 2.784.387 | 16,86 |
-| GO | CENTRO-OESTE | 33 | 10 | 2.738.168 | 14,66 |
-| PA | NORTE | 32 | 13 | 2.382.807 | 16,63 |
-| PE | NORDESTE | 18 | 8 | 1.843.336 | 14,10 |
-| PR | SUL | 47 | 11 | 1.620.769 | 13,89 |
-| RS | SUL | 41 | 16 | 1.578.637 | 13,66 |
-| ES | SUDESTE | 16 | 3 | 1.144.082 | 16,93 |
-| PI | NORDESTE | 1 | 1 | 866.300 | 17,00 |
-| SE | NORDESTE | 4 | 2 | 795.087 | 17,20 |
-| AP | NORTE | 2 | 2 | 550.551 | 19,20 |
-| SC | SUL | 37 | 5 | 490.686 | 11,35 |
+| SP | SUDESTE | 172 | 73 | 26.950.774 | 17,28 |
+| MG | SUDESTE | 89 | 31 | 6.724.733 | 16,00 |
+| RJ | SUDESTE | 49 | 22 | 5.698.803 | 16,42 |
+| BA | NORDESTE | 28 | 7 | 3.164.417 | 15,52 |
+| GO | CENTRO-OESTE | 33 | 11 | 3.005.496 | 15,03 |
+| CE | NORDESTE | 10 | 2 | 2.956.889 | 16,84 |
+| PA | NORTE | 35 | 13 | 2.582.395 | 16,54 |
+| PE | NORDESTE | 19 | 9 | 2.058.473 | 14,32 |
+| PR | SUL | 50 | 12 | 1.835.631 | 14,20 |
+| RS | SUL | 40 | 16 | 1.634.196 | 13,29 |
+| ES | SUDESTE | 17 | 4 | 1.246.707 | 17,01 |
+| SE | NORDESTE | 4 | 3 | 936.226 | 17,70 |
+| PI | NORDESTE | 1 | 1 | 905.692 | 17,00 |
+| AP | NORTE | 2 | 2 | 608.479 | 19,20 |
+| SC | SUL | 37 | 5 | 550.547 | 12,31 |
 
 ## Oportunidades reforcadas
 
 - Regulacao integrada APS e retaguarda: priorizar encaminhamentos, referencias e disponibilidade de leitos onde a porta de entrada e a capacidade hospitalar sao simultaneamente pressionadas.
 - Gestao ativa de carteira APS: buscar pacientes sem acompanhamento consistente, especialmente onde vinculo cadastral e indicadores Previne aparecem baixos.
 - Mapa de oferta e validacao cadastral: investigar municipios com zero UBS ou zero leitos SUS no arquivo, separando ausencia real de oferta, cadastro incompleto e dependencia regional.
-- Monitoramento de risco e encaminhamento precoce: usar indicadores APS baixos como alerta para evitar agravamento e reduzir demanda evitavel por urgencia/hospital.
+- Monitoramento territorial preventivo: usar indicadores APS baixos como sinal para validacao local e organizacao de uma resposta preventiva, sem inferir risco clinico individual.
 - Planejamento regional: apoiar pactuacao entre municipios quando a demanda local depende de retaguarda fora do proprio municipio.
 
 ## Limites
 
 - A heuristica nao mede tempo de espera, absenteismo, agenda, qualidade clinica, deslocamento real nem satisfacao do paciente.
 - Zero UBS, zero leitos ou zero UTI no arquivo deve ser tratado como sinal para validacao com CNES/gestao local, nao como conclusao isolada.
-- Populacao usa Censo 2022 e as bases operacionais usam competencias diferentes: leitos 202605, UBS julho/2026, SISAB 2024Q3/202412.
+- Populacao usa a estimativa municipal IBGE com referencia em 01/07/2025; as bases operacionais usam competencias diferentes: leitos 202605, UBS julho/2026, SISAB 2024Q3/202412.

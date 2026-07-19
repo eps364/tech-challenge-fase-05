@@ -153,7 +153,7 @@ def classify(
     national_leitos_10k: float,
     national_uti_100k: float,
 ) -> tuple[int, list[str], list[str], list[str], list[str]]:
-    pop = parse_int(aps["populacao_2022"])
+    pop = parse_int(aps["populacao_2025"])
     ubs = parse_int(aps["ubs"])
     ubs_10k = parse_float(aps["ubs_por_10k_hab"])
     vinculo = parse_float(aps["pct_populacao_vinculada_aps"])
@@ -218,7 +218,7 @@ def classify(
         score += 3
     if low_previne and (low_uti or (pop >= 100_000 and uti_sus == 0)):
         sinais_integrados.append("desempenho_aps_baixo_e_uti_sus_critica")
-        oportunidades.append("monitoramento_risco_e_encaminhamento_precoce")
+        oportunidades.append("monitoramento_territorial_preventivo")
         score += 4
     if low_ubs and low_vinculo:
         sinais_integrados.append("baixa_densidade_ubs_e_baixo_vinculo")
@@ -252,7 +252,7 @@ def aggregate_uf(rows: list[dict[str, str | int | float]]) -> list[dict[str, str
         g = groups[uf]
         g["uf"] = uf
         g["regiao"] = str(row["regiao"])
-        pop = float(row["populacao_2022"])
+        pop = float(row["populacao_2025"])
         score = float(row["score_integrado"])
         g["municipios_priorizados"] = float(g["municipios_priorizados"]) + 1
         g["populacao_priorizada"] = float(g["populacao_priorizada"]) + pop
@@ -287,7 +287,7 @@ def write_reports(
     national_uti_100k: float,
 ) -> None:
     REPORTS.mkdir(parents=True, exist_ok=True)
-    total_pop = sum(int(row["populacao_2022"]) for row in rows)
+    total_pop = sum(int(row["populacao_2025"]) for row in rows)
     high_priority = [row for row in rows if int(row["score_integrado"]) >= 14]
     aps_beds = [
         row
@@ -300,15 +300,15 @@ def write_reports(
         if "desempenho_aps_baixo_e_uti_sus_critica" in str(row["sinais_integrados"]).split(";")
     ]
     large = sorted(
-        [row for row in rows if int(row["populacao_2022"]) >= 100_000],
-        key=lambda row: (-int(row["score_integrado"]), -int(row["populacao_2022"])),
+        [row for row in rows if int(row["populacao_2025"]) >= 100_000],
+        key=lambda row: (-int(row["score_integrado"]), -int(row["populacao_2025"])),
     )
-    top = sorted(rows, key=lambda row: (-int(row["score_integrado"]), -int(row["populacao_2022"])))
+    top = sorted(rows, key=lambda row: (-int(row["score_integrado"]), -int(row["populacao_2025"])))
 
     columns = [
         "uf",
         "municipio",
-        "populacao_2022",
+        "populacao_2025",
         "ubs_por_10k_hab",
         "pct_populacao_vinculada_aps",
         "media_indicadores_previne",
@@ -345,11 +345,11 @@ Cruzar capacidade hospitalar SUS, densidade de UBS, vinculo cadastral APS e dese
 - Municipios com algum sinal integrado: {fmt_int(len(rows))}.
 - Populacao nesses municipios: {fmt_int(total_pop)}.
 - Municipios de alta prioridade heuristica, score >= 14: {fmt_int(len(high_priority))}.
-- Populacao em municipios de alta prioridade: {fmt_int(sum(int(row["populacao_2022"]) for row in high_priority))}.
+- Populacao em municipios de alta prioridade: {fmt_int(sum(int(row["populacao_2025"]) for row in high_priority))}.
 - Municipios com APS fragil e leitos SUS baixos: {fmt_int(len(aps_beds))}.
-- Populacao em municipios com APS fragil e leitos SUS baixos: {fmt_int(sum(int(row["populacao_2022"]) for row in aps_beds))}.
+- Populacao em municipios com APS fragil e leitos SUS baixos: {fmt_int(sum(int(row["populacao_2025"]) for row in aps_beds))}.
 - Municipios com desempenho APS baixo e UTI SUS critica: {fmt_int(len(aps_uti))}.
-- Populacao em municipios com desempenho APS baixo e UTI SUS critica: {fmt_int(sum(int(row["populacao_2022"]) for row in aps_uti))}.
+- Populacao em municipios com desempenho APS baixo e UTI SUS critica: {fmt_int(sum(int(row["populacao_2025"]) for row in aps_uti))}.
 
 ## Municipios priorizados pelo cruzamento
 
@@ -368,14 +368,14 @@ Cruzar capacidade hospitalar SUS, densidade de UBS, vinculo cadastral APS e dese
 - Regulacao integrada APS e retaguarda: priorizar encaminhamentos, referencias e disponibilidade de leitos onde a porta de entrada e a capacidade hospitalar sao simultaneamente pressionadas.
 - Gestao ativa de carteira APS: buscar pacientes sem acompanhamento consistente, especialmente onde vinculo cadastral e indicadores Previne aparecem baixos.
 - Mapa de oferta e validacao cadastral: investigar municipios com zero UBS ou zero leitos SUS no arquivo, separando ausencia real de oferta, cadastro incompleto e dependencia regional.
-- Monitoramento de risco e encaminhamento precoce: usar indicadores APS baixos como alerta para evitar agravamento e reduzir demanda evitavel por urgencia/hospital.
+- Monitoramento territorial preventivo: usar indicadores APS baixos como sinal para validacao local e organizacao de uma resposta preventiva, sem inferir risco clinico individual.
 - Planejamento regional: apoiar pactuacao entre municipios quando a demanda local depende de retaguarda fora do proprio municipio.
 
 ## Limites
 
 - A heuristica nao mede tempo de espera, absenteismo, agenda, qualidade clinica, deslocamento real nem satisfacao do paciente.
 - Zero UBS, zero leitos ou zero UTI no arquivo deve ser tratado como sinal para validacao com CNES/gestao local, nao como conclusao isolada.
-- Populacao usa Censo 2022 e as bases operacionais usam competencias diferentes: leitos 202605, UBS julho/2026, SISAB 2024Q3/202412.
+- Populacao usa a estimativa municipal IBGE com referencia em 01/07/2025; as bases operacionais usam competencias diferentes: leitos 202605, UBS julho/2026, SISAB 2024Q3/202412.
 """
     (REPORTS / "sintese_oportunidades_integradas_sus.md").write_text(md, encoding="utf-8")
 
@@ -405,7 +405,7 @@ Cruzar capacidade hospitalar SUS, densidade de UBS, vinculo cadastral APS e dese
   <section class="cards">
     <div class="card"><div>Municipios com sinal integrado</div><div class="metric">{fmt_int(len(rows))}</div></div>
     <div class="card"><div>Alta prioridade</div><div class="metric">{fmt_int(len(high_priority))}</div></div>
-    <div class="card"><div>Pop. alta prioridade</div><div class="metric">{fmt_int(sum(int(row["populacao_2022"]) for row in high_priority))}</div></div>
+    <div class="card"><div>Pop. alta prioridade</div><div class="metric">{fmt_int(sum(int(row["populacao_2025"]) for row in high_priority))}</div></div>
     <div class="card"><div>APS fragil + leitos baixos</div><div class="metric">{fmt_int(len(aps_beds))}</div></div>
     <div class="card"><div>APS baixa + UTI critica</div><div class="metric">{fmt_int(len(aps_uti))}</div></div>
   </section>
@@ -428,7 +428,7 @@ def main() -> None:
     aps_rows = read_csv(APS_CSV)
     leitos_rows = {row["co_ibge6"].zfill(6): row for row in read_csv(LEITOS_CSV)}
 
-    total_pop = sum(parse_int(row["populacao_2022"]) for row in aps_rows)
+    total_pop = sum(parse_int(row["populacao_2025"]) for row in aps_rows)
     national_ubs_10k = rate(sum(parse_int(row["ubs"]) for row in aps_rows), total_pop, 10_000)
     national_leitos_10k = rate(sum(parse_int(row["leitos_sus"]) for row in leitos_rows.values()), total_pop, 10_000)
     national_uti_100k = rate(sum(parse_int(row["uti_total_sus"]) for row in leitos_rows.values()), total_pop, 100_000)
@@ -454,7 +454,7 @@ def main() -> None:
                 "municipio": aps["municipio"],
                 "uf": aps["uf"],
                 "regiao": aps["regiao"],
-                "populacao_2022": parse_int(aps["populacao_2022"]),
+                "populacao_2025": parse_int(aps["populacao_2025"]),
                 "ubs": parse_int(aps["ubs"]),
                 "ubs_por_10k_hab": parse_float(aps["ubs_por_10k_hab"]),
                 "pct_populacao_vinculada_aps": parse_float(aps["pct_populacao_vinculada_aps"]),
@@ -475,7 +475,7 @@ def main() -> None:
 
     opportunities = sorted(
         opportunities,
-        key=lambda row: (-int(row["score_integrado"]), -int(row["populacao_2022"])),
+        key=lambda row: (-int(row["score_integrado"]), -int(row["populacao_2025"])),
     )
     uf_rows = aggregate_uf(opportunities)
 

@@ -11,7 +11,7 @@ Construir uma trilha reproduzivel de coleta, limpeza, integracao, indicadores e 
 Primeira analise executada:
 
 - Tema explorado: oferta de leitos SUS e UTI SUS.
-- Bases: Hospitais e Leitos 2026, IBGE Censo 2022 e API de Localidades.
+- Bases: Hospitais e Leitos 2026, estimativas municipais IBGE 2025 e API de Localidades.
 - Script: `analytics/scripts/analisar_leitos_sus.py`
 - Relatorio: `analytics/reports/analise_leitos_sus_2026.md`
 - Relatorio visual: `analytics/reports/analise_leitos_sus_2026.html`
@@ -70,7 +70,7 @@ Primeira analise executada:
 ## Riscos de interpretacao
 
 - Comparar municipios sem considerar redes regionais de referencia.
-- Usar populacao 2022 para leitos 2026 sem declarar a diferenca temporal.
+- Usar uma populacao desatualizada para leitos 2026 sem declarar a diferenca temporal; nesta rodada, o denominador usa a estimativa municipal IBGE de 01/07/2025.
 - Somar competencias mensais e inflar capacidade cadastrada.
 - Confundir capacidade cadastrada com disponibilidade real ou ocupacao.
 - Inferir fila de espera sem base de regulacao ou demanda.

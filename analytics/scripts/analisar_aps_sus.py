@@ -9,6 +9,8 @@ from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 
+from populacao_ibge import load_municipality_population_estimates
+
 
 ROOT = Path(__file__).resolve().parents[2]
 RAW = ROOT / "data" / "raw"
@@ -18,7 +20,7 @@ REPORTS = ROOT / "analytics" / "reports"
 UBS_ZIP = RAW / "unidades_basicas_saude_ubs_csv.zip"
 CADASTRO_ZIP = RAW / "sisab_cadastro_vinculado_202412_csv.zip"
 INDICADORES_ZIP = RAW / "sisab_indicador_desempenho_2024Q3_csv.zip"
-POP_MUNICIPIO_JSON = RAW / "ibge_populacao_municipio_2022_tabela_4714.json"
+POP_MUNICIPIO_ODS = RAW / "ibge_estimativa_populacao_municipio_2025.ods"
 ESTADOS_JSON = RAW / "ibge_localidades_estados.json"
 
 
@@ -40,7 +42,7 @@ class Municipality:
     uf: str
     uf_nome: str
     regiao: str
-    populacao_2022: int
+    populacao_2025: int
     ubs: int = 0
     ubs_com_coord: int = 0
     cadastro_populacao: int = 0
@@ -123,19 +125,18 @@ def load_estados() -> dict[str, dict[str, str]]:
 
 def load_municipalities() -> dict[str, Municipality]:
     estados = load_estados()
-    data = read_json(POP_MUNICIPIO_JSON)[1:]
+    estimates = load_municipality_population_estimates(POP_MUNICIPIO_ODS)
     municipalities: dict[str, Municipality] = {}
-    for row in data:
-        code = str(row["D1C"])[:6]
+    for code, estimate in estimates.items():
         uf_code = code[:2]
         estado = estados.get(uf_code, {})
         municipalities[code] = Municipality(
             co_ibge6=code,
-            municipio=str(row["D1N"]),
+            municipio=estimate.municipio,
             uf=estado.get("sigla", ""),
             uf_nome=estado.get("nome", ""),
             regiao=estado.get("regiao", ""),
-            populacao_2022=parse_int(row["V"]),
+            populacao_2025=estimate.populacao_2025,
         )
     return municipalities
 
@@ -201,21 +202,21 @@ def municipality_row(m: Municipality, national_ubs_10k: float) -> dict[str, str 
     avg_indicator = sum(indicator_values) / len(indicator_values) if indicator_values else 0.0
     below_50 = sum(1 for value in indicator_values if value < 50)
     below_30 = sum(1 for value in indicator_values if value < 30)
-    cadastro_denominator = m.cadastro_populacao or m.populacao_2022
+    cadastro_denominator = m.cadastro_populacao or m.populacao_2025
     cadastro_pct = pct(m.pessoas_vinculadas, cadastro_denominator)
-    ubs_10k = rate(m.ubs, m.populacao_2022, 10_000)
+    ubs_10k = rate(m.ubs, m.populacao_2025, 10_000)
     return {
         "co_ibge6": m.co_ibge6,
         "municipio": m.municipio,
         "uf": m.uf,
         "uf_nome": m.uf_nome,
         "regiao": m.regiao,
-        "populacao_2022": m.populacao_2022,
+        "populacao_2025": m.populacao_2025,
         "ubs": m.ubs,
         "ubs_com_coord": m.ubs_com_coord,
         "ubs_por_10k_hab": ubs_10k,
-        "habitantes_por_ubs": m.populacao_2022 / m.ubs if m.ubs else 0.0,
-        "gap_ubs_para_media_nacional": max(0.0, national_ubs_10k - ubs_10k) * m.populacao_2022 / 10_000,
+        "habitantes_por_ubs": m.populacao_2025 / m.ubs if m.ubs else 0.0,
+        "gap_ubs_para_media_nacional": max(0.0, national_ubs_10k - ubs_10k) * m.populacao_2025 / 10_000,
         "cadastro_populacao_base": cadastro_denominator,
         "pessoas_vinculadas_aps": m.pessoas_vinculadas,
         "pct_populacao_vinculada_aps": cadastro_pct,
@@ -228,7 +229,7 @@ def municipality_row(m: Municipality, national_ubs_10k: float) -> dict[str, str 
 
 
 def score_opportunity(row: dict[str, str | int | float], national_ubs_10k: float) -> tuple[int, list[str]]:
-    pop = int(row["populacao_2022"])
+    pop = int(row["populacao_2025"])
     score = 0
     flags: list[str] = []
     ubs = int(row["ubs"])
@@ -289,7 +290,7 @@ def aggregate_by(rows: list[dict[str, str | int | float]], key: str) -> list[dic
         if name not in groups:
             groups[name] = {
                 key: name,
-                "populacao_2022": 0.0,
+                "populacao_2025": 0.0,
                 "ubs": 0.0,
                 "pessoas_vinculadas_aps": 0.0,
                 "cadastro_populacao_base": 0.0,
@@ -297,8 +298,8 @@ def aggregate_by(rows: list[dict[str, str | int | float]], key: str) -> list[dic
                 "municipios": 0.0,
             }
         g = groups[name]
-        pop = float(row["populacao_2022"])
-        g["populacao_2022"] = float(g["populacao_2022"]) + pop
+        pop = float(row["populacao_2025"])
+        g["populacao_2025"] = float(g["populacao_2025"]) + pop
         g["ubs"] = float(g["ubs"]) + float(row["ubs"])
         g["pessoas_vinculadas_aps"] = float(g["pessoas_vinculadas_aps"]) + float(row["pessoas_vinculadas_aps"])
         g["cadastro_populacao_base"] = float(g["cadastro_populacao_base"]) + float(row["cadastro_populacao_base"])
@@ -307,13 +308,13 @@ def aggregate_by(rows: list[dict[str, str | int | float]], key: str) -> list[dic
 
     out: list[dict[str, str | int | float]] = []
     for g in groups.values():
-        pop = float(g["populacao_2022"])
+        pop = float(g["populacao_2025"])
         cad_pop = float(g["cadastro_populacao_base"])
         out.append(
             {
                 key: g[key],
                 "municipios": int(g["municipios"]),
-                "populacao_2022": int(pop),
+                "populacao_2025": int(pop),
                 "ubs": int(g["ubs"]),
                 "ubs_por_10k_hab": rate(float(g["ubs"]), pop, 10_000),
                 "habitantes_por_ubs": pop / float(g["ubs"]) if float(g["ubs"]) else 0.0,
@@ -395,25 +396,25 @@ def write_reports(
     national_ubs_10k: float,
 ) -> None:
     REPORTS.mkdir(parents=True, exist_ok=True)
-    total_pop = sum(int(row["populacao_2022"]) for row in rows)
+    total_pop = sum(int(row["populacao_2025"]) for row in rows)
     total_ubs = sum(int(row["ubs"]) for row in rows)
     municipalities_with_ubs = sum(1 for row in rows if int(row["ubs"]) > 0)
-    municipalities_no_ubs_5k = sum(1 for row in rows if int(row["populacao_2022"]) >= 5_000 and int(row["ubs"]) == 0)
+    municipalities_no_ubs_5k = sum(1 for row in rows if int(row["populacao_2025"]) >= 5_000 and int(row["ubs"]) == 0)
     municipalities_low_vinculo = sum(
-        1 for row in rows if int(row["populacao_2022"]) >= 20_000 and float(row["pct_populacao_vinculada_aps"]) < 50
+        1 for row in rows if int(row["populacao_2025"]) >= 20_000 and float(row["pct_populacao_vinculada_aps"]) < 50
     )
     municipalities_low_previne = sum(
-        1 for row in rows if int(row["populacao_2022"]) >= 20_000 and float(row["media_indicadores_previne"]) < 40
+        1 for row in rows if int(row["populacao_2025"]) >= 20_000 and float(row["media_indicadores_previne"]) < 40
     )
-    weighted_previne = sum(float(row["media_indicadores_previne"]) * int(row["populacao_2022"]) for row in rows) / total_pop
+    weighted_previne = sum(float(row["media_indicadores_previne"]) * int(row["populacao_2025"]) for row in rows) / total_pop
     pct_vinculo = pct(
         sum(float(row["pessoas_vinculadas_aps"]) for row in rows),
         sum(float(row["cadastro_populacao_base"]) for row in rows),
     )
 
-    low_ubs = sorted(rows, key=lambda row: (float(row["ubs_por_10k_hab"]), -int(row["populacao_2022"])))
-    low_vinculo = sorted(rows, key=lambda row: (float(row["pct_populacao_vinculada_aps"]), -int(row["populacao_2022"])))
-    low_previne = sorted(rows, key=lambda row: (float(row["media_indicadores_previne"]), -int(row["populacao_2022"])))
+    low_ubs = sorted(rows, key=lambda row: (float(row["ubs_por_10k_hab"]), -int(row["populacao_2025"])))
+    low_vinculo = sorted(rows, key=lambda row: (float(row["pct_populacao_vinculada_aps"]), -int(row["populacao_2025"])))
+    low_previne = sorted(rows, key=lambda row: (float(row["media_indicadores_previne"]), -int(row["populacao_2025"])))
     regiao_ubs = sorted(regiao_rows, key=lambda row: float(row["ubs_por_10k_hab"]))
     uf_ubs = sorted(uf_rows, key=lambda row: float(row["ubs_por_10k_hab"]))
 
@@ -430,7 +431,7 @@ Ampliar a investigacao para oportunidades relacionadas a atencao primaria, antes
 - Ministerio da Saude / Portal de Dados Abertos do SUS: Unidades Basicas de Saude - UBS, CSV atualizado em julho/2026.
 - Ministerio da Saude / Sisab: Cadastro Vinculado do Programa Previne Brasil, competencia 202412.
 - Ministerio da Saude / Sisab: Indicadores de Desempenho do Programa Previne Brasil, quadrimestre 2024Q3.
-- IBGE / SIDRA: Censo Demografico 2022, populacao residente por municipio.
+- IBGE: Estimativas da Populacao Residente para municipios, referencia em 01/07/2025, revisadas em 13/01/2026.
 
 ## Volume analisado
 
@@ -453,34 +454,34 @@ Ampliar a investigacao para oportunidades relacionadas a atencao primaria, antes
 
 ## Regioes com menor taxa de UBS por 10 mil habitantes
 
-{table_md(regiao_ubs, ["regiao", "populacao_2022", "ubs", "ubs_por_10k_hab", "pct_populacao_vinculada_aps", "media_indicadores_previne_ponderada"], 10)}
+{table_md(regiao_ubs, ["regiao", "populacao_2025", "ubs", "ubs_por_10k_hab", "pct_populacao_vinculada_aps", "media_indicadores_previne_ponderada"], 10)}
 
 ## UFs com menor taxa de UBS por 10 mil habitantes
 
-{table_md(uf_ubs, ["uf", "populacao_2022", "ubs", "ubs_por_10k_hab", "pct_populacao_vinculada_aps", "media_indicadores_previne_ponderada"], 10)}
+{table_md(uf_ubs, ["uf", "populacao_2025", "ubs", "ubs_por_10k_hab", "pct_populacao_vinculada_aps", "media_indicadores_previne_ponderada"], 10)}
 
 ## Municipios com menor densidade de UBS
 
-{table_md(low_ubs, ["uf", "municipio", "populacao_2022", "ubs", "ubs_por_10k_hab", "habitantes_por_ubs"], 15)}
+{table_md(low_ubs, ["uf", "municipio", "populacao_2025", "ubs", "ubs_por_10k_hab", "habitantes_por_ubs"], 15)}
 
 ## Municipios com menor vinculo aproximado na APS
 
-{table_md(low_vinculo, ["uf", "municipio", "populacao_2022", "pct_populacao_vinculada_aps", "pessoas_vinculadas_aps"], 15)}
+{table_md(low_vinculo, ["uf", "municipio", "populacao_2025", "pct_populacao_vinculada_aps", "pessoas_vinculadas_aps"], 15)}
 
 ## Municipios com menor media dos indicadores Previne
 
-{table_md(low_previne, ["uf", "municipio", "populacao_2022", "media_indicadores_previne", "indicadores_abaixo_50", "indicadores_abaixo_30"], 15)}
+{table_md(low_previne, ["uf", "municipio", "populacao_2025", "media_indicadores_previne", "indicadores_abaixo_50", "indicadores_abaixo_30"], 15)}
 
 ## Municipios priorizados pela heuristica de oportunidade
 
-{table_md(opportunities, ["uf", "municipio", "populacao_2022", "ubs_por_10k_hab", "pct_populacao_vinculada_aps", "media_indicadores_previne", "sinais_de_oportunidade", "score_heuristico_oportunidade"], 20)}
+{table_md(opportunities, ["uf", "municipio", "populacao_2025", "ubs_por_10k_hab", "pct_populacao_vinculada_aps", "media_indicadores_previne", "sinais_de_oportunidade", "score_heuristico_oportunidade"], 20)}
 
 ## Interpretacao inicial
 
 - Fato/dado: ha variacao territorial em densidade de UBS, vinculo cadastral APS e desempenho dos indicadores Previne.
 - Interpretacao: oportunidades podem estar no acompanhamento ativo de pacientes, qualidade/registro da APS, priorizacao de visitas/cadastros e gestao territorial das UBS.
 - Hipotese: municipios com baixa densidade de UBS, baixo vinculo e baixo desempenho em indicadores de cuidado podem se beneficiar de uma ferramenta de priorizacao operacional para equipes ou gestores.
-- Limitacao: essas bases nao medem diretamente fila de consulta, agenda disponivel, qualidade clinica, deslocamento ou satisfacao do paciente.
+- Limitacao: essas bases nao medem diretamente fila de consulta, agenda disponivel, qualidade clinica, deslocamento ou satisfacao do paciente. As competencias sao diferentes: estimativa populacional 2025, cadastro 202412, indicadores 2024Q3 e UBS julho/2026.
 
 ## Arquivos gerados
 
@@ -527,9 +528,9 @@ Ampliar a investigacao para oportunidades relacionadas a atencao primaria, antes
   <h2>Regioes - UBS por 10 mil habitantes</h2>
   <div class="chart">{bar_svg(regiao_ubs, "regiao", "ubs_por_10k_hab", "Regioes por UBS por 10 mil habitantes")}</div>
   <h2>UFs com menor taxa de UBS</h2>
-  {html_table(uf_ubs, ["uf", "populacao_2022", "ubs", "ubs_por_10k_hab", "pct_populacao_vinculada_aps", "media_indicadores_previne_ponderada"], 12)}
+  {html_table(uf_ubs, ["uf", "populacao_2025", "ubs", "ubs_por_10k_hab", "pct_populacao_vinculada_aps", "media_indicadores_previne_ponderada"], 12)}
   <h2>Municipios priorizados</h2>
-  {html_table(opportunities, ["uf", "municipio", "populacao_2022", "ubs_por_10k_hab", "pct_populacao_vinculada_aps", "media_indicadores_previne", "sinais_de_oportunidade", "score_heuristico_oportunidade"], 30)}
+  {html_table(opportunities, ["uf", "municipio", "populacao_2025", "ubs_por_10k_hab", "pct_populacao_vinculada_aps", "media_indicadores_previne", "sinais_de_oportunidade", "score_heuristico_oportunidade"], 30)}
   <h2>Limites de interpretacao</h2>
   <div class="note">UBS cadastrada, vinculo cadastral e indicadores de desempenho sao proxies operacionais. Eles nao medem agenda disponivel, tempo de espera, qualidade clinica, deslocamento, satisfacao ou necessidade individual do paciente.</div>
 </main>
@@ -546,7 +547,7 @@ def main() -> None:
     total_cadastro_rows = add_cadastro_vinculado(municipalities)
     total_indicador_rows = add_indicadores(municipalities)
 
-    total_pop = sum(m.populacao_2022 for m in municipalities.values())
+    total_pop = sum(m.populacao_2025 for m in municipalities.values())
     total_ubs = sum(m.ubs for m in municipalities.values())
     national_ubs_10k = rate(total_ubs, total_pop, 10_000)
 
@@ -567,7 +568,7 @@ def main() -> None:
             -int(row["score_heuristico_oportunidade"]),
             float(row["media_indicadores_previne"]),
             float(row["pct_populacao_vinculada_aps"]),
-            -int(row["populacao_2022"]),
+            -int(row["populacao_2025"]),
         ),
     )
 

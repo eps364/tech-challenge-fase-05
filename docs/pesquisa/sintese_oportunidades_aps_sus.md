@@ -8,22 +8,22 @@ Data: 2026-07-18
 - Ministerio da Saude / SISAB: Cadastro Vinculado do Programa Previne Brasil, competencia `202412`.
 - Ministerio da Saude / SISAB: Indicadores de Desempenho do Programa Previne Brasil, quadrimestre `2024Q3`.
 - Ministerio da Saude: Hospitais e Leitos, competencia `202605`, ja analisada na etapa anterior.
-- IBGE: Censo Demografico 2022, populacao residente por municipio.
+- IBGE: estimativas municipais de populacao 2025, referencia em 01/07/2025 e revisao em 13/01/2026.
 
 ## Fatos e dados encontrados
 
 - Foram analisados 47.839 registros brutos de UBS, 46.086 registros de cadastro vinculado e 100.242 registros de indicadores de desempenho.
-- Foram avaliados 5.570 municipios, com populacao total de 203.080.756 habitantes no Censo 2022.
-- Media nacional calculada: 2,36 UBS por 10 mil habitantes.
+- Foram avaliados 5.571 municipios, com populacao total estimada de 213.421.037 habitantes em 2025.
+- Media nacional calculada: 2,24 UBS por 10 mil habitantes.
 - 56 municipios com 5 mil habitantes ou mais aparecem com zero UBS no arquivo analisado.
 - Percentual aproximado nacional de populacao vinculada na APS: 38,11%.
-- Media ponderada nacional dos indicadores Previne analisados: 47,38 em escala de 0 a 100.
-- 1.071 municipios com 20 mil habitantes ou mais aparecem com vinculo APS abaixo de 50%.
-- 273 municipios com 20 mil habitantes ou mais aparecem com media dos indicadores Previne abaixo de 40.
-- No cruzamento APS + leitos, 645 municipios apresentaram algum sinal integrado.
-- 214 municipios ficaram em alta prioridade heuristica, representando 58.607.042 habitantes.
-- 459 municipios combinaram APS fragil com leitos SUS baixos, representando 45.418.673 habitantes.
-- 25 municipios combinaram desempenho APS baixo com UTI SUS critica, representando 5.390.795 habitantes.
+- Media ponderada nacional dos indicadores Previne analisados: 47,34 em escala de 0 a 100.
+- 1.091 municipios com 20 mil habitantes ou mais aparecem com vinculo APS abaixo de 50%.
+- 276 municipios com 20 mil habitantes ou mais aparecem com media dos indicadores Previne abaixo de 40.
+- No cruzamento APS + leitos, 654 municipios apresentaram algum sinal integrado.
+- 221 municipios ficaram em alta prioridade heuristica, representando 61.899.822 habitantes.
+- 468 municipios combinaram APS fragil com leitos SUS baixos, representando 48.281.213 habitantes.
+- 28 municipios combinaram desempenho APS baixo com UTI SUS critica, representando 6.201.548 habitantes.
 
 ## Oportunidades identificadas
 
@@ -31,7 +31,7 @@ Data: 2026-07-18
 
 Problema candidato: gestores e reguladores precisam enxergar, no mesmo painel, onde a APS esta fragil e a retaguarda hospitalar tambem esta limitada.
 
-Evidencia: 459 municipios aparecem com sinais de APS fragil e baixa disponibilidade relativa de leitos SUS.
+Evidencia: 468 municipios aparecem com sinais de APS fragil e baixa disponibilidade relativa de leitos SUS.
 
 Hipotese de valor: uma ferramenta de priorizacao poderia orientar encaminhamentos, pactuacao regional, abertura temporaria de agenda, teleconsultoria, transporte sanitario ou reforco preventivo antes do agravamento dos casos.
 
@@ -39,7 +39,7 @@ Hipotese de valor: uma ferramenta de priorizacao poderia orientar encaminhamento
 
 Problema candidato: equipes de UBS podem ter dificuldade para identificar grupos e territorios com baixo vinculo e baixo acompanhamento.
 
-Evidencia: 1.071 municipios com 20 mil habitantes ou mais aparecem com vinculo APS abaixo de 50%, e 273 aparecem com media Previne abaixo de 40.
+Evidencia: 1.091 municipios com 20 mil habitantes ou mais aparecem com vinculo APS abaixo de 50%, e 276 aparecem com media Previne abaixo de 40.
 
 Hipotese de valor: um motor simples de busca ativa poderia priorizar pacientes/territorios para cadastro, acompanhamento de gestantes, vacinacao, citopatologico, diabetes e outros indicadores sensiveis a acompanhamento longitudinal.
 
@@ -47,17 +47,17 @@ Hipotese de valor: um motor simples de busca ativa poderia priorizar pacientes/t
 
 Problema candidato: municipios com zero UBS, zero leitos ou zero UTI no arquivo exigem validacao antes de qualquer conclusao operacional.
 
-Evidencia: 56 municipios de 5 mil habitantes ou mais aparecem com zero UBS no arquivo; na etapa de leitos, 12 municipios de 50 mil habitantes ou mais apareceram com zero leitos SUS e 40 municipios de 100 mil habitantes ou mais com zero UTI SUS.
+Evidencia: 56 municipios de 5 mil habitantes ou mais aparecem com zero UBS no arquivo; na etapa de leitos, 14 municipios de 50 mil habitantes ou mais apareceram com zero leitos SUS e 47 municipios de 100 mil habitantes ou mais com zero UTI SUS.
 
 Hipotese de valor: um validador de oferta cadastrada poderia apontar inconsistencias, dependencia regional e lacunas de transparencia para gestores e populacao.
 
-### 4. Monitoramento preventivo para evitar agravamento
+### 4. Monitoramento territorial preventivo
 
-Problema candidato: baixo desempenho em APS pode antecipar maior risco de agravamento e demanda evitavel por urgencia/hospital.
+Problema candidato: sinais historicos de desempenho APS baixo e de UTI SUS critica precisam de validacao local e podem justificar uma resposta territorial preventiva.
 
-Evidencia: 25 municipios combinam desempenho APS baixo com UTI SUS critica no cruzamento.
+Evidencia: 28 municipios combinam desempenho APS baixo com UTI SUS critica no cruzamento.
 
-Hipotese de valor: alertas de risco territorial poderiam apoiar cuidado precoce, acompanhamento remoto, roteiros de agentes comunitarios e comunicacao ativa com pacientes.
+Hipotese de valor: uma fila de investigacao territorial pode apoiar cuidado preventivo, busca ativa e coordenacao local, sem inferir risco clinico individual ou causalidade.
 
 ### 5. Planejamento regional e pactuacao entre municipios
 
@@ -91,7 +91,7 @@ Isso abre espaco para um MVP de apoio a decisao e priorizacao operacional, desde
 - As bases nao medem fila, tempo de espera, absenteismo, ocupacao hospitalar em tempo real, deslocamento real, qualidade clinica ou satisfacao do paciente.
 - Indicadores do Previne Brasil sao historicos e foram afetados pela mudanca do modelo de financiamento da APS.
 - Zero unidade/leito/UTI em arquivo oficial deve ser tratado como sinal para validacao cadastral e regional, nao como conclusao isolada.
-- As competencias das bases sao diferentes: populacao 2022, SISAB 2024, leitos 202605 e UBS julho/2026.
+- As competencias das bases sao diferentes: estimativa populacional 2025, SISAB 2024, leitos 202605 e UBS julho/2026.
 
 ## Arquivos gerados
 

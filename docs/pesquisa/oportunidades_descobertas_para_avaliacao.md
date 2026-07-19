@@ -22,10 +22,10 @@ Gestores e reguladores podem ter dificuldade para enxergar, em uma unica visao, 
 
 Evidencia encontrada:
 
-- 645 municipios apresentaram algum sinal integrado no cruzamento APS + leitos.
-- 214 municipios ficaram em alta prioridade heuristica.
-- Esses 214 municipios representam 58.607.042 habitantes.
-- 459 municipios combinam APS fragil com leitos SUS baixos, representando 45.418.673 habitantes.
+- 654 municipios apresentaram algum sinal integrado no cruzamento APS + leitos.
+- 221 municipios ficaram em alta prioridade heuristica.
+- Esses 221 municipios representam 61.899.822 habitantes.
+- 468 municipios combinam APS fragil com leitos SUS baixos, representando 48.281.213 habitantes.
 
 Oportunidade de melhoria:
 
@@ -35,7 +35,7 @@ Por que parece forte para o hackathon:
 
 - Usa dados oficiais.
 - Tem impacto social claro.
-- Permite MVP factivel com painel, score de risco e explicabilidade.
+- Permite MVP factivel com painel, score territorial e explicabilidade.
 - Nao depende, no primeiro MVP, de dados sensiveis de pacientes.
 
 ## Oportunidade 2 - Gestao ativa de carteira na APS
@@ -47,12 +47,12 @@ Equipes de UBS podem ter dificuldade para identificar quem ou onde priorizar qua
 Evidencia encontrada:
 
 - Percentual aproximado nacional de populacao vinculada na APS: 38,11%.
-- 1.071 municipios com 20 mil habitantes ou mais aparecem com vinculo APS abaixo de 50%.
-- 273 municipios com 20 mil habitantes ou mais aparecem com media dos indicadores Previne abaixo de 40.
+- 1.091 municipios com 20 mil habitantes ou mais aparecem com vinculo APS abaixo de 50%.
+- 276 municipios com 20 mil habitantes ou mais aparecem com media dos indicadores Previne abaixo de 40.
 
 Oportunidade de melhoria:
 
-Apoiar busca ativa e acompanhamento de carteira, priorizando territorios com maior risco de abandono de cuidado, baixo acompanhamento preventivo ou indicadores sensiveis a continuidade do cuidado.
+Apoiar busca ativa e acompanhamento de carteira, priorizando territorios com sinais de baixo vinculo, baixo acompanhamento preventivo ou indicadores historicos sensiveis a continuidade do cuidado.
 
 Casos de uso possiveis:
 
@@ -69,8 +69,8 @@ Alguns municipios aparecem com zero UBS, zero leitos SUS ou zero UTI SUS nas bas
 Evidencia encontrada:
 
 - 56 municipios com 5 mil habitantes ou mais aparecem com zero UBS no arquivo de UBS.
-- Na analise anterior de leitos, 12 municipios com 50 mil habitantes ou mais apareceram com zero leitos SUS.
-- Na analise anterior de leitos, 40 municipios com 100 mil habitantes ou mais apareceram com zero UTI SUS.
+- Na analise atualizada de leitos, 14 municipios com 50 mil habitantes ou mais apareceram com zero leitos SUS.
+- Na analise atualizada de leitos, 47 municipios com 100 mil habitantes ou mais apareceram com zero UTI SUS.
 
 Oportunidade de melhoria:
 
@@ -81,20 +81,20 @@ Criar uma ferramenta de validacao e transparencia de oferta, separando:
 - possivel inconsistencia cadastral;
 - necessidade de revisao pelo gestor.
 
-## Oportunidade 4 - Monitoramento preventivo de risco assistencial
+## Oportunidade 4 - Monitoramento territorial preventivo
 
 Problema observado:
 
-Quando indicadores de APS estao baixos e a retaguarda de UTI tambem e critica, existe risco de agravamento sem uma rede local preparada para absorver casos mais graves.
+Quando indicadores historicos de APS estao baixos e a retaguarda de UTI tambem aparece critica, o territorio precisa de investigacao local e pode demandar organizacao preventiva da rede.
 
 Evidencia encontrada:
 
-- 25 municipios combinam desempenho APS baixo com UTI SUS critica.
-- A populacao nesses municipios soma 5.390.795 habitantes.
+- 28 municipios combinam desempenho APS baixo com UTI SUS critica.
+- A populacao nesses municipios soma 6.201.548 habitantes.
 
 Oportunidade de melhoria:
 
-Criar alertas territoriais para acao precoce: cuidado remoto, busca ativa, teleorientacao, priorizacao de grupos vulneraveis e encaminhamento antecipado antes de agravamentos.
+Criar uma fila territorial para validacao e acao preventiva: busca ativa, teleorientacao, priorizacao de grupos definidos pela equipe local e articulacao da referencia quando necessario. O dado agregado nao classifica risco clinico individual nem prediz agravamento.
 
 ## Oportunidade 5 - Planejamento regional e pactuacao entre municipios
 
@@ -139,7 +139,7 @@ Essa dor conversa bem com o tema do hackathon porque conecta acesso, eficiencia,
 - Os dados nao medem fila real, tempo de espera, absenteismo, ocupacao hospitalar em tempo real, deslocamento ou satisfacao do paciente.
 - Os indicadores do Previne Brasil sao historicos e foram afetados por mudancas no financiamento da APS.
 - Zero UBS, zero leito ou zero UTI em arquivo oficial deve ser validado com CNES e gestores locais.
-- A populacao vem do Censo 2022; as demais bases usam competencias diferentes.
+- A populacao vem da estimativa municipal IBGE de 2025; as demais bases usam competencias diferentes.
 - A analise aponta oportunidades e hipoteses, nao prova causalidade.
 
 ## Arquivos de apoio
