@@ -13,6 +13,10 @@ No Bruno, use **Open Collection**, nao **Import Collection**. Selecione a pasta
 pasta `Aps-Prioritization` dentro da collection e selecione o ambiente
 `aps-local`.
 
+Se a sua tela permitir apenas selecionar arquivo, use **Import Collection** com
+`docs/tecnico/api/aps-prioritization-bruno.zip`. Caso o seletor esteja filtrando
+somente `.bru`, arraste o ZIP para a area de importacao.
+
 Ordem principal:
 
 1. `01 - Health | servico no ar`

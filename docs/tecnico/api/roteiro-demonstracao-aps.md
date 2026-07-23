@@ -51,8 +51,10 @@ Esperanca fica proxima do prazo.
 
 No Bruno, abra a collection com **Open Collection** apontando para
 `docs/tecnico/api/`, nao pelo importador de arquivo. Use o ambiente `aps-local`.
-O passo 5 captura automaticamente o ID da acao criada em `apsCreatedActionId`,
-e o passo 6 usa esse ID.
+Se a interface permitir apenas arquivo, importe
+`docs/tecnico/api/aps-prioritization-bruno.zip` ou arraste esse ZIP para a area
+de importacao. O passo 5 captura automaticamente o ID da acao criada em
+`apsCreatedActionId`, e o passo 6 usa esse ID.
 
 | Ordem | Request | O que dizer | O que apontar no output |
 | --- | --- | --- | --- |
