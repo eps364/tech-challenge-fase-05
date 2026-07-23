@@ -1,11 +1,11 @@
 meta {
-  name: Update Search Action Progress
+  name: 06 - Atualizar progresso | execucao agregada
   type: http
   seq: 6
 }
 
 patch {
-  url: {{apsBaseUrl}}/actions/{{apsActionId}}/progress
+  url: {{apsBaseUrl}}/actions/{{apsCreatedActionId}}/progress
   body: json
   auth: none
 }
@@ -19,6 +19,6 @@ body:json {
   {
     "status": "IN_PROGRESS",
     "performedCount": 54,
-    "resultNotes": "54 contacts made and 31 people reconnected to follow-up"
+    "resultNotes": "54 contatos agregados registrados pela equipe no territorio."
   }
 }

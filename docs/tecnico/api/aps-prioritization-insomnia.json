@@ -1,7 +1,7 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2026-07-18T21:00:00.000Z",
+  "__export_date": "2026-07-23T12:00:00.000Z",
   "__export_source": "codex",
   "resources": [
     {
@@ -19,7 +19,11 @@
         "apsServiceUrl": "http://localhost:8205",
         "apsBaseUrl": "http://localhost:8205/api/v1",
         "apsTerritoryId": "10000000-0000-0000-0000-000000000001",
-        "apsActionId": "20000000-0000-0000-0000-000000000001"
+        "apsActionId": "20000000-0000-0000-0000-000000000001",
+        "apsCreatedActionId": "20000000-0000-0000-0000-000000000001",
+        "apsDemoStartDate": "2026-07-23",
+        "apsDemoEndDate": "2026-07-30",
+        "apsDemoCompetence": "2026-06"
       }
     },
     {
@@ -27,13 +31,14 @@
       "parentId": "wrk_aps_prioritization",
       "_type": "request_group",
       "name": "APS Prioritization Flow",
-      "description": "Run the requests in order to demonstrate territorial prioritization and aggregate outreach progress."
+      "description": "Execute de 01 a 07 para demonstrar priorizacao territorial, explicacao da regra, criacao de acao, progresso agregado e retorno ao dashboard. O request 90 e opcional para resetar indicadores."
     },
     {
       "_id": "req_aps_health",
       "parentId": "fld_aps_prioritization",
       "_type": "request",
-      "name": "01 - Health",
+      "name": "01 - Health | servico no ar",
+      "description": "Mostra que o container da API esta disponivel antes da demonstracao.",
       "method": "GET",
       "url": "{{ _.apsServiceUrl }}/actuator/health",
       "headers": [{"name": "Accept", "value": "application/json"}]
@@ -42,7 +47,8 @@
       "_id": "req_aps_dashboard",
       "parentId": "fld_aps_prioritization",
       "_type": "request",
-      "name": "02 - Get Dashboard",
+      "name": "02 - Dashboard inicial | fila territorial",
+      "description": "Abre a historia com resumo de territorios prioritarios, acoes abertas e alertas operacionais.",
       "method": "GET",
       "url": "{{ _.apsBaseUrl }}/dashboard",
       "headers": [{"name": "Accept", "value": "application/json"}]
@@ -51,7 +57,8 @@
       "_id": "req_aps_priorities",
       "parentId": "fld_aps_prioritization",
       "_type": "request",
-      "name": "03 - List High Priority Territories",
+      "name": "03 - Prioridades HIGH | escolher territorio",
+      "description": "Mostra a lista filtrada para escolher Jardim Esperanca como primeira acao.",
       "method": "GET",
       "url": "{{ _.apsBaseUrl }}/territories?priority=HIGH",
       "headers": [{"name": "Accept", "value": "application/json"}]
@@ -60,7 +67,8 @@
       "_id": "req_aps_territory",
       "parentId": "fld_aps_prioritization",
       "_type": "request",
-      "name": "04 - Get Territory Details",
+      "name": "04 - Detalhe Jardim Esperanca | explicar regra",
+      "description": "Mostra vinculo, metas, indicadores e motivos da prioridade HIGH.",
       "method": "GET",
       "url": "{{ _.apsBaseUrl }}/territories/{{ _.apsTerritoryId }}",
       "headers": [{"name": "Accept", "value": "application/json"}]
@@ -69,7 +77,8 @@
       "_id": "req_aps_create_action",
       "parentId": "fld_aps_prioritization",
       "_type": "request",
-      "name": "05 - Create Search Action",
+      "name": "05 - Criar acao territorial | prioridade vira trabalho",
+      "description": "Cria uma acao de busca ativa com equipe, prazo e meta agregada. Para atualizar exatamente esta acao no Insomnia, copie o campo id retornado para a variavel apsCreatedActionId.",
       "method": "POST",
       "url": "{{ _.apsBaseUrl }}/territories/{{ _.apsTerritoryId }}/actions",
       "headers": [
@@ -78,30 +87,42 @@
       ],
       "body": {
         "mimeType": "application/json",
-        "text": "{\n  \"focus\": \"CHRONIC_CONDITIONS\",\n  \"objective\": \"Reconnect people with chronic conditions to preventive follow-up\",\n  \"responsibleTeam\": \"ESF Jardim Esperanca\",\n  \"plannedStart\": \"2026-07-18\",\n  \"plannedEnd\": \"2026-07-25\",\n  \"targetCount\": 80,\n  \"notes\": \"Demonstration action with aggregate counts only\"\n}"
+        "text": "{\n  \"focus\": \"CHRONIC_CONDITIONS\",\n  \"objective\": \"Organizar busca ativa territorial para acompanhamento preventivo de condicoes cronicas\",\n  \"responsibleTeam\": \"ESF Jardim Esperanca\",\n  \"plannedStart\": \"{{ _.apsDemoStartDate }}\",\n  \"plannedEnd\": \"{{ _.apsDemoEndDate }}\",\n  \"targetCount\": 80,\n  \"notes\": \"Massa demonstrativa com contagens agregadas. Nao ha dados de pacientes.\"\n}"
       }
     },
     {
       "_id": "req_aps_update_action",
       "parentId": "fld_aps_prioritization",
       "_type": "request",
-      "name": "06 - Update Search Action Progress",
+      "name": "06 - Atualizar progresso | execucao agregada",
+      "description": "Registra 54 contatos agregados. Por padrao usa a acao demonstrativa inicial; se voce copiou o id do passo 05 para apsCreatedActionId, atualiza a acao recem-criada.",
       "method": "PATCH",
-      "url": "{{ _.apsBaseUrl }}/actions/{{ _.apsActionId }}/progress",
+      "url": "{{ _.apsBaseUrl }}/actions/{{ _.apsCreatedActionId }}/progress",
       "headers": [
         {"name": "Content-Type", "value": "application/json"},
         {"name": "Accept", "value": "application/json"}
       ],
       "body": {
         "mimeType": "application/json",
-        "text": "{\n  \"status\": \"IN_PROGRESS\",\n  \"performedCount\": 54,\n  \"resultNotes\": \"54 contacts made and 31 people reconnected to follow-up\"\n}"
+        "text": "{\n  \"status\": \"IN_PROGRESS\",\n  \"performedCount\": 54,\n  \"resultNotes\": \"54 contatos agregados registrados pela equipe no territorio.\"\n}"
       }
+    },
+    {
+      "_id": "req_aps_dashboard_after_progress",
+      "parentId": "fld_aps_prioritization",
+      "_type": "request",
+      "name": "07 - Dashboard apos progresso | fechar ciclo",
+      "description": "Fecha a demonstracao mostrando que o painel reflete a carga operacional apos a atualizacao.",
+      "method": "GET",
+      "url": "{{ _.apsBaseUrl }}/dashboard",
+      "headers": [{"name": "Accept", "value": "application/json"}]
     },
     {
       "_id": "req_aps_replace_indicators",
       "parentId": "fld_aps_prioritization",
       "_type": "request",
-      "name": "07 - Replace Territory Indicators",
+      "name": "90 - Opcional | resetar indicadores Jardim Esperanca",
+      "description": "Request de apoio para restaurar os indicadores de Jardim Esperanca depois de testes manuais. Nao remove acoes criadas.",
       "method": "PUT",
       "url": "{{ _.apsBaseUrl }}/territories/{{ _.apsTerritoryId }}/indicators",
       "headers": [
@@ -110,7 +131,7 @@
       ],
       "body": {
         "mimeType": "application/json",
-        "text": "{\n  \"linkedPopulationPercent\": 42.00,\n  \"dataCompetence\": \"2026-06\",\n  \"indicators\": [\n    {\"focus\": \"CHRONIC_CONDITIONS\", \"score\": 32.00, \"target\": 60.00},\n    {\"focus\": \"PRENATAL_CARE\", \"score\": 72.00, \"target\": 85.00}\n  ]\n}"
+        "text": "{\n  \"linkedPopulationPercent\": 42.00,\n  \"dataCompetence\": \"{{ _.apsDemoCompetence }}\",\n  \"indicators\": [\n    {\"focus\": \"CHRONIC_CONDITIONS\", \"score\": 32.00, \"target\": 60.00},\n    {\"focus\": \"PRENATAL_CARE\", \"score\": 72.00, \"target\": 85.00}\n  ]\n}"
       }
     }
   ]

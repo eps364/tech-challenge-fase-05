@@ -1,7 +1,7 @@
 meta {
-  name: Replace Territory Indicators
+  name: 90 - Opcional | resetar indicadores Jardim Esperanca
   type: http
-  seq: 7
+  seq: 90
 }
 
 put {
@@ -18,7 +18,7 @@ headers {
 body:json {
   {
     "linkedPopulationPercent": 42.00,
-    "dataCompetence": "2026-06",
+    "dataCompetence": "{{apsDemoCompetence}}",
     "indicators": [
       {"focus": "CHRONIC_CONDITIONS", "score": 32.00, "target": 60.00},
       {"focus": "PRENATAL_CARE", "score": 72.00, "target": 85.00}

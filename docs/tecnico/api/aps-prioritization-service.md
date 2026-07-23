@@ -14,6 +14,15 @@ indicadores agregados e nao aceita dados pessoais ou prontuarios.
 | Parque das Flores | `10000000-0000-0000-0000-000000000003` | Media prioridade por vinculo abaixo da meta. |
 | Centro | `10000000-0000-0000-0000-000000000004` | Baixa prioridade e uma acao concluida. |
 
+| Acao inicial | ID | Situacao inicial |
+| --- | --- | --- |
+| Jardim Esperanca, condicoes cronicas | `20000000-0000-0000-0000-000000000001` | Em andamento, 54 de 80 contatos agregados. |
+| Vila Nova, condicoes cronicas | `20000000-0000-0000-0000-000000000002` | Planejada, sem contatos e vencida em relacao ao dia de carga da massa. |
+| Centro, vacinacao infantil | `20000000-0000-0000-0000-000000000003` | Concluida, 47 de 50 contatos agregados. |
+
+O roteiro detalhado de apresentacao esta em
+`docs/tecnico/api/roteiro-demonstracao-aps.md`.
+
 ## Endpoints
 
 | Metodo | Endpoint | Descricao |
@@ -40,12 +49,12 @@ resultado e apoio administrativo explicavel, nao diagnostico ou previsao clinica
 ```json
 {
   "focus": "CHRONIC_CONDITIONS",
-  "objective": "Reconnect people with chronic conditions to preventive follow-up",
+  "objective": "Organizar busca ativa territorial para acompanhamento preventivo de condicoes cronicas",
   "responsibleTeam": "ESF Jardim Esperanca",
-  "plannedStart": "2026-07-18",
-  "plannedEnd": "2026-07-25",
+  "plannedStart": "2026-07-23",
+  "plannedEnd": "2026-07-30",
   "targetCount": 80,
-  "notes": "Demonstration action with aggregate counts only"
+  "notes": "Massa demonstrativa com contagens agregadas. Nao ha dados de pacientes."
 }
 ```
 
@@ -55,7 +64,7 @@ Em seguida, atualize o resultado de forma agregada:
 {
   "status": "IN_PROGRESS",
   "performedCount": 54,
-  "resultNotes": "54 contacts made and 31 people reconnected to follow-up"
+  "resultNotes": "54 contatos agregados registrados pela equipe no territorio."
 }
 ```
 
@@ -65,3 +74,5 @@ Em seguida, atualize o resultado de forma agregada:
 - Insomnia: `docs/tecnico/api/aps-prioritization-insomnia.json`.
 
 As duas colecoes executam o fluxo demonstrativo sem depender de dados de pacientes.
+No Bruno, a sequencia principal captura automaticamente o ID da acao criada no
+passo 5 para atualizar a mesma acao no passo 6.

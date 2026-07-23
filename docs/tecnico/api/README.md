@@ -3,28 +3,35 @@
 As colecoes ativas demonstram o fluxo de priorizacao territorial e busca ativa
 preventiva. Elas nao usam pacientes, prontuarios ou agendamentos.
 
+Para apresentar o fluxo com massa, fala sugerida e campos de output para
+mostrar na tela, use `docs/tecnico/api/roteiro-demonstracao-aps.md`.
+
 ## Bruno
 
 Abra a pasta `docs/tecnico/api/Aps-Prioritization/` no Bruno e selecione o
 ambiente `docs/tecnico/api/environments/aps-local.bru`.
 
-Ordem sugerida:
+Ordem principal:
 
-1. `01-Health`
-2. `02-Get-Dashboard`
-3. `03-List-High-Priority-Territories`
-4. `04-Get-Territory-Details`
-5. `05-Create-Search-Action`
-6. `06-Update-Search-Action-Progress`
-7. `07-Replace-Territory-Indicators`
+1. `01 - Health | servico no ar`
+2. `02 - Dashboard inicial | fila territorial`
+3. `03 - Prioridades HIGH | escolher territorio`
+4. `04 - Detalhe Jardim Esperanca | explicar regra`
+5. `05 - Criar acao territorial | prioridade vira trabalho`
+6. `06 - Atualizar progresso | execucao agregada`
+7. `07 - Dashboard apos progresso | fechar ciclo`
 
-A requisicao de criacao guarda o ID retornado para que a atualizacao de
-progresso execute o fluxo ponta a ponta.
+A requisicao de criacao guarda o ID retornado em `apsCreatedActionId` para que
+a atualizacao de progresso execute o fluxo ponta a ponta. O request
+`90 - Opcional | resetar indicadores Jardim Esperanca` e apenas de apoio para
+testes manuais.
 
 ## Insomnia
 
 Importe `docs/tecnico/api/aps-prioritization-insomnia.json`. A collection aponta para
 `http://localhost:8205/api/v1` e usa os mesmos IDs demonstrativos do Bruno.
+No Insomnia, caso queira atualizar exatamente a acao criada no passo 5, copie o
+`id` retornado para a variavel `apsCreatedActionId` antes de executar o passo 6.
 
 Consulte `docs/tecnico/api/aps-prioritization-service.md` para contratos e massa de
 demonstracao.
