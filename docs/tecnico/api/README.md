@@ -8,8 +8,10 @@ mostrar na tela, use `docs/tecnico/api/roteiro-demonstracao-aps.md`.
 
 ## Bruno
 
-Abra a pasta `docs/tecnico/api/Aps-Prioritization/` no Bruno e selecione o
-ambiente `docs/tecnico/api/environments/aps-local.bru`.
+No Bruno, use **Open Collection**, nao **Import Collection**. Selecione a pasta
+`docs/tecnico/api/`, que contem `bruno.json` e `collection.bru`. Depois abra a
+pasta `Aps-Prioritization` dentro da collection e selecione o ambiente
+`aps-local`.
 
 Ordem principal:
 

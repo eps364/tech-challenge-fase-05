@@ -49,8 +49,10 @@ Esperanca fica proxima do prazo.
 
 ## Sequencia principal da collection
 
-Use o ambiente `aps-local`. No Bruno, o passo 5 captura automaticamente o ID da
-acao criada em `apsCreatedActionId`, e o passo 6 usa esse ID.
+No Bruno, abra a collection com **Open Collection** apontando para
+`docs/tecnico/api/`, nao pelo importador de arquivo. Use o ambiente `aps-local`.
+O passo 5 captura automaticamente o ID da acao criada em `apsCreatedActionId`,
+e o passo 6 usa esse ID.
 
 | Ordem | Request | O que dizer | O que apontar no output |
 | --- | --- | --- | --- |
