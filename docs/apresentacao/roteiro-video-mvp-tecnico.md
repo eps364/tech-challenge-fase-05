@@ -1,37 +1,43 @@
-# Roteiro do vídeo técnico do MVP - SUS Conecta
+# Roteiro da apresentação técnica - SUS Conecta
 
-Duração-alvo: **7 minutos e 35 segundos**.
+Duração planejada: **aproximadamente 7 minutos**.
 
-Objetivo: demonstrar o backend funcionando, explicar as classes centrais e
-mostrar como dados agregados sustentaram a escolha do problema, sem confundir
-a análise exploratória com a massa fictícia da API.
+Limite de segurança: **encerrar até 7 minutos e 30 segundos**.
 
-Ferramentas de gravação recomendadas:
+Objetivo do vídeo: apresentar brevemente o projeto e os dados analisados,
+explicar o fluxo principal do código e demonstrar a solução pela collection
+importada no Insomnia.
 
-- IDE para mostrar estrutura e classes;
-- relatório HTML ou Markdown da análise;
-- Bruno com a collection `docs/tecnico/api/`;
-- terminal apenas para healthcheck e, se desejado, evidências de teste;
-- tela em 1920 x 1080, com notificações, abas pessoais e barra do Windows
-  ocultas.
+## Como usar este roteiro
 
-## Mensagem que deve orientar todo o vídeo
+- Cada bloco de fala apresenta apenas uma ideia principal.
+- Não leia nomes completos de pacotes ou todos os métodos da classe.
+- Mostre a classe, aponte o método importante e volte a olhar para a câmera.
+- Ao explicar a arquitetura, siga sempre a mesma direção:
+  **controller → caso de uso → domínio → gateway → adapter → repository**.
+- Na demonstração, execute os requests de `01` a `07`. O request `90` é apenas
+  um apoio para restaurar os indicadores.
 
-> O SUS Conecta recebe indicadores agregados por território, aplica uma regra
-> operacional explicável e ajuda a coordenação a transformar prioridade em uma
-> ação de busca ativa acompanhada de forma agregada.
+## História que o vídeo deve contar
 
-Não dizer que o sistema diagnostica, identifica pacientes, prediz agravamento,
-evita internação ou comprova impacto clínico.
+> O SUS Conecta ajuda a coordenação da Atenção Primária a identificar um
+> território prioritário, entender os indicadores que justificam essa
+> prioridade, registrar uma ação de busca ativa e acompanhar seu progresso de
+> forma agregada.
 
-## Preparação antes de gravar
+Os dados da análise nacional são públicos, oficiais e agregados. Jardim
+Esperança e os demais territórios da API são fictícios. O sistema não
+prioriza pessoas e não toma decisões clínicas.
 
-### 1. Ambiente
+---
 
-Subir o serviço:
+## Preparação antes da gravação
+
+### 1. Conferir o serviço
+
+Como o Docker já está ativo, confirme apenas o healthcheck:
 
 ```powershell
-docker compose up -d --build aps-prioritization-service
 curl.exe http://localhost:8205/actuator/health
 ```
 
@@ -41,192 +47,300 @@ Resposta esperada:
 {"status":"UP"}
 ```
 
-Para obter a mesma massa e os mesmos contadores descritos neste roteiro, o
-banco demonstrativo deve estar limpo. O comando abaixo remove o volume local
-da demonstração; use-o somente se não houver dados que precisem ser
-preservados:
+Se precisar reconstruir o serviço:
 
 ```powershell
-docker compose down -v
 docker compose up -d --build aps-prioritization-service
 ```
 
-### 2. Bruno
+### 2. Preparar o Insomnia
 
-1. Abrir como collection a pasta `docs/tecnico/api/`.
-2. Selecionar o ambiente `aps-local`.
-3. Atualizar `apsDemoStartDate` para o dia da gravação.
-4. Atualizar `apsDemoEndDate` para sete dias depois.
-5. Confirmar que `apsCreatedActionId` será preenchido automaticamente pelo
-   request 05.
-6. Executar a sequência uma vez antes da gravação.
-7. Limpar novamente a massa antes do take final.
+Collection importada:
 
-### 3. Abas e arquivos já preparados
+`docs/tecnico/api/aps-prioritization-insomnia.json`
+
+No **Base Environment**, conferir:
+
+| Variável | Uso |
+| --- | --- |
+| `apsServiceUrl` | Healthcheck do serviço |
+| `apsBaseUrl` | Base da API: `http://localhost:8205/api/v1` |
+| `apsTerritoryId` | ID estável de Jardim Esperança |
+| `apsCreatedActionId` | ID da ação que será atualizada no passo 06 |
+| `apsDemoStartDate` | Dia da gravação |
+| `apsDemoEndDate` | Sete dias depois da gravação |
+| `apsDemoCompetence` | Competência usada somente pelo request opcional 90 |
+
+Antes do take:
+
+1. atualizar `apsDemoStartDate` e `apsDemoEndDate`;
+2. executar os requests de `01` a `07` uma vez;
+3. confirmar que todos respondem;
+4. voltar ao request `01`;
+5. deixar o **Base Environment** fácil de abrir com `Ctrl+E`.
+
+O Insomnia não captura automaticamente o ID criado no passo 05. Depois de criar
+a ação, copie o campo `id`, abra o **Base Environment** com `Ctrl+E` e substitua
+o valor de `apsCreatedActionId` antes de executar o passo 06.
+
+### 3. Preparar as abas da IDE
 
 Abrir nesta ordem:
 
-1. `analytics/reports/analise_aps_sus.html`;
-2. árvore `core` e `infra` do serviço;
+1. `ApsPrioritizationController.java`;
+2. `CreateSearchActionUseCase.java`;
 3. `PriorityCalculator.java`;
 4. `SearchAction.java`;
-5. `ApsPrioritizationController.java`;
-6. `UseCaseConfig.java`;
-7. Bruno, com os requests 01 a 07 visíveis;
-8. `docs/tecnico/e2e/relatorio_execucao_e2e.md`.
+5. `SearchActionGateway.java`;
+6. `SearchActionRepositoryAdapter.java`;
+7. `SearchActionJpaRepository.java`.
 
-Não navegar procurando arquivos durante a gravação. Deixar cada ponto pronto
-reduz silêncio e risco de ultrapassar o limite.
+Deixe também aberto:
 
-## Mapa técnico para explicar
+- `analytics/reports/analise_aps_sus.html`;
+- `GetDashboardUseCase.java`, apenas como apoio para perguntas;
+- o Insomnia com a pasta **APS Prioritization Flow** expandida.
+
+---
+
+## Fluxo técnico em uma imagem
 
 ```mermaid
 flowchart LR
-  HTTP["ApsPrioritizationController\nrequests e validação HTTP"] --> UC["Casos de uso\norquestração"]
-  UC --> D["Domínio\nTerritory, PriorityCalculator e SearchAction"]
-  UC --> G["Gateways\nportas de persistência"]
-  G --> A["Adapters JPA\nmapeamento domínio-banco"]
-  A --> DB["PostgreSQL 15\nschema criado por Flyway"]
-  D --> UC
-  UC --> HTTP
+  I["Insomnia"] --> C["ApsPrioritizationController"]
+  C --> U["Caso de uso"]
+  U --> D["Domínio\nPriorityCalculator ou SearchAction"]
+  U --> G["Gateway do core"]
+  G --> A["RepositoryAdapter"]
+  A --> R["JpaRepository"]
+  R --> B["PostgreSQL"]
+  D --> U
+  U --> C
+  C --> I
 ```
 
-As dependências apontam para o `core`. Spring, JPA, Jakarta Validation,
-ProblemDetail e Flyway permanecem em `infra`.
+### Explicação em uma frase
 
-## Classes principais e o que dizer
+> O controller recebe a chamada e delega; o caso de uso coordena o fluxo; o
+> domínio aplica as regras; o gateway define o que precisa ser persistido; o
+> adapter traduz domínio e JPA; e o repository acessa o banco.
 
-| Classe ou grupo | Papel no fluxo | Ponto para mostrar |
+O ponto mais importante da arquitetura é que o controller não acessa o
+repository diretamente. As regras também não ficam no controller ou nas
+entidades JPA.
+
+---
+
+## Classes principais em ordem de fluxo
+
+| Ordem | Classe ou grupo | Explicação simples |
 | --- | --- | --- |
-| `ApsPrioritizationController` | Traduz HTTP em comandos do core e devolve os outputs. | Endpoints `/dashboard`, `/territories`, `/actions`. |
-| `PriorityCalculator` | Aplica a regra `HIGH`, `MEDIUM` ou `LOW` e gera os motivos. | Método `assess`. |
-| `Territory` | Protege invariantes dos dados territoriais agregados. | Percentuais de 0 a 100, competência obrigatória e foco sem duplicidade. |
-| `SearchAction` | Controla status, progresso, prazo e regra de conclusão. | `updateProgress`, `progressPercent`, `isOverdue` e `isDueSoon`. |
-| Casos de uso | Orquestram leitura, classificação, criação e atualização. | `GetDashboardUseCase`, `GetTerritoryDetailsUseCase`, `CreateSearchActionUseCase` e `UpdateSearchActionProgressUseCase`. |
-| Gateways e adapters | Mantém o core independente do banco. | `TerritoryGateway`/`SearchActionGateway` e adapters JPA. |
-| `UseCaseConfig` | Faz a composição das dependências no limite de infraestrutura. | Meta de vínculo configurável e injeção dos gateways. |
-| `ApsExceptionHandler` | Converte erros conhecidos em `ProblemDetail`. | Validação de domínio retorna HTTP `422`. |
+| 1 | `ApsPrioritizationController` | É a porta de entrada HTTP. Recebe parâmetros e payloads, valida o formato, transforma requests em comandos e chama o caso de uso correto. |
+| 2 | Casos de uso | Coordenam cada operação. Buscam dados pelos gateways, chamam as regras de domínio e montam o resultado. |
+| 3 | `PriorityCalculator` | Classifica o território como `HIGH`, `MEDIUM` ou `LOW` e registra os motivos da prioridade. |
+| 4 | `SearchAction` | Representa a ação territorial e protege regras de criação, atualização, prazo e cálculo do progresso. |
+| 5 | `TerritoryGateway` e `SearchActionGateway` | São contratos do core. Dizem quais operações de persistência a aplicação precisa, sem depender de JPA. |
+| 6 | `TerritoryRepositoryAdapter` e `SearchActionRepositoryAdapter` | Implementam os gateways e convertem objetos do domínio em entidades JPA e vice-versa. |
+| 7 | `TerritoryJpaRepository` e `SearchActionJpaRepository` | Usam Spring Data para executar consultas e gravações no banco. |
+| 8 | `ApsExceptionHandler` | Traduz exceções conhecidas para respostas HTTP padronizadas com `ProblemDetail`. |
 
-Não é necessário abrir todas essas classes. Para caber no tempo, mostrar a
-árvore e abrir somente `PriorityCalculator`, `SearchAction` e
-`ApsPrioritizationController`.
+### Casos de uso ligados aos requests do Insomnia
+
+| Request | Caso de uso principal | O que ele faz |
+| --- | --- | --- |
+| Dashboard | `GetDashboardUseCase` | Busca territórios e ações, calcula prioridades, contadores e alertas de prazo. |
+| Prioridades HIGH | `ListTerritoriesUseCase` | Classifica, filtra e ordena os territórios. |
+| Detalhe do território | `GetTerritoryDetailsUseCase` | Busca o território, calcula a prioridade e reúne o histórico de ações. |
+| Criar ação | `CreateSearchActionUseCase` | Confirma que o território existe, cria `SearchAction` e salva pelo gateway. |
+| Atualizar progresso | `UpdateSearchActionProgressUseCase` | Busca a ação, chama `updateProgress` no domínio e salva o novo estado. |
+
+### Dois fluxos fáceis de explicar
+
+Criação da ação:
+
+```text
+createSearchAction no controller
+  → CreateSearchActionUseCase
+  → TerritoryGateway.findById
+  → SearchAction.create
+  → SearchActionGateway.save
+  → SearchActionRepositoryAdapter
+  → SearchActionJpaRepository
+```
+
+Atualização do progresso:
+
+```text
+updateSearchActionProgress no controller
+  → UpdateSearchActionProgressUseCase
+  → SearchActionGateway.findById
+  → SearchAction.updateProgress
+  → SearchActionGateway.save
+  → adapter e repository
+```
+
+---
 
 ## Roteiro cronometrado
 
-### 0:00-0:25 - Abertura técnica
+### 0:00-0:40 — Explicação breve do projeto
 
-**Na tela:** título do projeto e estrutura raiz do repositório.
-
-**Fala:**
-
-> Este é o SUS Conecta, um backend em Java 21 e Spring Boot 3.4.5 para apoiar
-> a priorização territorial de busca ativa na Atenção Primária. Nesta
-> demonstração eu vou mostrar de onde veio a oportunidade, como organizamos a
-> arquitetura e, principalmente, o fluxo real da API: identificar um
-> território, explicar a prioridade, criar uma ação e registrar seu progresso.
-
-### 0:25-1:00 - Dados e análise
-
-**Na tela:** topo de `analytics/reports/analise_aps_sus.html`, com os indicadores
-principais.
+**Na tela:** README ou nome do projeto.
 
 **Fala:**
 
-> A escolha do problema foi apoiada por dados públicos agregados. Usamos
-> IBGE 2025 e bases agregadas do SISAB. O pipeline Python organizou as fontes
-> por município e calculou proporções. Observamos vínculo aproximado nacional
-> de 38,11%, 1.091 municípios com mais de 20 mil habitantes abaixo de 50% de
-> vínculo e 276 com média de indicadores abaixo de 40. Esses resultados
-> sustentam uma oportunidade de investigação territorial; não provam qualidade
-> clínica nem causalidade.
-
-**Apontar rapidamente:**
-
-- `analytics/scripts/analisar_aps_sus.py`;
-- `data/raw` como preservação das fontes;
-- `data/processed` como saídas tabulares;
-- `analytics/reports` como resultado reproduzível.
-
-**Frase de transição:**
-
-> A análise escolheu a oportunidade. A demonstração da API usa territórios
-> fictícios e agregados para não expor pessoas.
-
-### 1:00-1:50 - Arquitetura e classes centrais
-
-**Na tela:** árvore `core`/`infra`, seguida de `PriorityCalculator` e
-`SearchAction`.
-
-**Fala:**
-
-> O serviço segue Clean Architecture. No core ficam domínio, casos de uso,
-> DTOs e interfaces de gateway, todos em Java puro. O controller, Spring, JPA,
-> validação HTTP e tratamento de erros ficam em infraestrutura.
+> Este é o SUS Conecta, uma solução para apoiar a priorização territorial de
+> busca ativa na Atenção Primária. A pergunta que ele responde é: com equipes e
+> tempo limitados, em qual território a coordenação deve organizar uma ação
+> preventiva primeiro, e por quê?
 >
-> A regra principal está em `PriorityCalculator`. Vínculo abaixo da meta e ao
-> menos um indicador preventivo abaixo da própria meta resultam em prioridade
-> alta. Apenas um desses sinais resulta em média; nenhum resulta em baixa. O
-> retorno inclui os motivos, portanto não é uma caixa preta.
->
-> `SearchAction` concentra a regra de execução: nasce como `PLANNED`, calcula o
-> percentual realizado, identifica prazo e impede concluir uma ação com
-> quantidade realizada igual a zero. Os casos de uso orquestram essas regras e
-> acessam persistência por gateways, sem acoplar o core ao PostgreSQL.
+> O sistema usa indicadores agregados, explica a prioridade e permite registrar
+> uma ação com foco, equipe, prazo, meta e progresso. Ele não trabalha com
+> prontuários ou risco clínico individual.
 
-### 1:50-2:10 - Infraestrutura e qualidade
+**[TROQUE PARA A ANÁLISE]**
 
-**Na tela:** `UseCaseConfig`, migration `V1` e, por poucos segundos, o resumo de
-testes.
+---
+
+### 0:40-1:15 — Dados e análise
+
+**Na tela:** `analytics/reports/analise_aps_sus.html`.
 
 **Fala:**
 
-> `UseCaseConfig` monta os casos de uso e injeta a meta de vínculo configurável.
-> Os adapters traduzem domínio e entidades JPA. O PostgreSQL 15 é criado por
-> Flyway, enquanto o Hibernate apenas valida o schema. A suíte atual possui 18
-> testes sem falhas e cobertura de linhas de 98,94%.
+> A escolha do problema foi apoiada por dados públicos e agregados. Usamos a
+> população municipal do IBGE de 2025, cadastros vinculados do SISAB e
+> indicadores preventivos do terceiro quadrimestre de 2024.
+>
+> A análise encontrou vínculo nacional aproximado de 38,11%. Entre municípios
+> com pelo menos 20 mil habitantes, 1.091 ficaram abaixo de 50% nessa
+> aproximação e 276 tiveram média de indicadores abaixo de 40%.
+>
+> Esses números mostram uma oportunidade de organização territorial. Eles não
+> medem qualidade clínica e não provam causalidade. A API usa uma massa
+> fictícia e agregada para demonstrar a solução com segurança.
 
-### 2:10-2:25 - API no ar
+**[TROQUE PARA A IDE]**
 
-**Na tela:** request 01 do Bruno.
+---
+
+### 1:15-1:50 — Controller e casos de uso
+
+**Na tela:** `ApsPrioritizationController`, depois
+`CreateSearchActionUseCase`.
+
+**Fala:**
+
+> O fluxo começa no `ApsPrioritizationController`. Ele expõe os endpoints,
+> recebe parâmetros e payloads, converte a entrada para os comandos do core e
+> chama o caso de uso correspondente.
+>
+> O controller não contém a regra de prioridade e não acessa o banco
+> diretamente. Na criação de uma ação, ele chama
+> `CreateSearchActionUseCase`. Esse caso de uso confirma que o território
+> existe, cria o objeto `SearchAction` e solicita a gravação pelo
+> `SearchActionGateway`.
+>
+> Os outros endpoints seguem o mesmo padrão, cada um com um caso de uso
+> específico.
+
+**Apontar:**
+
+- os métodos `getDashboard`, `listTerritories` e `createSearchAction`;
+- a chamada `createSearchActionUseCase.execute(...)`;
+- os campos `TerritoryGateway` e `SearchActionGateway` dentro do caso de uso.
+
+---
+
+### 1:50-2:20 — Regras de domínio
+
+**Na tela:** `PriorityCalculator`, depois `SearchAction`.
+
+**Fala:**
+
+> As regras ficam no domínio. O `PriorityCalculator` compara o vínculo e os
+> indicadores com suas metas. Vínculo baixo junto com pelo menos um indicador
+> abaixo da meta gera prioridade alta. Apenas um desses sinais gera prioridade
+> média; quando todos atingem as metas, a prioridade é baixa.
+>
+> A classe `SearchAction` controla a execução da ação. Ela começa como
+> `PLANNED`, calcula o percentual realizado, identifica prazos e impede, por
+> exemplo, que uma ação seja concluída com zero contatos realizados.
+
+**Apontar:**
+
+- método `assess` em `PriorityCalculator`;
+- método `updateProgress` e `progressPercent` em `SearchAction`.
+
+---
+
+### 2:20-2:45 — Gateway, adapter e repository
+
+**Na tela:** `SearchActionGateway`, `SearchActionRepositoryAdapter` e
+`SearchActionJpaRepository`.
+
+**Fala:**
+
+> Para persistir sem acoplar o core ao banco, o caso de uso depende de um
+> gateway. O `SearchActionGateway` define operações como buscar e salvar.
+>
+> O `SearchActionRepositoryAdapter` implementa esse contrato e converte entre o
+> domínio e a entidade JPA. Só no final aparece o
+> `SearchActionJpaRepository`, que executa a persistência.
+>
+> Então a dependência segue para dentro: o domínio não conhece Spring Data nem
+> PostgreSQL.
+
+**[TROQUE PARA O INSOMNIA]**
+
+---
+
+### 2:45-3:00 — Request 01: serviço no ar
 
 **Executar:** `01 - Health | servico no ar`.
 
 **Fala:**
 
-> A aplicação está em Docker, na porta 8205. O healthcheck retorna HTTP 200 e
-> status `UP`.
+> Primeiro eu confirmo que a aplicação está disponível. O healthcheck responde
+> HTTP 200 com status `UP`.
 
 **Apontar:** `status = UP`.
 
-### 2:25-2:55 - Dashboard inicial
+---
+
+### 3:00-3:25 — Request 02: dashboard inicial
 
 **Executar:** `02 - Dashboard inicial | fila territorial`.
 
 **Fala:**
 
-> O primeiro endpoint resume a decisão operacional. Com a massa limpa, existe
-> um território em alta prioridade, duas ações abertas e uma concluída no
-> período. O dashboard também devolve as cinco maiores prioridades e ações
-> vencidas ou próximas do prazo.
+> O dashboard resume a situação operacional. Com a massa limpa, ele mostra um
+> território em alta prioridade, duas ações abertas, uma ação concluída e os
+> alertas de prazo.
+>
+> O mais importante é que o painel já devolve uma fila de trabalho, e não apenas
+> indicadores isolados.
 
 **Apontar:**
 
-- `highPriorityTerritoryCount = 1`;
-- `openActionCount = 2`;
-- `completedActionCount = 1`;
+- `highPriorityTerritoryCount`;
+- `openActionCount`;
+- `completedActionCount`;
 - `topPriorities`;
 - `attentionActions`.
 
-### 2:55-3:20 - Escolha do território
+---
+
+### 3:25-3:50 — Request 03: escolher o território
 
 **Executar:** `03 - Prioridades HIGH | escolher territorio`.
 
 **Fala:**
 
-> A listagem aceita filtros e já vem ordenada. Filtrando por `HIGH`, Jardim
-> Esperança aparece como primeiro território, com foco de atenção em
-> `CHRONIC_CONDITIONS`. A unidade de decisão é território ou UBS, nunca uma
-> pessoa.
+> A listagem aceita filtros e vem ordenada. Ao filtrar por `HIGH`, Jardim
+> Esperança aparece com foco de atenção em condições crônicas.
+>
+> A unidade de decisão é o território ou a UBS, nunca uma pessoa.
 
 **Apontar:**
 
@@ -235,18 +349,21 @@ testes.
 - `attentionFocus = CHRONIC_CONDITIONS`;
 - `openActionCount`.
 
-### 3:20-4:05 - Explicação da prioridade
+---
+
+### 3:50-4:25 — Request 04: explicar a prioridade
 
 **Executar:** `04 - Detalhe Jardim Esperanca | explicar regra`.
 
 **Fala:**
 
-> O detalhe comprova a explicabilidade. Jardim Esperança possui 42% de
-> população vinculada para uma meta configurada de 50%. Condições crônicas
-> está em 32% para meta de 60%, e pré-natal em 72% para meta de 85%. O objeto
-> `priority` devolve o nível, a meta usada e as razões textuais. A competência
-> dos dados também acompanha o território. O sistema apoia a coordenação a
-> investigar e organizar trabalho; ele não classifica risco clínico.
+> No detalhe aparece a explicação da prioridade. Jardim Esperança possui 42% de
+> população vinculada para uma meta de 50%. Condições crônicas está em 32% para
+> uma meta de 60%, e pré-natal em 72% para uma meta de 85%.
+>
+> Como o vínculo e indicadores preventivos estão abaixo das metas, a prioridade
+> é alta. A resposta também informa a competência dos dados e os motivos
+> textuais gerados pelo `PriorityCalculator`.
 
 **Apontar:**
 
@@ -257,23 +374,35 @@ testes.
 - `priority.reasons`;
 - `indicators`.
 
-### 4:05-5:05 - Criação de uma ação
+---
 
-**Na tela:** request 05, mostrando o payload antes de executar.
+### 4:25-5:15 — Request 05: criar a ação
+
+**Na tela:** payload do request 05.
+
+**Fala antes de executar:**
+
+> Agora a prioridade vira uma ação territorial. O payload informa o foco
+> preventivo, o objetivo, a equipe responsável, o período e uma meta agregada
+> de 80 contatos. Não existe nome, CPF, prontuário ou dado clínico individual.
 
 **Executar:** `05 - Criar acao territorial | prioridade vira trabalho`.
 
-**Fala antes da chamada:**
+**Fala depois da resposta:**
 
-> Agora a prioridade vira uma ação territorial. O payload informa foco
-> preventivo, objetivo, equipe responsável, período e uma meta agregada de 80
-> contatos. Não existe nome, CPF, endereço, prontuário ou diagnóstico.
+> A API retorna HTTP 201. A ação nasce como `PLANNED`, com meta 80, zero
+> realizado e progresso de zero por cento.
+>
+> Vou copiar o `id` retornado e atualizar a variável `apsCreatedActionId` no
+> Base Environment. Assim, o próximo request altera exatamente a ação que eu
+> acabei de criar.
 
-**Fala depois da chamada:**
+**Ação na tela:**
 
-> A API retorna HTTP 201. A ação nasce como `PLANNED`, com zero realizado e
-> zero por cento de progresso. O ID retornado é capturado automaticamente pelo
-> Bruno para atualizar exatamente esta ação no próximo passo.
+1. copiar o valor de `id`;
+2. pressionar `Ctrl+E`;
+3. substituir `apsCreatedActionId`;
+4. fechar o editor do ambiente.
 
 **Apontar:**
 
@@ -284,16 +413,23 @@ testes.
 - `performedCount = 0`;
 - `progressPercent = 0.00`.
 
-### 5:05-5:45 - Atualização do progresso
+---
+
+### 5:15-6:00 — Request 06: atualizar o progresso
 
 **Executar:** `06 - Atualizar progresso | execucao agregada`.
 
 **Fala:**
 
-> A equipe registra 54 contatos agregados e muda a situação para
-> `IN_PROGRESS`. O domínio recalcula 54 dividido por 80 e devolve 67,50%. Esse
-> número mede execução operacional. Ele não informa quem foi contatado e não
-> comprova melhora clínica.
+> Agora a equipe registra 54 contatos agregados e muda a ação para
+> `IN_PROGRESS`.
+>
+> O `UpdateSearchActionProgressUseCase` busca a ação pelo gateway, chama
+> `updateProgress` no domínio e salva o novo estado. A resposta mostra 54 de 80,
+> ou 67,50% de progresso.
+>
+> Esse percentual mede execução operacional. Ele não informa quem foi
+> contatado e não comprova melhora clínica.
 
 **Apontar:**
 
@@ -303,183 +439,110 @@ testes.
 - `progressPercent = 67.50`;
 - `resultNotes`.
 
-### 5:45-6:10 - Fechamento do ciclo no dashboard
+---
+
+### 6:00-6:25 — Request 07: fechar o ciclo
 
 **Executar:** `07 - Dashboard apos progresso | fechar ciclo`.
 
 **Fala:**
 
-> Voltando ao dashboard, a nova ação permanece aberta e o contador passa de
-> duas para três. A coordenação continua vendo as prioridades e os alertas de
-> prazo. Assim o fluxo fecha no mesmo painel em que a decisão começou.
+> Para fechar o ciclo, eu volto ao dashboard. A nova ação permanece aberta e o
+> contador aumenta. A coordenação continua vendo as prioridades e os alertas de
+> prazo no mesmo lugar em que iniciou a decisão.
+>
+> Assim, o fluxo vai do indicador para a prioridade, da prioridade para a ação
+> e da ação para o acompanhamento.
 
 **Apontar:**
 
-- `openActionCount = 3`;
+- `openActionCount`;
 - `topPriorities`;
 - `attentionActions`.
 
-### 6:10-6:40 - Regra de erro e evidência E2E
+---
 
-**Na tela:** seção "Bloqueio de conclusão inválida" do relatório E2E.
+### 6:25-6:55 — Encerramento técnico
 
-**Fala:**
-
-> Além do caminho feliz, o fluxo E2E envia uma tentativa de concluir uma ação
-> com zero realizado. `SearchAction` rejeita a transição e o
-> `ApsExceptionHandler` converte a regra em `ProblemDetail`, com HTTP 422. O
-> mesmo relatório comprova que a tentativa inválida não corrompeu o estado
-> persistido no PostgreSQL.
-
-**Apontar:**
-
-- payload com `status = COMPLETED` e `performedCount = 0`;
-- HTTP `422`;
-- asserções `PASS`;
-- leitura posterior ainda com `IN_PROGRESS` e 54.
-
-### 6:40-7:10 - O que está entregue e o que não está
-
-**Na tela:** README ou checklist final.
+**Na tela:** collection completa do Insomnia ou diagrama do fluxo.
 
 **Fala:**
 
-> O MVP entregue cobre o fluxo principal por API, possui documentação
-> Swagger, collections Bruno e Insomnia, testes unitários, integração HTTP e
-> E2E com PostgreSQL. A massa demonstrativa é fictícia e o funcionamento não
-> depende de uma fonte externa em tempo real. Ainda não entregamos front-end,
-> integração com sistemas locais nem medição de impacto assistencial. Esses
-> pontos dependem de validação e governança com uma rede parceira.
+> Tecnicamente, a entrada HTTP fica no controller, a coordenação do fluxo fica
+> nos casos de uso, as regras ficam no domínio e a persistência é acessada por
+> gateways e adapters.
+>
+> Na prática, essa separação sustenta um fluxo simples: identificar um
+> território prioritário, explicar a regra, registrar uma ação e acompanhar seu
+> progresso agregado. A decisão final continua com a coordenação e a equipe de
+> saúde.
 
-### 7:10-7:35 - Encerramento
+Finalizar a gravação. Não improvisar um segundo encerramento.
 
-**Na tela:** dashboard ou diagrama do fluxo.
+---
 
-**Fala:**
+## Colinha rápida para perguntas técnicas
 
-> Tecnicamente, o SUS Conecta mantém a regra no domínio, a orquestração nos
-> casos de uso e os frameworks na infraestrutura. Na prática, ele transforma
-> um sinal territorial agregado em uma prioridade explicável, uma ação
-> executável e um acompanhamento visível. A decisão final continua com a
-> coordenação e a equipe de saúde.
+### Por que o controller não chama o repository?
 
-Finalizar a gravação imediatamente. Não improvisar um segundo encerramento.
+> Porque o controller deve cuidar apenas da entrada e saída HTTP. A operação é
+> coordenada pelo caso de uso, que depende de interfaces do core e não de uma
+> tecnologia específica de banco.
 
-## Chamadas equivalentes em HTTP
+### Qual a diferença entre gateway, adapter e repository?
 
-O Bruno é mais seguro para a gravação porque captura o ID criado. As chamadas
-abaixo servem como referência técnica.
+> O gateway é o contrato definido pelo core. O adapter implementa esse contrato
+> e faz o mapeamento entre domínio e persistência. O `JpaRepository` executa as
+> operações no banco.
 
-### Health
+### Onde fica a regra de prioridade?
 
-```http
-GET http://localhost:8205/actuator/health
-```
+> Em `PriorityCalculator`, dentro do domínio. O caso de uso chama essa classe e
+> o controller apenas devolve o resultado.
 
-### Dashboard
+### Onde fica a regra do progresso?
 
-```http
-GET http://localhost:8205/api/v1/dashboard
-```
+> Em `SearchAction`. O método `updateProgress` valida a transição, e
+> `progressPercent` calcula o percentual realizado.
 
-### Territórios de alta prioridade
+### Como os erros chegam à API?
 
-```http
-GET http://localhost:8205/api/v1/territories?priority=HIGH
-```
+> As exceções do domínio são tratadas por `ApsExceptionHandler`, que devolve
+> respostas padronizadas com `ProblemDetail`.
 
-### Detalhe de Jardim Esperança
+### Os dados da demonstração são reais?
 
-```http
-GET http://localhost:8205/api/v1/territories/10000000-0000-0000-0000-000000000001
-```
+> As bases e os resultados nacionais da análise são reais e agregados. Os
+> territórios, indicadores e ações usados na API são fictícios.
 
-### Criar ação
+---
 
-```http
-POST http://localhost:8205/api/v1/territories/10000000-0000-0000-0000-000000000001/actions
-Content-Type: application/json
+## Request 90 e repetição da demonstração
 
-{
-  "focus": "CHRONIC_CONDITIONS",
-  "objective": "Organizar busca ativa territorial para acompanhamento preventivo de condições crônicas",
-  "responsibleTeam": "ESF Jardim Esperança",
-  "plannedStart": "AJUSTAR_PARA_DATA_DA_GRAVACAO",
-  "plannedEnd": "AJUSTAR_PARA_SETE_DIAS_DEPOIS",
-  "targetCount": 80,
-  "notes": "Massa demonstrativa com contagens agregadas. Não há dados de pacientes."
-}
-```
+O request `90 - Opcional | resetar indicadores Jardim Esperanca` restaura os
+indicadores de Jardim Esperança, mas não apaga ações criadas.
 
-### Atualizar a ação criada
+Se a demonstração for repetida, os contadores podem aumentar. Isso não quebra o
+fluxo: compare o `openActionCount` antes e depois da criação.
 
-```http
-PATCH http://localhost:8205/api/v1/actions/{id-retornado-no-post}/progress
-Content-Type: application/json
+Para restaurar completamente a massa inicial, seria necessário recriar o banco
+demonstrativo. Faça isso somente fora da gravação e apenas se os dados locais
+puderem ser removidos.
 
-{
-  "status": "IN_PROGRESS",
-  "performedCount": 54,
-  "resultNotes": "54 contatos agregados registrados pela equipe no território."
-}
-```
-
-### Demonstrar a validação de conclusão
-
-```http
-PATCH http://localhost:8205/api/v1/actions/{id-retornado-no-post}/progress
-Content-Type: application/json
-
-{
-  "status": "COMPLETED",
-  "performedCount": 0,
-  "resultNotes": "Tentativa demonstrativa inválida."
-}
-```
-
-Resposta esperada: HTTP `422` com `application/problem+json`.
-
-## Plano de contingência
-
-### Se o Docker não iniciar
-
-Não gravar uma demonstração incompleta. Corrigir o ambiente antes do take. Ter
-como evidência secundária o relatório E2E, mas o vídeo deve mostrar a API
-respondendo.
-
-### Se a massa estiver alterada
-
-Parar, limpar apenas o volume demonstrativo com consciência de que os dados
-locais serão apagados, subir novamente e repetir a sequência.
-
-### Se o request 06 não encontrar o ID
-
-Confirmar que o request 05 retornou HTTP 201 e que `apsCreatedActionId` foi
-preenchido no ambiente Bruno. Não editar um UUID durante a gravação.
-
-### Se o tempo ultrapassar 7:35 no ensaio
-
-Cortar explicações, nesta ordem:
-
-1. detalhes de adapters e `UseCaseConfig`;
-2. nomes de todas as fontes, mantendo apenas IBGE e SISAB;
-3. leitura de campos secundários do dashboard.
-
-Não cortar a criação da ação, a atualização do progresso nem o retorno ao
-dashboard, pois esses passos demonstram a funcionalidade principal.
+---
 
 ## Checklist do take final
 
-- Duração total menor que 8 minutos.
-- Healthcheck `UP`.
-- Massa limpa e contadores previsíveis.
+- Serviço respondendo `UP`.
 - Datas do request 05 atualizadas.
-- ID criado capturado automaticamente.
-- Nenhuma notificação, aba pessoal ou credencial visível.
+- Base Environment fácil de abrir com `Ctrl+E`.
+- Ordem dos requests: `01`, `02`, `03`, `04`, `05`, `06`, `07`.
+- ID do passo 05 copiado para `apsCreatedActionId`.
+- Classes abertas na ordem controller, use case, domínio e persistência.
 - Código com zoom suficiente para leitura.
-- Dados sempre descritos como agregados ou fictícios.
-- Regra `HIGH` explicada sem chamar de risco clínico.
-- Progresso descrito como execução, não impacto.
-- Limitações declaradas.
-- Áudio ouvido do início ao fim antes do upload.
-- Link testado em janela anônima depois da publicação.
+- Nenhuma notificação, aba pessoal ou credencial visível.
+- Dados nacionais descritos como reais e agregados.
+- Massa da API descrita como fictícia.
+- Prioridade descrita como operacional, nunca como risco clínico.
+- Progresso descrito como execução, nunca como impacto assistencial.
+- Gravação encerrada antes de 7 minutos e 30 segundos.
