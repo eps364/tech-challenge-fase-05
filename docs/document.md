@@ -99,32 +99,46 @@ A estrutura do módulo `aps-prioritization-service` separa rigorosamente as preo
 3. **Core Gateways e DTOs (`core/gateway` e `core/dto`)**: Define os contratos de repositório para persistência de dados e as classes imutáveis do tipo `record` para transferência limpa de informações.
 4. **Infrastructure Layer (`infra`)**: Camada mais externa que contém o Spring Boot, os controladores REST (`infra/web`), as entidades JPA (`infra/entity`) e repositórios Spring Data (`infra/repository`), os adaptadores de gateway (`infra/gateway`), configurações de beans (`infra/config`), tratamento global de erros HTTP por meio de `ProblemDetail`, e os scripts SQL gerenciados pelo Flyway.
 
-### 5.2. Diagrama de Arquitetura
+### 5.2. Visão Geral da Arquitetura
 
-![Arquitetura do Sistema](diagramas/architecture.svg)
+![Visão Geral da Arquitetura](diagramas/architecture-visao-geral.svg)
 
-### 5.3. Modelo de Domínio
+### 5.3. Camadas Internas — Clean Architecture
 
-![Modelo de Domínio](diagramas/domain.svg)
+![Clean Architecture](diagramas/architecture-clean-architecture.svg)
+
+### 5.4. Implantação — Docker Compose
+
+![Implantação Docker](diagramas/architecture-implantacao.svg)
+
+### 5.5. Modelo de Domínio: Território e Prioridade
+
+![Domínio Território e Prioridade](diagramas/domain-territorio-prioridade.svg)
+
+### 5.6. Modelo de Domínio: Ação de Busca Ativa
+
+![Domínio Ação de Busca Ativa](diagramas/domain-acao-busca-ativa.svg)
 
 ---
 
 ## 6. Fluxos Principais do MVP
-A demonstração do sistema executa o fluxo operacional em um ciclo fechado de 5 etapas:
+A demonstração do sistema executa o fluxo operacional em um ciclo fechado de 4 etapas principais:
 
-```
-[Dashboard Inicial] -> Identifica territórios em alta prioridade
-       |
-[Detalhe do Território] -> Apresenta justificativa analítica da prioridade
-       |
-[Criar Ação Preventiva] -> Registra atividade territorial planejada
-       |
-[Atualizar Progresso] -> ACS reporta visitas executadas de forma agregada
-       |
-[Dashboard Atualizado] -> Exibe progresso da ação e evolução do território
-```
+### 6.1. Painel Operacional (Dashboard)
 
-![Fluxos Principais](diagramas/flows.svg)
+![Fluxo Dashboard](diagramas/flow-01-dashboard.svg)
+
+### 6.2. Diagnóstico do Território
+
+![Fluxo Detalhe do Território](diagramas/flow-02-detalhe-territorio.svg)
+
+### 6.3. Criação de Ação de Busca Ativa
+
+![Fluxo Criação de Ação](diagramas/flow-03-criar-acao.svg)
+
+### 6.4. Atualização de Progresso pela Equipe de Campo
+
+![Fluxo Atualização de Progresso](diagramas/flow-04-atualizar-progresso.svg)
 
 ---
 
