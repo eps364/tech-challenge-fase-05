@@ -1,0 +1,48 @@
+%% Camadas da Clean Architecture - SUS-Connect APS MVP (Fase 05)
+
+graph TD
+    HTTP["HTTP Request"] --> Controller
+
+    subgraph Web ["infra/web — Entrada HTTP"]
+        Controller["ApsPrioritizationController"]
+        ExcHandler["ApsExceptionHandler\n(ProblemDetail)"]
+    end
+
+    Controller --> UC
+
+    subgraph UseCase ["core/usecase — Orquestração"]
+        UC["GetDashboardUseCase\nListTerritoriesUseCase\nGetTerritoryDetailsUseCase\nCreateTerritoryUseCase\nReplaceTerritoryIndicatorsUseCase\nCreateSearchActionUseCase\nUpdateSearchActionProgressUseCase"]
+    end
+
+    UC --> Domain
+    UC --> GW
+
+    subgraph Domain ["core/domain — Regras puras (Java puro)"]
+        Territory["Territory"]
+        SearchAction["SearchAction"]
+        PriorityCalc["PriorityCalculator"]
+        Enums["PriorityLevel · PreventiveFocus · ActionStatus"]
+    end
+
+    subgraph GW ["core/gateway — Contratos de persistência"]
+        TGW["TerritoryGateway"]
+        SGW["SearchActionGateway"]
+    end
+
+    GW --> Infra
+
+    subgraph Infra ["infra/gateway + infra/repository — Adaptadores JPA"]
+        TAdapter["TerritoryRepositoryAdapter"]
+        SAdapter["SearchActionRepositoryAdapter"]
+        TRepo["TerritoryJpaRepository"]
+        SRepo["SearchActionJpaRepository"]
+    end
+
+    subgraph Config ["infra/config — Configuração Spring"]
+        Demo["DemoDataConfig\nAPS_DEMO_DATA_ENABLED"]
+        Props["ApsPriorityProperties\nAPS_LINKAGE_TARGET"]
+    end
+
+    Infra --> DB[("PostgreSQL")]
+
+    note1["core nunca importa\nSpring, JPA ou Jakarta"] -.-> Domain

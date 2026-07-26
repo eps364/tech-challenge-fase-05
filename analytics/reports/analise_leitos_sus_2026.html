@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Analise exploratoria - Leitos SUS 2026</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 32px; color: #17202a; }
+    main { max-width: 1180px; margin: auto; }
+    h1, h2 { color: #113b53; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+    .card { border: 1px solid #d0d7de; border-radius: 6px; padding: 12px; background: #f8fafc; }
+    .metric { font-size: 24px; font-weight: 700; color: #155e75; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0 28px; font-size: 13px; }
+    th, td { border: 1px solid #d0d7de; padding: 6px 8px; text-align: left; vertical-align: top; }
+    th { background: #edf2f7; }
+    .note { background: #fff7ed; border-left: 4px solid #f97316; padding: 10px 14px; }
+    .chart { overflow-x: auto; margin: 18px 0; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Analise exploratoria - Hospitais e Leitos SUS 2026</h1>
+  <p><strong>Data de acesso:</strong> 2026-07-18. <strong>Competencia analisada:</strong> 202605. Esta analise identifica oportunidades; nao prova causalidade nem escolhe a solucao final.</p>
+  <section class="cards">
+    <div class="card"><div>Populacao 2025</div><div class="metric">213.421.037</div></div>
+    <div class="card"><div>Leitos SUS</div><div class="metric">353.520</div></div>
+    <div class="card"><div>Leitos SUS / 10 mil hab.</div><div class="metric">16,56</div></div>
+    <div class="card"><div>UTI SUS / 100 mil hab.</div><div class="metric">15,00</div></div>
+    <div class="card"><div>Municipios 50k+ sem leitos SUS</div><div class="metric">14</div></div>
+    <div class="card"><div>Municipios 100k+ sem UTI SUS</div><div class="metric">47</div></div>
+  </section>
+
+  <h2>UFs - leitos SUS por 10 mil habitantes</h2>
+  <div class="chart"><svg viewBox="0 0 980 988" width="980" height="988" role="img" aria-label="UFs ordenadas por leitos SUS por 10 mil habitantes">
+<style>text{font-family:Arial,sans-serif;font-size:12px}.title{font-size:16px;font-weight:700}.bar{fill:#227c9d}.axis{stroke:#d0d7de;stroke-width:1}</style>
+<text class="title" x="0" y="20">UFs ordenadas por leitos SUS por 10 mil habitantes</text>
+<text x="0" y="60">SP</text>
+<rect class="bar" x="170" y="46" width="358.2" height="18" rx="2"></rect>
+<text x="536.2" y="60">13,45</text>
+<text x="0" y="94">SE</text>
+<rect class="bar" x="170" y="80" width="369.3" height="18" rx="2"></rect>
+<text x="547.3" y="94">13,87</text>
+<text x="0" y="128">RJ</text>
+<rect class="bar" x="170" y="114" width="373.6" height="18" rx="2"></rect>
+<text x="551.6" y="128">14,03</text>
+<text x="0" y="162">AM</text>
+<rect class="bar" x="170" y="148" width="380.4" height="18" rx="2"></rect>
+<text x="558.4" y="162">14,29</text>
+<text x="0" y="196">PA</text>
+<rect class="bar" x="170" y="182" width="393.0" height="18" rx="2"></rect>
+<text x="571.0" y="196">14,76</text>
+<text x="0" y="230">MS</text>
+<rect class="bar" x="170" y="216" width="413.6" height="18" rx="2"></rect>
+<text x="591.6" y="230">15,53</text>
+<text x="0" y="264">MG</text>
+<rect class="bar" x="170" y="250" width="420.8" height="18" rx="2"></rect>
+<text x="598.8" y="264">15,80</text>
+<text x="0" y="298">ES</text>
+<rect class="bar" x="170" y="284" width="432.3" height="18" rx="2"></rect>
+<text x="610.3" y="298">16,24</text>
+<text x="0" y="332">SC</text>
+<rect class="bar" x="170" y="318" width="433.3" height="18" rx="2"></rect>
+<text x="611.3" y="332">16,27</text>
+<text x="0" y="366">MT</text>
+<rect class="bar" x="170" y="352" width="465.5" height="18" rx="2"></rect>
+<text x="643.5" y="366">17,48</text>
+<text x="0" y="400">GO</text>
+<rect class="bar" x="170" y="386" width="468.0" height="18" rx="2"></rect>
+<text x="646.0" y="400">17,58</text>
+<text x="0" y="434">BA</text>
+<rect class="bar" x="170" y="420" width="483.8" height="18" rx="2"></rect>
+<text x="661.8" y="434">18,17</text>
+<text x="0" y="468">PR</text>
+<rect class="bar" x="170" y="454" width="485.2" height="18" rx="2"></rect>
+<text x="663.2" y="468">18,22</text>
+<text x="0" y="502">PE</text>
+<rect class="bar" x="170" y="488" width="486.2" height="18" rx="2"></rect>
+<text x="664.2" y="502">18,26</text>
+<text x="0" y="536">AC</text>
+<rect class="bar" x="170" y="522" width="488.0" height="18" rx="2"></rect>
+<text x="666.0" y="536">18,33</text>
+<text x="0" y="570">DF</text>
+<rect class="bar" x="170" y="556" width="500.8" height="18" rx="2"></rect>
+<text x="678.8" y="570">18,81</text>
+<text x="0" y="604">CE</text>
+<rect class="bar" x="170" y="590" width="502.7" height="18" rx="2"></rect>
+<text x="680.7" y="604">18,88</text>
+<text x="0" y="638">AL</text>
+<rect class="bar" x="170" y="624" width="504.5" height="18" rx="2"></rect>
+<text x="682.5" y="638">18,95</text>
+<text x="0" y="672">AP</text>
+<rect class="bar" x="170" y="658" width="516.7" height="18" rx="2"></rect>
+<text x="694.7" y="672">19,40</text>
+<text x="0" y="706">PI</text>
+<rect class="bar" x="170" y="692" width="516.9" height="18" rx="2"></rect>
+<text x="694.9" y="706">19,41</text>
+<text x="0" y="740">RN</text>
+<rect class="bar" x="170" y="726" width="518.4" height="18" rx="2"></rect>
+<text x="696.4" y="740">19,47</text>
+<text x="0" y="774">PB</text>
+<rect class="bar" x="170" y="760" width="523.6" height="18" rx="2"></rect>
+<text x="701.6" y="774">19,66</text>
+<text x="0" y="808">TO</text>
+<rect class="bar" x="170" y="794" width="528.0" height="18" rx="2"></rect>
+<text x="706.0" y="808">19,83</text>
+<text x="0" y="842">RR</text>
+<rect class="bar" x="170" y="828" width="534.5" height="18" rx="2"></rect>
+<text x="712.5" y="842">20,07</text>
+<text x="0" y="876">MA</text>
+<rect class="bar" x="170" y="862" width="546.5" height="18" rx="2"></rect>
+<text x="724.5" y="876">20,52</text>
+<text x="0" y="910">RS</text>
+<rect class="bar" x="170" y="896" width="550.1" height="18" rx="2"></rect>
+<text x="728.1" y="910">20,66</text>
+<text x="0" y="944">RO</text>
+<rect class="bar" x="170" y="930" width="700.0" height="18" rx="2"></rect>
+<text x="878.0" y="944">26,29</text>
+</svg></div>
+
+  <h2>UFs - UTI SUS por 100 mil habitantes</h2>
+  <div class="chart"><svg viewBox="0 0 980 988" width="980" height="988" role="img" aria-label="UFs ordenadas por UTI SUS por 100 mil habitantes">
+<style>text{font-family:Arial,sans-serif;font-size:12px}.title{font-size:16px;font-weight:700}.bar{fill:#227c9d}.axis{stroke:#d0d7de;stroke-width:1}</style>
+<text class="title" x="0" y="20">UFs ordenadas por UTI SUS por 100 mil habitantes</text>
+<text x="0" y="60">AC</text>
+<rect class="bar" x="170" y="46" width="283.6" height="18" rx="2"></rect>
+<text x="461.6" y="60">9,16</text>
+<text x="0" y="94">AP</text>
+<rect class="bar" x="170" y="80" width="303.3" height="18" rx="2"></rect>
+<text x="481.3" y="94">9,80</text>
+<text x="0" y="128">PI</text>
+<rect class="bar" x="170" y="114" width="305.5" height="18" rx="2"></rect>
+<text x="483.5" y="128">9,87</text>
+<text x="0" y="162">AM</text>
+<rect class="bar" x="170" y="148" width="316.0" height="18" rx="2"></rect>
+<text x="494.0" y="162">10,20</text>
+<text x="0" y="196">BA</text>
+<rect class="bar" x="170" y="182" width="352.7" height="18" rx="2"></rect>
+<text x="530.7" y="196">11,39</text>
+<text x="0" y="230">MA</text>
+<rect class="bar" x="170" y="216" width="356.5" height="18" rx="2"></rect>
+<text x="534.5" y="230">11,51</text>
+<text x="0" y="264">PA</text>
+<rect class="bar" x="170" y="250" width="357.2" height="18" rx="2"></rect>
+<text x="535.2" y="264">11,54</text>
+<text x="0" y="298">RR</text>
+<rect class="bar" x="170" y="284" width="377.2" height="18" rx="2"></rect>
+<text x="555.2" y="298">12,18</text>
+<text x="0" y="332">MT</text>
+<rect class="bar" x="170" y="318" width="384.9" height="18" rx="2"></rect>
+<text x="562.9" y="332">12,43</text>
+<text x="0" y="366">SE</text>
+<rect class="bar" x="170" y="352" width="390.5" height="18" rx="2"></rect>
+<text x="568.5" y="366">12,61</text>
+<text x="0" y="400">TO</text>
+<rect class="bar" x="170" y="386" width="394.1" height="18" rx="2"></rect>
+<text x="572.1" y="400">12,73</text>
+<text x="0" y="434">CE</text>
+<rect class="bar" x="170" y="420" width="405.9" height="18" rx="2"></rect>
+<text x="583.9" y="434">13,11</text>
+<text x="0" y="468">RN</text>
+<rect class="bar" x="170" y="454" width="418.5" height="18" rx="2"></rect>
+<text x="596.5" y="468">13,52</text>
+<text x="0" y="502">RJ</text>
+<rect class="bar" x="170" y="488" width="431.8" height="18" rx="2"></rect>
+<text x="609.8" y="502">13,95</text>
+<text x="0" y="536">GO</text>
+<rect class="bar" x="170" y="522" width="445.4" height="18" rx="2"></rect>
+<text x="623.4" y="536">14,39</text>
+<text x="0" y="570">PE</text>
+<rect class="bar" x="170" y="556" width="453.3" height="18" rx="2"></rect>
+<text x="631.3" y="570">14,64</text>
+<text x="0" y="604">PB</text>
+<rect class="bar" x="170" y="590" width="463.9" height="18" rx="2"></rect>
+<text x="641.9" y="604">14,98</text>
+<text x="0" y="638">AL</text>
+<rect class="bar" x="170" y="624" width="473.0" height="18" rx="2"></rect>
+<text x="651.0" y="638">15,28</text>
+<text x="0" y="672">MS</text>
+<rect class="bar" x="170" y="658" width="488.1" height="18" rx="2"></rect>
+<text x="666.1" y="672">15,76</text>
+<text x="0" y="706">SP</text>
+<rect class="bar" x="170" y="692" width="492.2" height="18" rx="2"></rect>
+<text x="670.2" y="706">15,90</text>
+<text x="0" y="740">SC</text>
+<rect class="bar" x="170" y="726" width="504.5" height="18" rx="2"></rect>
+<text x="682.5" y="740">16,29</text>
+<text x="0" y="774">RS</text>
+<rect class="bar" x="170" y="760" width="523.7" height="18" rx="2"></rect>
+<text x="701.7" y="774">16,91</text>
+<text x="0" y="808">RO</text>
+<rect class="bar" x="170" y="794" width="530.2" height="18" rx="2"></rect>
+<text x="708.2" y="808">17,12</text>
+<text x="0" y="842">MG</text>
+<rect class="bar" x="170" y="828" width="531.0" height="18" rx="2"></rect>
+<text x="709.0" y="842">17,15</text>
+<text x="0" y="876">PR</text>
+<rect class="bar" x="170" y="862" width="601.8" height="18" rx="2"></rect>
+<text x="779.8" y="876">19,44</text>
+<text x="0" y="910">DF</text>
+<rect class="bar" x="170" y="896" width="633.3" height="18" rx="2"></rect>
+<text x="811.3" y="910">20,45</text>
+<text x="0" y="944">ES</text>
+<rect class="bar" x="170" y="930" width="700.0" height="18" rx="2"></rect>
+<text x="878.0" y="944">22,61</text>
+</svg></div>
+
+  <h2>Comparacao regional</h2>
+  <table><thead><tr><th>regiao</th><th>populacao_2025</th><th>leitos_sus</th><th>leitos_sus_por_10k_hab</th><th>uti_total_sus</th><th>uti_sus_por_100k_hab</th></tr></thead><tbody><tr><td>SUDESTE</td><td>88.825.643</td><td>126.666</td><td>14,26</td><td>14.329</td><td>16,13</td></tr><tr><td>NORTE</td><td>18.801.282</td><td>31.453</td><td>16,73</td><td>2.198</td><td>11,69</td></tr><tr><td>CENTRO-OESTE</td><td>17.238.818</td><td>30.036</td><td>17,42</td><td>2.626</td><td>15,23</td></tr><tr><td>SUL</td><td>31.310.809</td><td>58.201</td><td>18,59</td><td>5.545</td><td>17,71</td></tr><tr><td>NORDESTE</td><td>57.244.485</td><td>107.164</td><td>18,72</td><td>7.324</td><td>12,79</td></tr></tbody></table>
+
+  <h2>Municipios priorizados pela heuristica de oportunidade</h2>
+  <table><thead><tr><th>uf</th><th>municipio</th><th>populacao_2025</th><th>leitos_sus</th><th>leitos_sus_por_10k_hab</th><th>uti_total_sus</th><th>uti_sus_por_100k_hab</th><th>sinais_de_oportunidade</th><th>score_heuristico_oportunidade</th></tr></thead><tbody><tr><td>SC</td><td>Palhoça</td><td>253.469</td><td>0</td><td>0,00</td><td>0</td><td>0,00</td><td>municipio_50k_mais_sem_leitos_sus;municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional;baixa_participacao_sus_na_capacidade_existente</td><td>17</td></tr><tr><td>PR</td><td>Almirante Tamandaré</td><td>125.861</td><td>0</td><td>0,00</td><td>0</td><td>0,00</td><td>municipio_50k_mais_sem_leitos_sus;municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>15</td></tr><tr><td>SP</td><td>Jandira</td><td>121.550</td><td>0</td><td>0,00</td><td>0</td><td>0,00</td><td>municipio_50k_mais_sem_leitos_sus;municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>15</td></tr><tr><td>SP</td><td>Poá</td><td>106.355</td><td>0</td><td>0,00</td><td>0</td><td>0,00</td><td>municipio_50k_mais_sem_leitos_sus;municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>15</td></tr><tr><td>PE</td><td>Camaragibe</td><td>156.112</td><td>41</td><td>2,63</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional;baixa_participacao_sus_na_capacidade_existente</td><td>12</td></tr><tr><td>PE</td><td>Abreu e Lima</td><td>104.248</td><td>4</td><td>0,38</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional;baixa_participacao_sus_na_capacidade_existente</td><td>12</td></tr><tr><td>SP</td><td>Ribeirão Pires</td><td>118.954</td><td>43</td><td>3,61</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional;baixa_participacao_sus_na_capacidade_existente</td><td>12</td></tr><tr><td>RJ</td><td>Belford Roxo</td><td>518.384</td><td>359</td><td>6,93</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>PR</td><td>Colombo</td><td>241.672</td><td>39</td><td>1,61</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>MA</td><td>São José de Ribamar</td><td>259.164</td><td>77</td><td>2,97</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>GO</td><td>Valparaíso de Goiás</td><td>218.416</td><td>23</td><td>1,05</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>GO</td><td>Águas Lindas de Goiás</td><td>245.352</td><td>91</td><td>3,71</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>SE</td><td>Nossa Senhora do Socorro</td><td>204.081</td><td>57</td><td>2,79</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>MA</td><td>Paço do Lumiar</td><td>153.158</td><td>26</td><td>1,70</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>SP</td><td>Santana de Parnaíba</td><td>163.787</td><td>74</td><td>4,52</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>PR</td><td>Fazenda Rio Grande</td><td>165.943</td><td>84</td><td>5,06</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>MG</td><td>Vespasiano</td><td>138.583</td><td>48</td><td>3,46</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>RJ</td><td>Rio das Ostras</td><td>168.455</td><td>99</td><td>5,88</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>PE</td><td>São Lourenço da Mata</td><td>118.258</td><td>33</td><td>2,79</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>GO</td><td>Cidade Ocidental</td><td>101.570</td><td>20</td><td>1,97</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>SC</td><td>Camboriú</td><td>117.324</td><td>47</td><td>4,01</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>PE</td><td>Ipojuca</td><td>106.539</td><td>32</td><td>3,00</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>RJ</td><td>Japeri</td><td>102.171</td><td>30</td><td>2,94</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>MG</td><td>Nova Serrana</td><td>114.791</td><td>51</td><td>4,44</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>RJ</td><td>Queimados</td><td>149.135</td><td>111</td><td>7,44</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>CE</td><td>Maranguape</td><td>108.622</td><td>44</td><td>4,05</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>RN</td><td>São Gonçalo do Amarante</td><td>124.495</td><td>77</td><td>6,18</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>SE</td><td>São Cristóvão</td><td>101.213</td><td>41</td><td>4,05</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>SP</td><td>Várzea Paulista</td><td>119.655</td><td>73</td><td>6,10</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr><tr><td>MG</td><td>Sabará</td><td>134.576</td><td>99</td><td>7,36</td><td>0</td><td>0,00</td><td>municipio_100k_mais_sem_uti_sus;leitos_sus_por_10k_abaixo_de_50pct_media_nacional;uti_sus_por_100k_abaixo_de_50pct_media_nacional</td><td>10</td></tr></tbody></table>
+
+  <h2>Limites de interpretacao</h2>
+  <div class="note">
+    <p>A base de leitos representa capacidade cadastrada no CNES, nao tempo de espera, ocupacao em tempo real, qualidade assistencial ou necessidade clinica. A leitura municipal precisa ser cruzada com regioes de saude, fluxos de referencia e dados de demanda antes de virar decisao de produto.</p>
+  </div>
+</main>
+</body>
+</html>

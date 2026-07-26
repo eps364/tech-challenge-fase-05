@@ -1,0 +1,28 @@
+%% Fluxo 3: Criação de Ação de Busca Ativa - SUS-Connect APS MVP (Fase 05)
+
+sequenceDiagram
+    participant Coord as Coordenador APS
+    participant API as REST API
+    participant UC as CreateSearchActionUseCase
+    participant Domain as SearchAction (domain)
+    participant DB as PostgreSQL
+
+    Coord->>API: POST /api/v1/territories/{territoryId}/actions
+    Note right of Coord: {focus, objective, responsibleTeam,<br/>plannedStart, plannedEnd,<br/>targetCount, notes?}
+
+    API->>UC: execute(territoryId, command)
+    UC->>DB: verifica existência do território
+    alt Território não encontrado
+        DB-->>UC: vazio
+        UC-->>API: TerritoryNotFoundException
+        API-->>Coord: 404 Not Found (ProblemDetail)
+    else Território existente
+        DB-->>UC: Territory encontrado
+        UC->>Domain: SearchAction.create(territoryId, focus, ...)
+        Domain-->>UC: SearchAction validado (status = PLANNED)
+        Note right of Domain: Validações: período válido<br/>targetCount > 0<br/>focus obrigatório
+        UC->>DB: persiste SearchAction
+        DB-->>UC: ação salva
+        UC-->>API: SearchActionOutput
+        API-->>Coord: 201 Created — ação territorial registrada
+    end

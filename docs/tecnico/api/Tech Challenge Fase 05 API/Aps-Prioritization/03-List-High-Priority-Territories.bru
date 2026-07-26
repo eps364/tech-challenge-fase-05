@@ -1,0 +1,15 @@
+meta {
+  name: 03 - Prioridades HIGH | escolher territorio
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{apsBaseUrl}}/territories?priority=HIGH
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}

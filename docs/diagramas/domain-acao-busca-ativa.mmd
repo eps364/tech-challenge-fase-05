@@ -1,0 +1,52 @@
+%% Domínio: Ação de Busca Ativa - SUS-Connect APS MVP (Fase 05)
+
+classDiagram
+    class SearchAction {
+        +UUID id
+        +UUID territoryId
+        +PreventiveFocus focus
+        +String objective
+        +String responsibleTeam
+        +LocalDate plannedStart
+        +LocalDate plannedEnd
+        +int targetCount
+        +int performedCount
+        +ActionStatus status
+        +String notes
+        +String resultNotes
+        +LocalDateTime createdAt
+        +LocalDateTime updatedAt
+        +create(...) SearchAction$
+        +reconstruct(...) SearchAction$
+        +updateProgress(status, performedCount, resultNotes)
+        +progressPercent() BigDecimal
+        +isOverdue(Clock) boolean
+    }
+
+    class ActionStatus {
+        <<enum>>
+        PLANNED
+        IN_PROGRESS
+        COMPLETED
+        CANCELLED
+    }
+
+    class PreventiveFocus {
+        <<enum>>
+        CHRONIC_CONDITIONS
+        PRENATAL
+        CHILD_VACCINATION
+        CYTOPATHOLOGY
+        +label() String
+    }
+
+    class RegrasSearchAction {
+        <<restricoes>>
+        COMPLETED exige performedCount maior que zero
+        performedCount nao pode ser negativo
+        plannedEnd nao pode ser anterior a plannedStart
+    }
+
+    SearchAction --> ActionStatus : tem status
+    SearchAction --> PreventiveFocus : foco preventivo
+    SearchAction .. RegrasSearchAction

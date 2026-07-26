@@ -1,0 +1,27 @@
+%% Fluxo 2: Detalhe e Prioridade do Território - SUS-Connect APS MVP (Fase 05)
+
+sequenceDiagram
+    participant Coord as Coordenador APS
+    participant API as REST API
+    participant UC as GetTerritoryDetailsUseCase
+    participant Calc as PriorityCalculator
+    participant DB as PostgreSQL
+
+    Coord->>API: GET /api/v1/territories/{territoryId}
+    API->>UC: execute(territoryId)
+    UC->>DB: busca território por ID
+    alt Território não encontrado
+        DB-->>UC: vazio
+        UC-->>API: TerritoryNotFoundException
+        API-->>Coord: 404 Not Found (ProblemDetail)
+    else Território encontrado
+        DB-->>UC: Territory + PreventiveIndicators
+        UC->>Calc: assess(territory)
+        Calc-->>UC: PriorityAssessment
+        Note right of Calc: Regra: HIGH = vínculo baixo<br/>+ indicador abaixo da meta<br/>MEDIUM = apenas um sinal<br/>LOW = tudo dentro da meta
+        UC->>DB: busca histórico de ações do território
+        DB-->>UC: lista de SearchAction
+        UC-->>API: TerritoryDetailsOutput
+        Note right of UC: prioridade + razões explicadas<br/>indicadores com valor vs meta<br/>histórico de ações agregadas
+        API-->>Coord: 200 OK — detalhes e justificativa
+    end

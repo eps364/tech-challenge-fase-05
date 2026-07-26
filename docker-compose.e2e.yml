@@ -1,0 +1,38 @@
+name: sus-connect-aps-e2e
+
+services:
+  aps-e2e-postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: aps_e2e_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d aps_e2e_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    volumes:
+      - aps_e2e_postgres_data:/var/lib/postgresql/data
+
+  aps-e2e-service:
+    build:
+      context: .
+      dockerfile: ./aps-prioritization-service/Dockerfile
+    depends_on:
+      aps-e2e-postgres:
+        condition: service_healthy
+    environment:
+      SERVER_PORT: 8205
+      SPRING_DATASOURCE_URL: jdbc:postgresql://aps-e2e-postgres:5432/aps_e2e_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_FLYWAY_ENABLED: "true"
+      APS_DEMO_DATA_ENABLED: "false"
+      APS_LINKAGE_TARGET: "50.00"
+    ports:
+      - "8215:8205"
+
+volumes:
+  aps_e2e_postgres_data:

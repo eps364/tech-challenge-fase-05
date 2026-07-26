@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Tech Challenge Fase 05 API",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

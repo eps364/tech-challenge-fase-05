@@ -1,0 +1,20 @@
+%% Fluxo 1: Painel Operacional (Dashboard) - SUS-Connect APS MVP (Fase 05)
+
+sequenceDiagram
+    participant Coord as Coordenador APS
+    participant API as REST API
+    participant UC as GetDashboardUseCase
+    participant Calc as PriorityCalculator
+    participant DB as PostgreSQL
+
+    Coord->>API: GET /api/v1/dashboard
+    API->>UC: execute(from, to)
+    UC->>DB: busca todos os territórios
+    DB-->>UC: lista de Territory + PreventiveIndicators
+    UC->>Calc: assess(territory) para cada território
+    Calc-->>UC: PriorityAssessment (HIGH / MEDIUM / LOW + razões)
+    UC->>DB: busca ações abertas e vencidas no período
+    DB-->>UC: lista de SearchAction
+    UC-->>API: DashboardOutput
+    Note right of UC: highPriorityTerritoryCount<br/>openActionCount<br/>completedActionCount<br/>topPriorities<br/>attentionActions
+    API-->>Coord: 200 OK — resumo operacional

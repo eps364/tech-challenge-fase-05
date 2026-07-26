@@ -1,0 +1,29 @@
+%% Fluxo 4: Atualização de Progresso da Ação - SUS-Connect APS MVP (Fase 05)
+
+sequenceDiagram
+    participant ACS as ACS / Equipe ESF
+    participant API as REST API
+    participant UC as UpdateSearchActionProgressUseCase
+    participant Domain as SearchAction (domain)
+    participant DB as PostgreSQL
+
+    ACS->>API: PATCH /api/v1/actions/{actionId}/progress
+    Note right of ACS: {status: IN_PROGRESS,<br/>performedCount: 54,<br/>resultNotes?: "..."}
+
+    API->>UC: execute(actionId, command)
+    UC->>DB: busca ação por ID
+    alt Ação não encontrada
+        DB-->>UC: vazio
+        UC-->>API: SearchActionNotFoundException
+        API-->>ACS: 404 Not Found (ProblemDetail)
+    else Ação encontrada
+        DB-->>UC: SearchAction atual
+        UC->>Domain: action.updateProgress(status, performedCount, notes)
+        Note right of Domain: Regra: COMPLETED exige<br/>performedCount > 0<br/>performedCount >= 0 sempre
+        Domain-->>UC: SearchAction atualizada
+        UC->>DB: persiste progresso atualizado
+        DB-->>UC: salvo
+        UC-->>API: SearchActionOutput atualizada
+        Note right of UC: progressPercent calculado<br/>isOverdue verificado
+        API-->>ACS: 200 OK — progresso registrado
+    end

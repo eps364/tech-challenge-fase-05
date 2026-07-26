@@ -1,0 +1,50 @@
+services:
+  aps-prioritization-postgres:
+    image: postgres:15-alpine
+    container_name: aps-prioritization-postgres
+    restart: on-failure
+    environment:
+      POSTGRES_DB: aps_priority_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d aps_priority_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - aps_priority_postgres_data:/var/lib/postgresql/data
+    networks:
+      - susconnect-network
+
+  aps-prioritization-service:
+    build:
+      context: .
+      dockerfile: ./aps-prioritization-service/Dockerfile
+    container_name: aps-prioritization-service
+    restart: on-failure
+    depends_on:
+      aps-prioritization-postgres:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: aps-prioritization-service
+      SERVER_PORT: 8205
+      SPRING_DATASOURCE_URL: jdbc:postgresql://aps-prioritization-postgres:5432/aps_priority_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_FLYWAY_ENABLED: "true"
+      APS_DEMO_DATA_ENABLED: "true"
+    ports:
+      - "8205:8205"
+    networks:
+      - susconnect-network
+
+networks:
+  susconnect-network:
+    driver: bridge
+
+volumes:
+  aps_priority_postgres_data:
