@@ -505,7 +505,7 @@ O projeto disponibiliza coleções completas pré-configuradas para validação 
 ---
 
 ## 16. Links Úteis do Projeto
-* **Repositório do Código (Branch de Desenvolvimento)**: [GitHub - eps364/tech-challenge-fase-05](https://github.com/eps364/tech-challenge-fase-05)
+* **Repositório do Código**: [GitHub - eps364/tech-challenge-fase-05](https://github.com/eps364/tech-challenge-fase-05)
 * **Video Pitch**: [https://www.youtube.com/watch?v=J10DTc7Rg7U](https://www.youtube.com/watch?v=J10DTc7Rg7U)
 
 
