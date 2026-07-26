@@ -16,9 +16,9 @@ Roteiro sincronizado com `apresentacao_aps.html`.
 
 ## Controle de tempo
 
-- Fala planejada: aproximadamente **6 min 50 s**.
+- Fala planejada: aproximadamente **7 minutos**.
 - Gravação esperada, com pausas e troca de slides: **7 min 10 s a 7 min 30 s**.
-- Limite de segurança para encerrar: **7 min 40 s**.
+- Limite de segurança para encerrar: **7 min 45 s**.
 - Limite do enunciado: **8 minutos**.
 
 > Não tente preencher todo o tempo disponível. A margem final absorve pausas,
@@ -32,7 +32,6 @@ Roteiro sincronizado com `apresentacao_aps.html`.
 | Números nacionais exibidos nos slides | Real, calculado pelo projeto | São resultados reproduzíveis da análise das bases oficiais |
 | Jardim Esperança, Parque das Flores, Vila Nova e Centro | Fictício | São territórios criados apenas para demonstrar o produto |
 | Nomes de UBS, indicadores, metas, equipes e ações desses territórios | Simulado | Não representam municípios, unidades ou pessoas reais |
-| Respostas HTTP, persistência, validações e cobertura de testes | Evidência técnica real | Foram obtidas executando a aplicação sobre a massa fictícia |
 
 ## Tipos de dados utilizados
 
@@ -42,7 +41,7 @@ Roteiro sincronizado com `apresentacao_aps.html`.
 | Cadastros vinculados por município | SISAB, dezembro de 2024 | Construir uma aproximação de cobertura de vínculo |
 | Percentuais de indicadores preventivos | SISAB/Previne Brasil, 3º quadrimestre de 2024 | Identificar lacunas agregadas de acompanhamento preventivo |
 | Quantidade de UBS e estabelecimentos | Dados Abertos do SUS | Acrescentar contexto de estrutura territorial |
-| Leitos e UTI | Dados Abertos do SUS | Análise exploratória de contexto; não entra no score principal |
+| Leitos e UTI | Dados Abertos do SUS | Análise exploratória de contexto; não entram na prioridade do produto |
 
 As bases possuem competências diferentes. A análise é um recorte exploratório,
 não um painel em tempo real e não uma medição de risco individual, qualidade
@@ -50,165 +49,176 @@ assistencial, fila de espera ou impacto causal.
 
 ---
 
-## Slide 1 - Abertura
+## Slide 1 - O que é o SUS Conecta
 
-**Tempo-alvo: 0:00 a 0:45**
+**Tempo-alvo: 0:00 a 0:55**
 
 > Oi, eu sou Luiz Saraiva. Eu e o Emerson Silva desenvolvemos juntos o SUS
 > Conecta para a Fase 5 do Tech Challenge.
 >
-> A ideia nasceu de uma pergunta bem prática: se a equipe não consegue atuar em
-> todos os lugares ao mesmo tempo, como decidir qual território precisa de
-> atenção primeiro?
+> Antes dos dados, o projeto em uma frase: o SUS Conecta ajuda coordenadores da
+> Atenção Primária e de UBS a decidir qual território deve receber primeiro uma
+> ação preventiva.
 >
-> Hoje, essa análise pode depender de várias planilhas, indicadores separados e
-> muito trabalho manual.
+> Ele reúne indicadores agregados, organiza os territórios por prioridade,
+> explica os motivos dessa ordem e ajuda a transformar a decisão em uma ação
+> com equipe, prazo, meta e acompanhamento.
 >
-> O que o SUS Conecta faz é organizar esses dados, explicar a prioridade e
-> ajudar a acompanhar a ação. Tudo isso olhando para o território, sem
-> identificar pacientes e sem tirar da equipe a decisão final.
+> A pergunta que ele responde é simples: se não dá para atuar em todos os
+> lugares ao mesmo tempo, onde começar e por quê?
+>
+> Ele não escolhe pacientes nem toma decisões clínicas. A busca ativa continua
+> sendo um trabalho da própria equipe; o sistema só dá à gestão um ponto de
+> partida territorial claro.
 
 **[AVANCE]**
 
 ---
 
-## Slide 2 - Evidência e tipos de dados
+## Slide 2 - De onde vieram os dados
 
-**Tempo-alvo: 0:45 a 1:40**
+**Tempo-alvo: 0:55 a 2:00**
 
-> Para entender se esse problema realmente tinha escala, a gente foi atrás de
-> dados oficiais e sempre agregados.
+> Para entender se essa necessidade realmente tinha escala, a gente analisou
+> dados públicos, oficiais e sempre agregados.
 >
-> Usamos cinco tipos de informação: população por município, cadastros
-> vinculados à APS, indicadores preventivos, quantidade de UBS e
-> estabelecimentos, além de leitos e UTI para entender o contexto da rede.
+> A primeira base foi a estimativa populacional do IBGE de 2025. Ela permitiu
+> comparar municípios de tamanhos diferentes. Depois usamos os cadastros
+> vinculados à APS do SISAB, de dezembro de 2024, e os indicadores preventivos
+> do SISAB/Previne Brasil, do terceiro quadrimestre de 2024.
 >
-> A população vem do IBGE de 2025. Os dados de vínculo são do SISAB, de
-> dezembro de 2024, e os indicadores são do terceiro quadrimestre de 2024. Os
-> dados de estrutura ajudaram no contexto, mas leitos e UTI não entram na regra
-> de prioridade do produto.
+> Também analisamos dados de UBS e estabelecimentos dos Dados Abertos do SUS
+> para entender a estrutura disponível. Leitos e UTI entraram apenas na análise
+> exploratória e não fazem parte da prioridade do produto.
 >
-> E esses números que aparecem na tela são reais: foram 5.571 municípios,
-> cerca de 213,4 milhões de habitantes e mais de 100 mil registros de
-> indicadores analisados. Como as fontes são de períodos diferentes, esse é um
-> recorte exploratório, não uma fotografia do SUS em tempo real.
+> Os números desta tela são resultados reais da nossa análise: 5.571
+> municípios, cerca de 213,4 milhões de habitantes e 100.242 registros brutos
+> de indicadores. A média ponderada desses indicadores ficou em 47,34, numa
+> escala de zero a cem.
+>
+> Como as bases são de períodos diferentes, esse é um recorte exploratório, não
+> uma fotografia do SUS em tempo real.
 
 **[AVANCE]**
 
 ---
 
-## Slide 3 - Oportunidade encontrada
+## Slide 3 - A necessidade revelada pelos dados
 
-**Tempo-alvo: 1:40 a 2:35**
+**Tempo-alvo: 2:00 a 3:05**
 
-> Depois veio a parte de tratamento dos dados. A gente juntou as bases pelo
-> código do município, padronizou os percentuais e aplicou os mesmos filtros em
-> todo o conjunto.
+> Depois de reunir as fontes, a gente relacionou as bases pelo código do
+> município, padronizou os percentuais e aplicou critérios iguais em todo o
+> conjunto.
 >
-> O que apareceu foi o seguinte: a aproximação nacional de vínculo ficou em
-> 38,11%. Entre os municípios com pelo menos 20 mil habitantes, 1.091 ficaram
-> abaixo de 50%. E, nesse mesmo recorte, 276 tiveram média inferior a 40% nos
-> indicadores preventivos.
+> Também processamos 47.839 registros da base de UBS e 46.086 da base de
+> cadastro vinculado. Esses volumes não representam pessoas atendidas.
 >
-> Aqui tem um cuidado importante: esses volumes são registros processados, não
-> pessoas atendidas. E o percentual de vínculo é uma aproximação histórica,
-> porque as bases não são todas do mesmo período.
+> O que chamou nossa atenção foi o seguinte: a aproximação nacional de vínculo
+> com a APS ficou em 38,11%. Entre os municípios com pelo menos 20 mil
+> habitantes, 1.091 ficaram abaixo de 50%. Nesse mesmo recorte, 276 tiveram
+> média inferior a 40% nos indicadores preventivos.
 >
-> Então, o que a análise mostra é uma oportunidade para investigar e organizar
-> melhor a resposta local. Ela não avalia a qualidade do atendimento e não
-> prova que existe um problema clínico naquele município.
+> A necessidade percebida não foi a falta de dados. Eles já existem, mas estão
+> separados em fontes e períodos diferentes. O desafio é transformar esses
+> sinais em uma decisão: onde olhar primeiro, por quê e como acompanhar a
+> resposta.
+>
+> Isso indica uma oportunidade de organização territorial, não uma conclusão
+> sobre qualidade do atendimento ou um problema clínico.
 
 **[AVANCE]**
 
 ---
 
-## Slide 4 - Produto e regra de priorização
+## Slide 4 - Como a solução responde
 
-**Tempo-alvo: 2:35 a 3:40**
+**Tempo-alvo: 3:05 a 4:10**
 
-> Agora eu entro na parte do produto. Mas, antes, um ponto importante: Jardim
-> Esperança, Parque das Flores, Vila Nova e Centro são exemplos fictícios. Os
-> nomes das UBS, os percentuais, as metas e as equipes também foram simulados.
+> A partir dessa necessidade, a gente criou uma fila de territórios que mostra
+> onde começar e por que cada local está naquela posição.
 >
-> A lógica é bem direta. Se o vínculo está abaixo da meta e pelo menos um
-> indicador preventivo também está, a prioridade é alta. Se apenas um desses
-> sinais está abaixo, ela é média. Se todos atingem as metas, ela é baixa.
+> Jardim Esperança e os demais territórios do painel são fictícios. Nomes de
+> UBS, percentuais, metas e equipes também foram simulados.
 >
-> Pegando Jardim Esperança como exemplo: o vínculo está em 42%, para uma meta
-> de 50%. Condições crônicas está em 32%, para uma meta de 60%. E o
-> acompanhamento pré-natal está em 72%, para uma meta de 85%.
+> A regra é simples: vínculo baixo junto com pelo menos um indicador preventivo
+> abaixo da meta gera prioridade alta. Apenas um desses sinais gera prioridade
+> média. Se todos atingem as referências, a prioridade é baixa.
 >
-> Por isso o território aparece com prioridade alta. E, em vez de mostrar só
-> uma cor, o painel explica os motivos. A regra ajuda a coordenação, mas quem
-> decide o que fazer continua sendo a equipe.
+> Em Jardim Esperança, o vínculo está em 42%, para uma meta de 50%. Condições
+> crônicas está em 32%, para uma meta de 60%, e o acompanhamento pré-natal está
+> em 72%, para uma meta de 85%.
+>
+> Por isso ele aparece com prioridade alta. O painel apresenta indicadores,
+> metas e motivos, mas a decisão final continua sendo da coordenação.
 
 **[AVANCE]**
 
 ---
 
-## Slide 5 - Ação e evidências técnicas
+## Slide 5 - Da prioridade para a ação
 
-**Tempo-alvo: 3:40 a 4:40**
+**Tempo-alvo: 4:10 a 5:15**
 
-> Depois que a coordenação escolhe uma prioridade, ela consegue transformar
-> esse sinal em uma ação de verdade, com foco, equipe responsável, prazo e
-> meta.
+> Identificar a prioridade é só o começo. A informação precisa virar uma ação
+> que a equipe consiga executar e acompanhar.
 >
-> Nesse exemplo, o foco é acompanhamento de condições crônicas, quem assume é
-> uma equipe de Saúde da Família e o prazo é de sete dias. A meta é realizar 80
-> contatos, e o painel mostra 54 realizados. Esses valores continuam sendo
-> fictícios.
+> A coordenação registra o foco preventivo, o objetivo, a equipe, o período e
+> uma meta agregada. Assim, um indicador abaixo da meta vira um trabalho
+> organizado.
 >
-> O que é real aqui é a validação técnica. A API criou a ação e retornou 201,
-> salvou os dados no PostgreSQL, atualizou o progresso e bloqueou, com retorno
-> 422, uma tentativa de concluir a ação sem informar o resultado.
+> No exemplo, a equipe de Saúde da Família tem sete dias para realizar uma ação
+> relacionada ao acompanhamento de condições crônicas. A meta é de 80 contatos
+> agregados, e 54 já foram registrados. Isso representa 67,5% da execução
+> planejada.
 >
-> Os 67,5% mostram apenas o andamento da ação, não uma melhora clínica. E os
-> testes automatizados chegaram a 98,94% de cobertura de linhas.
+> Esses números são fictícios. O progresso mostra a execução da ação; não
+> identifica quem foi contatado nem significa melhora clínica.
+>
+> A coordenação consegue organizar a resposta e voltar ao painel para acompanhar
+> o que está aberto, em andamento ou concluído.
 
 **[AVANCE]**
 
 ---
 
-## Slide 6 - Fluxo e arquitetura
+## Slide 6 - Como a solução funciona
 
-**Tempo-alvo: 4:40 a 5:30**
+**Tempo-alvo: 5:15 a 6:00**
 
-> Por trás desse fluxo, a solução faz cinco coisas: recebe os dados agregados,
-> calcula as lacunas, organiza os territórios, registra a ação e acompanha o
-> andamento.
+> O funcionamento pode ser resumido em cinco passos.
 >
-> A gente construiu a aplicação com Java 21, Spring Boot e Clean Architecture.
-> Na prática, as regras principais ficam separadas da API e do banco de dados.
-> Isso deixa a regra mais fácil de entender, testar e evoluir.
+> Primeiro, entram os indicadores agregados do território. Depois, o sistema
+> compara os valores com as metas e organiza a fila de prioridades. A
+> coordenação abre o território, entende os motivos e escolhe onde atuar.
 >
-> A persistência usa PostgreSQL e Flyway. Para a demonstração, os containers
-> sobem o serviço e o banco sem depender de prontuário ou de uma integração
-> externa em tempo real.
+> A prioridade escolhida vira uma ação com foco, equipe, prazo e meta. Por fim,
+> o resultado agregado volta para o painel, permitindo acompanhar o trabalho.
+>
+> A tecnologia organiza a informação, mas a validação do contexto e a decisão
+> continuam com quem conhece o território.
 
 **[AVANCE]**
 
 ---
 
-## Slide 7 - Diferencial e impacto esperado
+## Slide 7 - Valor e impacto esperado
 
-**Tempo-alvo: 5:30 a 6:20**
+**Tempo-alvo: 6:00 a 6:50**
 
-> Para a gente, o principal diferencial é que o SUS Conecta não para no
-> indicador. Ele transforma uma lacuna em uma próxima ação: onde atuar, por que,
-> com qual meta, em qual prazo e com qual resultado.
+> O principal diferencial é justamente conectar três coisas que normalmente
+> ficam separadas: o dado, a decisão e a execução.
 >
-> Para a gestão, isso pode reduzir o trabalho manual e deixar a prioridade mais
-> fácil de explicar. Para a equipe da UBS, fica mais claro o que precisa ser
-> feito. E tudo isso sem usar dados pessoais na priorização.
+> Para a gestão, a expectativa é reduzir o trabalho com planilhas e tornar a
+> prioridade mais fácil de justificar. Para a UBS, ficam claros o foco, a meta
+> e o prazo, sem usar dados pessoais na priorização.
 >
-> O impacto, por enquanto, é uma hipótese. A gente espera reduzir o tempo gasto
-> nessa decisão e aumentar o número de ações que chegam ao fim com um resultado
-> registrado.
+> O impacto ainda é uma hipótese que precisa ser validada. Em um piloto, a
+> gente mediria o tempo necessário para priorizar os territórios e a proporção
+> de ações concluídas com resultado registrado.
 >
-> O jeito certo de confirmar isso é com um piloto, comparando esses indicadores
-> antes e depois. Neste momento, a gente ainda não afirma impacto clínico ou
-> causal.
+> Neste momento, a proposta é melhorar a organização da resposta territorial.
+> A gente não afirma impacto clínico nem causal.
 
 **[AVANCE]**
 
@@ -216,18 +226,15 @@ assistencial, fila de espera ou impacto causal.
 
 ## Slide 8 - Encerramento
 
-**Tempo-alvo: 6:20 a 6:50**
+**Tempo-alvo: 6:50 a 7:20**
 
-> Daqui para frente, os próximos passos são validar a solução com coordenadores,
-> ajustar as metas conforme a realidade local e, depois, estudar integrações
-> autorizadas.
+> O próximo passo é validar a solução com coordenadores e ajustar as metas à
+> realidade local.
 >
-> Se eu tivesse que resumir o projeto em uma frase, seria esta: o SUS Conecta
-> ajuda a transformar dados agregados em uma decisão territorial mais clara e
-> em uma ação que pode ser acompanhada.
->
-> Sem expor dados individuais e sem substituir quem realmente conhece o
-> território: a equipe de saúde. Obrigado.
+> Em resumo, o SUS Conecta transforma dados públicos e agregados em uma
+> prioridade explicável e em uma ação acompanhável. Ele ajuda a responder onde
+> atuar primeiro, por quê e como acompanhar o trabalho, sem expor dados
+> individuais e sem substituir a equipe de saúde. Obrigado.
 
 ---
 
@@ -251,9 +258,8 @@ assistencial, fila de espera ou impacto causal.
 
 ### O produto prova impacto na saúde?
 
-> Ainda não. O MVP mostra que a solução funciona tecnicamente e apresenta uma
-> hipótese de ganho operacional. Impacto na saúde só pode ser avaliado em um
-> piloto adequado.
+> Ainda não. O MVP apresenta uma hipótese de ganho operacional. Impacto na
+> saúde só pode ser avaliado em um piloto adequado.
 
 ### Por que as competências das bases são diferentes?
 
@@ -285,10 +291,10 @@ Preferir:
 
 - Apresentar os dois participantes apenas uma vez, na abertura.
 - Manter um cronômetro visível e avançar o slide nos marcadores `[AVANCE]`.
-- Aos 4 minutos, estar no slide 5.
-- Aos 6 minutos e 20 segundos, iniciar o encerramento.
+- Aos 4 minutos e 10 segundos, iniciar o slide 5.
+- Aos 6 minutos e 50 segundos, iniciar o encerramento.
 - Se houver atraso, cortar detalhes do slide 6; nunca acelerar a conclusão.
-- Encerrar até 7 minutos e 40 segundos para preservar margem.
+- Encerrar até 7 minutos e 45 segundos para preservar margem.
 - Não abrir código, terminal ou documentação técnica neste vídeo de pitch.
 - Gravar o vídeo técnico separadamente, seguindo
   `roteiro-video-mvp-tecnico.md`.
