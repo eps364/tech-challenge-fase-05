@@ -505,11 +505,9 @@ O projeto disponibiliza coleções completas pré-configuradas para validação 
 ---
 
 ## 16. Links Úteis do Projeto
-* **Repositório do Código (Branch de Desenvolvimento)**: [GitHub - eps364/tech-challenge-fase-05 at codex-oportunidades-sus-analise](https://github.com/eps364/tech-challenge-fase-05/tree/codex-oportunidades-sus-analise)
-* **Especificação Detalhada de Requisitos**: [docs/produto/especificacao-requisitos.md](https://github.com/eps364/tech-challenge-fase-05/blob/codex-oportunidades-sus-analise/docs/produto/especificacao-requisitos.md)
-* **Guia de Execução de Endpoints e Roteiro de Testes**: [docs/tecnico/api/README.md](https://github.com/eps364/tech-challenge-fase-05/blob/codex-oportunidades-sus-analise/docs/tecnico/api/README.md)
-* **Ambiente Técnico e URLs**: [docs/tecnico/ambiente-local.md](https://github.com/eps364/tech-challenge-fase-05/blob/codex-oportunidades-sus-analise/docs/tecnico/ambiente-local.md)
-* **Contexto de Arquitetura e Agente**: [AGENTS.md](https://github.com/eps364/tech-challenge-fase-05/blob/codex-oportunidades-sus-analise/AGENTS.md)
+* **Repositório do Código (Branch de Desenvolvimento)**: [GitHub - eps364/tech-challenge-fase-05](https://github.com/eps364/tech-challenge-fase-05)
+* **Video Pitch**: [https://www.youtube.com/watch?v=J10DTc7Rg7U](https://www.youtube.com/watch?v=J10DTc7Rg7U)
+
 
 ---
 
