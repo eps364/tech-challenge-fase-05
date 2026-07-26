@@ -1,8 +1,8 @@
 %% Visão Geral - SUS-Connect APS MVP (Fase 05)
 
 graph TD
-    Coord["👤 Coordenador de APS"]
-    ACS["👤 ACS / Equipe ESF"]
+    Coord["Coordenador de APS"]
+    ACS["ACS / Equipe ESF"]
 
     Coord -->|"Consulta prioridades e cria ações"| API
     ACS -->|"Atualiza progresso agregado"| API
@@ -17,5 +17,5 @@ graph TD
 
     Service --> DB[("PostgreSQL\naps_priority_db")]
 
-    Swagger["📄 Swagger UI\n/swagger-ui"] -.-> API
-    Health["❤️ Actuator Health\n/actuator/health"] -.-> Service
+    Swagger["Swagger UI\n/swagger-ui"] -.-> API
+    Health["Actuator Health\n/actuator/health"] -.-> Service
