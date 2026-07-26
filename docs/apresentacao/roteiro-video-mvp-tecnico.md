@@ -4,11 +4,15 @@
 
 Este roteiro organiza a explicação técnica do projeto sem transformar a apresentação em um passo a passo de navegação. A proposta é explicar o significado de cada parte enquanto o código e as respostas da API são mostrados.
 
-Tempo estimado: **aproximadamente 7 minutos**.
+Tempo estimado: **aproximadamente 7 minutos e 30 segundos**.
 
 ---
 
-## 1. Visão geral do projeto — 0:00 a 0:40
+## 1. Introdução e visão geral do projeto — 0:00 a 0:50
+
+### Apresentação da dupla
+
+> Olá, eu sou o Luiz Saraiva e desenvolvi este projeto junto com a minha dupla, o Emerson Silva. Nesta apresentação, vou mostrar como organizamos tecnicamente a solução e como o fluxo funciona na prática por meio da API.
 
 ### O que este tópico explica
 
@@ -24,7 +28,7 @@ O sistema não avalia pessoas individualmente e não realiza diagnóstico clíni
 
 ---
 
-## 2. Dados e análises utilizados — 0:40 a 1:20
+## 2. Dados e análises utilizados — 0:50 a 1:30
 
 ### O que este tópico explica
 
@@ -51,7 +55,7 @@ Os territórios e as ações exibidos na demonstração da API são **fictícios
 
 ---
 
-## 3. Organização da arquitetura — 1:20 a 1:45
+## 3. Organização da arquitetura — 1:30 a 1:55
 
 ### O que este tópico explica
 
@@ -85,7 +89,7 @@ Essa separação permite que as regras de prioridade e acompanhamento existam no
 
 ---
 
-## 4. Controller: entrada da API — 1:45 a 2:10
+## 4. Controller: entrada da API — 1:55 a 2:20
 
 ### Classe principal
 
@@ -112,7 +116,7 @@ Os erros de domínio também permanecem separados do controller. O `ApsException
 
 ---
 
-## 5. Casos de uso: fluxo da aplicação — 2:10 a 2:50
+## 5. Casos de uso: fluxo da aplicação — 2:20 a 3:00
 
 ### Classes principais
 
@@ -140,7 +144,7 @@ Essa camada não conhece detalhes de rota HTTP e também não implementa consult
 
 ---
 
-## 6. Domínio: regras de prioridade e progresso — 2:50 a 3:30
+## 6. Domínio: regras de prioridade e progresso — 3:00 a 3:40
 
 ### Classes principais
 
@@ -173,7 +177,7 @@ A entidade `SearchAction` representa a execução operacional. Uma nova ação c
 
 ---
 
-## 7. Gateways e repositórios: persistência — 3:30 a 3:55
+## 7. Gateways e repositórios: persistência — 3:40 a 4:05
 
 ### Classes principais
 
@@ -197,7 +201,7 @@ Essa inversão de dependência preserva o núcleo e permite substituir a tecnolo
 
 ---
 
-## 8. API: disponibilidade do serviço — 3:55 a 4:10
+## 8. API: disponibilidade do serviço — 4:05 a 4:20
 
 ### Requisição relacionada
 
@@ -213,7 +217,7 @@ O endpoint de health demonstra que a aplicação está disponível e que o ambie
 
 ---
 
-## 9. API: visão inicial do dashboard — 4:10 a 4:35
+## 9. API: visão inicial do dashboard — 4:20 a 4:45
 
 ### Requisição relacionada
 
@@ -238,7 +242,7 @@ Seu objetivo é oferecer uma leitura rápida do cenário e direcionar a atençã
 
 ---
 
-## 10. API: fila de prioridades altas — 4:35 a 4:55
+## 10. API: fila de prioridades altas — 4:45 a 5:05
 
 ### Requisição relacionada
 
@@ -258,7 +262,7 @@ Na demonstração, o filtro `HIGH` destaca os territórios em que a vinculação
 
 ---
 
-## 11. API: detalhe e explicação da prioridade — 4:55 a 5:25
+## 11. API: detalhe e explicação da prioridade — 5:05 a 5:35
 
 ### Requisição relacionada
 
@@ -284,7 +288,7 @@ Como a vinculação e indicadores preventivos estão abaixo das metas, o territ�
 
 ---
 
-## 12. API: criação da ação territorial — 5:25 a 5:55
+## 12. API: criação da ação territorial — 5:35 a 6:05
 
 ### Requisição relacionada
 
@@ -304,7 +308,7 @@ O sistema registra quantidades totais, nunca uma relação nominal de pacientes.
 
 ---
 
-## 13. API: atualização do progresso — 5:55 a 6:25
+## 13. API: atualização do progresso — 6:05 a 6:35
 
 ### Requisição relacionada
 
@@ -324,7 +328,7 @@ O domínio calcula o percentual de progresso comparando a quantidade realizada c
 
 ---
 
-## 14. API: fechamento do ciclo no dashboard — 6:25 a 6:50
+## 14. API: fechamento do ciclo no dashboard — 6:35 a 7:00
 
 ### Requisição relacionada
 
@@ -352,7 +356,7 @@ O MVP demonstra acompanhamento operacional. Ele não afirma que a ação causou 
 
 ---
 
-## 15. Encerramento técnico — 6:50 a 7:10
+## 15. Encerramento técnico — 7:00 a 7:20
 
 ### O que este tópico explica
 
