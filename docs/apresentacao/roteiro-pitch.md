@@ -2,6 +2,18 @@
 
 Roteiro sincronizado com `apresentacao_aps.html`.
 
+## Como usar sem parecer leitura
+
+- Use cada paragrafo como uma ideia, e nao como uma frase para decorar.
+- Olhe rapidamente para o roteiro, volte para a camera e conte a ideia com suas
+  palavras.
+- Nas telas com numeros, aponte primeiro para o slide e depois explique o que
+  chamou sua atencao.
+- As expressoes "a gente", "na pratica" e "o ponto aqui" sao intencionais:
+  deixam a fala mais proxima de uma conversa.
+- Se trocar uma palavra durante a gravacao, continue. O sentido e mais
+  importante do que repetir o texto exatamente.
+
 ## Controle de tempo
 
 - Fala planejada: aproximadamente **6 min 50 s**.
@@ -42,19 +54,19 @@ assistencial, fila de espera ou impacto causal.
 
 **Tempo-alvo: 0:00 a 0:45**
 
-> Ola, eu sou Luiz Saraiva. O SUS Conecta foi desenvolvido em conjunto por mim
-> e por Emerson Silva para a Fase 5 do Tech Challenge.
+> Oi, eu sou Luiz Saraiva. Eu e o Emerson Silva desenvolvemos juntos o SUS
+> Conecta para a Fase 5 do Tech Challenge.
 >
-> Nosso ponto de partida foi uma pergunta operacional da Atencao Primaria:
-> qual territorio deve receber primeiro uma acao de busca ativa preventiva, e
-> por que?
+> A ideia nasceu de uma pergunta bem pratica: se a equipe nao consegue atuar em
+> todos os lugares ao mesmo tempo, como decidir qual territorio precisa de
+> atencao primeiro?
 >
-> Na rotina, a coordenacao precisa comparar varios territorios, indicadores e
-> planilhas, enquanto as equipes possuem capacidade limitada.
+> Hoje, essa analise pode depender de varias planilhas, indicadores separados e
+> muito trabalho manual.
 >
-> A proposta transforma dados publicos e agregados em uma fila territorial
-> explicavel e em um fluxo simples para planejar, executar e acompanhar a
-> acao. Ela nao identifica pacientes e nao substitui a decisao da equipe.
+> O que o SUS Conecta faz e organizar esses dados, explicar a prioridade e
+> ajudar a acompanhar a acao. Tudo isso olhando para o territorio, sem
+> identificar pacientes e sem tirar da equipe a decisao final.
 
 **[AVANCE]**
 
@@ -64,23 +76,22 @@ assistencial, fila de espera ou impacto causal.
 
 **Tempo-alvo: 0:45 a 1:40**
 
-> Para verificar se o problema tinha escala, usamos dados oficiais e agregados:
-> populacao municipal do IBGE, cadastros vinculados e indicadores preventivos
-> do SISAB, alem de dados de UBS, estabelecimentos e leitos do SUS.
+> Para entender se esse problema realmente tinha escala, a gente foi atras de
+> dados oficiais e sempre agregados.
 >
-> O recorte combina a estimativa do IBGE de 2025, o cadastro do SISAB de
-> dezembro de 2024 e os indicadores do terceiro quadrimestre de 2024. UBS,
-> estabelecimentos e leitos serviram como contexto; leitos nao entram na regra
-> de prioridade.
+> Usamos cinco tipos de informacao: populacao por municipio, cadastros
+> vinculados a APS, indicadores preventivos, quantidade de UBS e
+> estabelecimentos, alem de leitos e UTI para entender o contexto da rede.
 >
-> Os numeros deste slide sao reais e foram calculados a partir dessas bases:
-> analisamos 5.571 municipios, cerca de 213,4 milhoes de habitantes e 100.242
-> registros de indicadores. A media ponderada ficou em 47,34, numa escala de
-> zero a cem.
+> A populacao vem do IBGE de 2025. Os dados de vinculo sao do SISAB, de
+> dezembro de 2024, e os indicadores sao do terceiro quadrimestre de 2024. Os
+> dados de estrutura ajudaram no contexto, mas leitos e UTI nao entram na regra
+> de prioridade do produto.
 >
-> Como as fontes possuem competencias diferentes, esse e um retrato
-> exploratorio, nao uma fotografia sincronizada do SUS. Ele nao usa dados de
-> pacientes nem mede risco clinico individual.
+> E esses numeros que aparecem na tela sao reais: foram 5.571 municipios,
+> cerca de 213,4 milhoes de habitantes e mais de 100 mil registros de
+> indicadores analisados. Como as fontes sao de periodos diferentes, esse e um
+> recorte exploratorio, nao uma fotografia do SUS em tempo real.
 
 **[AVANCE]**
 
@@ -90,22 +101,22 @@ assistencial, fila de espera ou impacto causal.
 
 **Tempo-alvo: 1:40 a 2:35**
 
-> Combinamos as bases por codigo de municipio, normalizamos os percentuais e
-> aplicamos filtros reproduziveis. Relacionamos populacao e cadastros para obter
-> uma aproximacao de vinculo e consolidamos os indicadores preventivos. Os dados
-> de UBS deram contexto, mas nao alteraram a classificacao do MVP.
+> Depois veio a parte de tratamento dos dados. A gente juntou as bases pelo
+> codigo do municipio, padronizou os percentuais e aplicou os mesmos filtros em
+> todo o conjunto.
 >
-> A aproximacao nacional de vinculo ficou em 38,11%. Entre os municipios com
-> pelo menos 20 mil habitantes, 1.091 ficaram abaixo de 50% nessa aproximacao.
-> No mesmo recorte populacional, 276 tiveram media inferior a 40% nos
-> indicadores preventivos analisados.
+> O que apareceu foi o seguinte: a aproximacao nacional de vinculo ficou em
+> 38,11%. Entre os municipios com pelo menos 20 mil habitantes, 1.091 ficaram
+> abaixo de 50%. E, nesse mesmo recorte, 276 tiveram media inferior a 40% nos
+> indicadores preventivos.
 >
-> Os volumes representam registros processados, nao pessoas atendidas, e o
-> vinculo e uma aproximacao historica, nao uma taxa oficial em tempo real.
+> Aqui tem um cuidado importante: esses volumes sao registros processados, nao
+> pessoas atendidas. E o percentual de vinculo e uma aproximacao historica,
+> porque as bases nao sao todas do mesmo periodo.
 >
-> Esses resultados indicam onde vale investigar e organizar uma resposta local.
-> Nao provam causalidade, nao avaliam a qualidade do cuidado e nao substituem a
-> decisao da equipe de saude.
+> Entao, o que a analise mostra e uma oportunidade para investigar e organizar
+> melhor a resposta local. Ela nao avalia a qualidade do atendimento e nao
+> prova que existe um problema clinico naquele municipio.
 
 **[AVANCE]**
 
@@ -115,23 +126,21 @@ assistencial, fila de espera ou impacto causal.
 
 **Tempo-alvo: 2:35 a 3:40**
 
-> Aqui comeca a demonstracao do produto. Jardim Esperanca, Parque das Flores,
-> Vila Nova e Centro sao territorios ficticios. Os nomes de UBS, percentuais,
-> metas e equipes tambem foram simulados; nenhuma unidade real e representada.
+> Agora eu entro na parte do produto. Mas, antes, um ponto importante: Jardim
+> Esperanca, Parque das Flores, Vila Nova e Centro sao exemplos ficticios. Os
+> nomes das UBS, os percentuais, as metas e as equipes tambem foram simulados.
 >
-> A classificacao segue uma regra objetiva. Vinculo baixo junto com pelo menos
-> um indicador abaixo da meta gera prioridade alta. Apenas um desses sinais gera
-> prioridade media. Quando todos atingem as referencias, a prioridade e baixa.
+> A logica e bem direta. Se o vinculo esta abaixo da meta e pelo menos um
+> indicador preventivo tambem esta, a prioridade e alta. Se apenas um desses
+> sinais esta abaixo, ela e media. Se todos atingem as metas, ela e baixa.
 >
-> No exemplo, a populacao vinculada esta em 42% para uma meta de 50%. O
-> indicador de condicoes cronicas esta em 32% para uma meta de 60%, e o
-> acompanhamento pre-natal esta em 72% para uma meta de 85%. Como ha vinculo
-> baixo e indicadores preventivos abaixo das metas, Jardim Esperanca recebe
-> prioridade alta. O painel explica cada motivo, em vez de exibir apenas uma
-> cor.
+> Pegando Jardim Esperanca como exemplo: o vinculo esta em 42%, para uma meta
+> de 50%. Condicoes cronicas esta em 32%, para uma meta de 60%. E o
+> acompanhamento pre-natal esta em 72%, para uma meta de 85%.
 >
-> A regra e simples, auditavel e serve como apoio: a coordenacao continua sendo
-> responsavel pela decisao final.
+> Por isso o territorio aparece com prioridade alta. E, em vez de mostrar so
+> uma cor, o painel explica os motivos. A regra ajuda a coordenacao, mas quem
+> decide o que fazer continua sendo a equipe.
 
 **[AVANCE]**
 
@@ -141,22 +150,21 @@ assistencial, fila de espera ou impacto causal.
 
 **Tempo-alvo: 3:40 a 4:40**
 
-> Depois de selecionar uma prioridade, a equipe registra uma acao com
-> territorio, indicador, responsavel, prazo e meta. No exemplo, o foco e
-> acompanhamento de condicoes cronicas, a equipe responsavel e uma ESF e o
-> prazo operacional e de sete dias.
+> Depois que a coordenacao escolhe uma prioridade, ela consegue transformar
+> esse sinal em uma acao de verdade, com foco, equipe responsavel, prazo e
+> meta.
 >
-> Os valores de 54 contatos realizados para uma meta de 80 tambem sao
-> ficticios. O que e real neste slide e a comprovacao tecnica: a API criou a
-> acao com HTTP 201, persistiu o resultado, atualizou o progresso e rejeitou com
-> HTTP 422 uma tentativa invalida de concluir a acao sem informar o realizado.
+> Nesse exemplo, o foco e acompanhamento de condicoes cronicas, quem assume e
+> uma equipe de Saude da Familia e o prazo e de sete dias. A meta e realizar 80
+> contatos, e o painel mostra 54 realizados. Esses valores continuam sendo
+> ficticios.
 >
-> O progresso de 67,5% descreve somente a execucao operacional. Ele nao significa
-> melhora clinica. Nos testes automatizados, o servico atingiu 98,94% de
-> cobertura de linhas, incluindo o fluxo HTTP com PostgreSQL.
+> O que e real aqui e a validacao tecnica. A API criou a acao e retornou 201,
+> salvou os dados no PostgreSQL, atualizou o progresso e bloqueou, com retorno
+> 422, uma tentativa de concluir a acao sem informar o resultado.
 >
-> Assim, o MVP conecta priorizacao, execucao e acompanhamento sem perder a
-> explicabilidade.
+> Os 67,5% mostram apenas o andamento da acao, nao uma melhora clinica. E os
+> testes automatizados chegaram a 98,94% de cobertura de linhas.
 
 **[AVANCE]**
 
@@ -166,17 +174,17 @@ assistencial, fila de espera ou impacto causal.
 
 **Tempo-alvo: 4:40 a 5:30**
 
-> O fluxo possui cinco etapas: carregar o cenario agregado, calcular lacunas,
-> classificar e ordenar territorios, registrar a acao e acompanhar sua
-> execucao. A prioridade e recalculada a cada consulta com seus motivos.
+> Por tras desse fluxo, a solucao faz cinco coisas: recebe os dados agregados,
+> calcula as lacunas, organiza os territorios, registra a acao e acompanha o
+> andamento.
 >
-> A aplicacao foi construida em Java 21 e Spring Boot, seguindo Clean
-> Architecture. O nucleo de dominio permanece independente de HTTP, banco de
-> dados e frameworks. PostgreSQL e Flyway cuidam da persistencia, e a API
-> documenta os contratos de entrada, saida e erro.
+> A gente construiu a aplicacao com Java 21, Spring Boot e Clean Architecture.
+> Na pratica, as regras principais ficam separadas da API e do banco de dados.
+> Isso deixa a regra mais facil de entender, testar e evoluir.
 >
-> Os containers sobem o servico e o banco para a demonstracao, sem depender de
-> prontuario ou integracao externa em tempo real.
+> A persistencia usa PostgreSQL e Flyway. Para a demonstracao, os containers
+> sobem o servico e o banco sem depender de prontuario ou de uma integracao
+> externa em tempo real.
 
 **[AVANCE]**
 
@@ -186,22 +194,21 @@ assistencial, fila de espera ou impacto causal.
 
 **Tempo-alvo: 5:30 a 6:20**
 
-> O diferencial nao e apenas mostrar indicadores. O SUS Conecta transforma a
-> lacuna em uma proxima acao rastreavel: onde atuar, por qual motivo, com qual
-> meta, em qual prazo e com qual resultado.
+> Para a gente, o principal diferencial e que o SUS Conecta nao para no
+> indicador. Ele transforma uma lacuna em uma proxima acao: onde atuar, por que,
+> com qual meta, em qual prazo e com qual resultado.
 >
-> Para a gestao, isso reduz a consolidacao manual e torna a prioridade
-> comparavel. Para as equipes de UBS, diminui a ambiguidade entre perceber uma
-> lacuna e receber uma acao executavel. Para o SUS, oferece uma rotina com
-> limites de interpretacao claros. A populacao pode se beneficiar de maior
-> continuidade preventiva sem exposicao de dados pessoais.
+> Para a gestao, isso pode reduzir o trabalho manual e deixar a prioridade mais
+> facil de explicar. Para a equipe da UBS, fica mais claro o que precisa ser
+> feito. E tudo isso sem usar dados pessoais na priorizacao.
 >
-> O impacto apresentado e uma hipotese mensuravel. Esperamos reduzir o tempo
-> gasto na priorizacao e aumentar a proporcao de acoes concluidas com resultado
-> registrado. Em uma etapa futura, um piloto controlado poderia comparar esses
-> indicadores antes e depois da adocao.
+> O impacto, por enquanto, e uma hipotese. A gente espera reduzir o tempo gasto
+> nessa decisao e aumentar o numero de acoes que chegam ao fim com um resultado
+> registrado.
 >
-> Ainda nao afirmamos ganho assistencial ou impacto causal.
+> O jeito certo de confirmar isso e com um piloto, comparando esses indicadores
+> antes e depois. Neste momento, a gente ainda nao afirma impacto clinico ou
+> causal.
 
 **[AVANCE]**
 
@@ -211,16 +218,16 @@ assistencial, fila de espera ou impacto causal.
 
 **Tempo-alvo: 6:20 a 6:50**
 
-> Os proximos passos sao integrar fontes autorizadas, executar um piloto com
-> coordenadores, avaliar o tempo de decisao e evoluir as metas de acordo com a
-> realidade local. Qualquer integracao futura devera preservar governanca,
-> privacidade e a finalidade territorial.
+> Daqui para frente, os proximos passos sao validar a solucao com coordenadores,
+> ajustar as metas conforme a realidade local e, depois, estudar integracoes
+> autorizadas.
 >
-> Em resumo, o SUS Conecta usa dados agregados para tornar a priorizacao da
-> busca ativa mais clara, justificavel e acompanhavel, sem expor dados
-> individuais e sem substituir a decisao humana.
+> Se eu tivesse que resumir o projeto em uma frase, seria esta: o SUS Conecta
+> ajuda a transformar dados agregados em uma decisao territorial mais clara e
+> em uma acao que pode ser acompanhada.
 >
-> Obrigado.
+> Sem expor dados individuais e sem substituir quem realmente conhece o
+> territorio: a equipe de saude. Obrigado.
 
 ---
 
@@ -229,27 +236,30 @@ assistencial, fila de espera ou impacto causal.
 ### Os dados sao reais?
 
 > As bases e os numeros nacionais da analise sao reais, publicos e agregados.
-> Os territorios e as acoes exibidos na demonstracao sao ficticios.
+> Ja os territorios e as acoes da demonstracao foram criados por nos e sao
+> ficticios.
 
 ### O sistema prioriza pacientes?
 
-> Nao. Ele prioriza territorios ou unidades por lacunas agregadas. Nao existe
-> score individual, prontuario ou decisao clinica.
+> Nao. Ele olha para territorios e unidades usando indicadores agregados. Nao
+> existe score individual, prontuario ou decisao clinica.
 
 ### O score usa inteligencia artificial?
 
-> Nao nesta versao. A regra e deterministica e auditavel: prioridade e funcao
-> da lacuna entre o indicador e a meta operacional.
+> Nao nesta versao. A regra e direta e pode ser auditada: ela compara o
+> indicador com a meta e mostra por que chegou aquela prioridade.
 
 ### O produto prova impacto na saude?
 
-> Nao. O MVP demonstra viabilidade tecnica e uma hipotese de ganho operacional.
-> Impacto assistencial exige validacao em piloto controlado.
+> Ainda nao. O MVP mostra que a solucao funciona tecnicamente e apresenta uma
+> hipotese de ganho operacional. Impacto na saude so pode ser avaliado em um
+> piloto adequado.
 
 ### Por que as competencias das bases sao diferentes?
 
-> Usamos as publicacoes oficiais disponiveis e documentamos a competencia de
-> cada fonte. Por isso, a analise e exploratoria e nao um retrato em tempo real.
+> Porque usamos as publicacoes oficiais que estavam disponiveis, e cada fonte
+> tem seu proprio calendario. Por isso a analise e um recorte exploratorio, nao
+> um retrato em tempo real.
 
 ## Expressoes que devem ser evitadas
 
