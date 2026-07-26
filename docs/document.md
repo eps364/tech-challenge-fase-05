@@ -94,10 +94,10 @@ O sistema é construído sobre as seguintes especificações técnicas:
 
 ### 5.1. Camadas da Clean Architecture
 A estrutura do módulo `aps-prioritization-service` separa rigorosamente as preocupações de domínio e infraestrutura:
-1. **Core Domain (`core/domain`)**: Escrito em Java puro, sem nenhuma dependência de bibliotecas externas ou frameworks (como Spring ou JPA). Contém as entidades ricas de negócio (`Territory`, `Indicator`, `Action`) e as regras fundamentais, como a lógica matemática para determinação de nível de prioridade.
-2. **Core Use Case (`core/usecase`)**: Contém os casos de uso que orquestram a lógica da aplicação (ex: `GetDashboardUseCase`, `CreateActionUseCase`, `UpdateActionProgressUseCase`), acionando os adaptadores através de gateways de interface.
+1. **Core Domain (`core/domain`)**: Escrito em Java puro, sem nenhuma dependência de bibliotecas externas ou frameworks (como Spring ou JPA). Contém as entidades ricas de negócio (`Territory`, `PreventiveIndicator`, `SearchAction`) e as regras fundamentais — incluindo `PriorityCalculator`, que implementa a lógica determinística de classificação de prioridade, e os enums `PriorityLevel`, `PreventiveFocus` e `ActionStatus`.
+2. **Core Use Case (`core/usecase`)**: Contém os casos de uso que orquestram a lógica da aplicação (`GetDashboardUseCase`, `ListTerritoriesUseCase`, `GetTerritoryDetailsUseCase`, `CreateTerritoryUseCase`, `ReplaceTerritoryIndicatorsUseCase`, `CreateSearchActionUseCase`, `UpdateSearchActionProgressUseCase`), acionando os adaptadores através de gateways de interface.
 3. **Core Gateways e DTOs (`core/gateway` e `core/dto`)**: Define os contratos de repositório para persistência de dados e as classes imutáveis do tipo `record` para transferência limpa de informações.
-4. **Infrastructure Layer (`infra`)**: Camada mais externa que contém o Spring Boot, os controladores REST (`infra/web`), as entidades e repositórios do Spring Data JPA (`infra/persistence`), as configurações gerais de beans, tratamento global de erros HTTP por meio de `ProblemDetail`, e os scripts SQL gerenciados pelo Flyway.
+4. **Infrastructure Layer (`infra`)**: Camada mais externa que contém o Spring Boot, os controladores REST (`infra/web`), as entidades JPA (`infra/entity`) e repositórios Spring Data (`infra/repository`), os adaptadores de gateway (`infra/gateway`), configurações de beans (`infra/config`), tratamento global de erros HTTP por meio de `ProblemDetail`, e os scripts SQL gerenciados pelo Flyway.
 
 ---
 
@@ -134,24 +134,36 @@ Todos os endpoints utilizam o prefixo `/api/v1` e operam com payloads JSON estru
 ### 8.1. Obter Resumo Operacional (Dashboard)
 * **Método**: `GET`
 * **Endpoint**: `/dashboard`
+* **Parâmetros Opcionais**: `from=2026-07-01` (ISO date), `to=2026-07-31` (ISO date) — define o período de análise das ações; padrão é o mês corrente.
 * **Resposta de Sucesso (200 OK)**:
 ```json
 {
-  "highPriorityCount": 1,
-  "mediumPriorityCount": 2,
-  "lowPriorityCount": 1,
-  "plannedActionsCount": 1,
-  "inProgressActionsCount": 1,
-  "completedActionsCount": 1,
-  "attentionRequiredActionsCount": 1,
+  "periodStart": "2026-07-01",
+  "periodEnd": "2026-07-26",
+  "highPriorityTerritoryCount": 1,
+  "openActionCount": 1,
+  "completedActionCount": 1,
   "topPriorities": [
     {
-      "territoryId": "10000000-0000-0000-0000-000000000001",
+      "id": "10000000-0000-0000-0000-000000000001",
+      "code": "T-001",
       "name": "Jardim Esperanca",
-      "priorityLevel": "HIGH",
-      "linkageRate": 0.42,
-      "criticalIndicator": "CHRONIC_CONDITIONS",
-      "openActionsCount": 1
+      "unitName": "UBS Jardim Esperanca",
+      "linkedPopulationPercent": 42.00,
+      "dataCompetence": "2026-06",
+      "priority": "HIGH",
+      "attentionFocus": "CHRONIC_CONDITIONS",
+      "attentionFocusLabel": "Condicoes cronicas",
+      "openActionCount": 1
+    }
+  ],
+  "attentionActions": [
+    {
+      "actionId": "20000000-0000-0000-0000-000000000002",
+      "territoryId": "10000000-0000-0000-0000-000000000002",
+      "territoryName": "Vila Nova",
+      "plannedEnd": "2026-07-10",
+      "reason": "Overdue"
     }
   ]
 }
@@ -166,14 +178,15 @@ Todos os endpoints utilizam o prefixo `/api/v1` e operam com payloads JSON estru
 [
   {
     "id": "10000000-0000-0000-0000-000000000001",
+    "code": "T-001",
     "name": "Jardim Esperanca",
-    "priorityLevel": "HIGH",
-    "linkageRate": 0.42,
-    "indicators": [
-      { "focus": "CHRONIC_CONDITIONS", "value": 0.35, "target": 0.60 },
-      { "focus": "PRENATAL", "value": 0.48, "target": 0.70 }
-    ],
-    "openActionsCount": 1
+    "unitName": "UBS Jardim Esperanca",
+    "linkedPopulationPercent": 42.00,
+    "dataCompetence": "2026-06",
+    "priority": "HIGH",
+    "attentionFocus": "CHRONIC_CONDITIONS",
+    "attentionFocusLabel": "Condicoes cronicas",
+    "openActionCount": 1
   }
 ]
 ```
@@ -184,35 +197,54 @@ Todos os endpoints utilizam o prefixo `/api/v1` e operam com payloads JSON estru
 * **Resposta de Sucesso (200 OK)**:
 ```json
 {
-  "territoryId": "10000000-0000-0000-0000-000000000001",
+  "id": "10000000-0000-0000-0000-000000000001",
+  "code": "T-001",
   "name": "Jardim Esperanca",
-  "priorityLevel": "HIGH",
-  "linkageRate": 0.42,
-  "linkageTarget": 0.50,
-  "linkageMet": false,
+  "unitName": "UBS Jardim Esperanca",
+  "linkedPopulationPercent": 42.00,
+  "dataCompetence": "2026-06",
+  "priority": {
+    "level": "HIGH",
+    "linkageTarget": 50.00,
+    "reasons": [
+      "Linked population 42.00% is below the configured target of 50.00%",
+      "Condicoes cronicas is 32.00% against target 60.00%"
+    ]
+  },
   "indicators": [
     {
       "focus": "CHRONIC_CONDITIONS",
-      "value": 0.35,
-      "target": 0.60,
-      "targetMet": false
+      "label": "Condicoes cronicas",
+      "score": 32.00,
+      "target": 60.00,
+      "belowTarget": true
     },
     {
-      "focus": "PRENATAL",
-      "value": 0.48,
-      "target": 0.70,
-      "targetMet": false
+      "focus": "PRENATAL_CARE",
+      "label": "Acompanhamento prenatal",
+      "score": 72.00,
+      "target": 85.00,
+      "belowTarget": true
     }
   ],
-  "reasonText": "Prioridade ALTA calculada porque a taxa de vinculo territorial (42.00%) esta abaixo da meta minima de 50.00% e pelo menos um indicador preventivo (CHRONIC_CONDITIONS) esta abaixo da meta de referencia.",
-  "actionsHistory": [
+  "actions": [
     {
       "id": "20000000-0000-0000-0000-000000000001",
+      "territoryId": "10000000-0000-0000-0000-000000000001",
       "focus": "CHRONIC_CONDITIONS",
-      "status": "IN_PROGRESS",
+      "focusLabel": "Condicoes cronicas",
+      "objective": "Reconnect people with chronic conditions to preventive follow-up",
+      "responsibleTeam": "ESF Jardim Esperanca",
+      "plannedStart": "2026-07-23",
+      "plannedEnd": "2026-07-30",
       "targetCount": 80,
       "performedCount": 54,
-      "plannedEnd": "2026-07-30"
+      "progressPercent": 67.50,
+      "status": "IN_PROGRESS",
+      "notes": null,
+      "resultNotes": "54 contatos agregados registrados pela equipe no territorio.",
+      "createdAt": "2026-07-23T10:00:00",
+      "updatedAt": "2026-07-25T14:30:00"
     }
   ]
 }
@@ -233,12 +265,25 @@ Todos os endpoints utilizam o prefixo `/api/v1` e operam com payloads JSON estru
   "notes": "Massa demonstrativa com contagens agregadas. Nao ha dados de pacientes."
 }
 ```
-* **Resposta de Sucesso (201 Created)**:
+* **Resposta de Sucesso (201 Created)**: retorna o objeto completo da ação criada (`SearchActionOutput`).
 ```json
 {
   "id": "20000000-0000-0000-0000-000000000004",
-  "message": "Acao de busca ativa registrada com sucesso no territorio Jardim Esperanca.",
-  "status": "PLANNED"
+  "territoryId": "10000000-0000-0000-0000-000000000001",
+  "focus": "CHRONIC_CONDITIONS",
+  "focusLabel": "Condicoes cronicas",
+  "objective": "Organizar busca ativa territorial para acompanhamento preventivo de condicoes cronicas",
+  "responsibleTeam": "ESF Jardim Esperanca",
+  "plannedStart": "2026-07-23",
+  "plannedEnd": "2026-07-30",
+  "targetCount": 80,
+  "performedCount": 0,
+  "progressPercent": 0.00,
+  "status": "PLANNED",
+  "notes": "Massa demonstrativa com contagens agregadas. Nao ha dados de pacientes.",
+  "resultNotes": null,
+  "createdAt": "2026-07-26T09:00:00",
+  "updatedAt": "2026-07-26T09:00:00"
 }
 ```
 
@@ -253,13 +298,25 @@ Todos os endpoints utilizam o prefixo `/api/v1` e operam com payloads JSON estru
   "resultNotes": "54 contatos agregados registrados pela equipe no territorio."
 }
 ```
-* **Resposta de Sucesso (200 OK)**:
+* **Resposta de Sucesso (200 OK)**: retorna o objeto completo da ação atualizada (`SearchActionOutput`).
 ```json
 {
   "id": "20000000-0000-0000-0000-000000000004",
-  "message": "Progresso da acao de busca ativa atualizado com sucesso.",
+  "territoryId": "10000000-0000-0000-0000-000000000001",
+  "focus": "CHRONIC_CONDITIONS",
+  "focusLabel": "Condicoes cronicas",
+  "objective": "Organizar busca ativa territorial para acompanhamento preventivo de condicoes cronicas",
+  "responsibleTeam": "ESF Jardim Esperanca",
+  "plannedStart": "2026-07-23",
+  "plannedEnd": "2026-07-30",
+  "targetCount": 80,
+  "performedCount": 54,
+  "progressPercent": 67.50,
   "status": "IN_PROGRESS",
-  "progressPercentage": 67.5
+  "notes": "Massa demonstrativa com contagens agregadas. Nao ha dados de pacientes.",
+  "resultNotes": "54 contatos agregados registrados pela equipe no territorio.",
+  "createdAt": "2026-07-26T09:00:00",
+  "updatedAt": "2026-07-26T12:00:00"
 }
 ```
 
@@ -304,20 +361,23 @@ A persistência do MVP utiliza PostgreSQL estruturado, com atualizações e cria
 ### 10.1. Modelagem Relacional
 
 ```
-  +------------------+             +--------------------+
-  |    territory     | 1         * |     indicator      |
-  |------------------|-------------|--------------------|
-  | id (UUID) PK     |             | id (UUID) PK       |
-  | name             |             | territory_id FK    |
-  | linkage_rate     |             | focus (VARCHAR)    |
-  | priority_level   |             | current_value      |
-  |                  |             | target_value       |
-  +------------------+             +--------------------+
+  +--------------------+             +---------------------------+
+  |    territories     | 1         * |   territory_indicators    |
+  |--------------------|-------------|---------------------------|
+  | id (UUID) PK       |             | id (UUID) PK              |
+  | code (VARCHAR) UQ  |             | territory_id FK           |
+  | name               |             | focus (VARCHAR)           |
+  | unit_name          |             | score NUMERIC(5,2)        |
+  | linked_population_ |             | target NUMERIC(5,2)       |
+  |   _percent         |             +---------------------------+
+  | data_competence    |
+  | created_at         |
+  +--------------------+
            | 1
            |
            | *
   +--------------------------------+
-  |             action             |
+  |        search_actions          |
   |--------------------------------|
   | id (UUID) PK                   |
   | territory_id FK                |
@@ -327,10 +387,11 @@ A persistência do MVP utiliza PostgreSQL estruturado, com atualizações e cria
   | planned_start, planned_end     |
   | target_count, performed_count  |
   | status, notes, result_notes    |
+  | created_at, updated_at         |
   +--------------------------------+
 ```
 
-As migrações do Flyway (`V1__create_schema.sql` e `V2__insert_demo_data.sql`) garantem que a estrutura física do banco e a massa de dados agregados de demonstração sejam provisionadas de forma consistente no momento em que o contêiner do banco é ativado localmente.
+O esquema físico é provisionado pela migração Flyway `V1__create_aps_prioritization_schema.sql`. A **massa de dados demonstrativos é carregada via `DemoDataConfig`** (bean Spring condicional à propriedade `aps.demo-data.enabled=true`), não por script SQL, o que permite desativá-la em ambientes de produção sem alterar as migrações.
 
 ---
 
