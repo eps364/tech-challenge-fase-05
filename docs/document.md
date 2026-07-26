@@ -99,6 +99,14 @@ A estrutura do módulo `aps-prioritization-service` separa rigorosamente as preo
 3. **Core Gateways e DTOs (`core/gateway` e `core/dto`)**: Define os contratos de repositório para persistência de dados e as classes imutáveis do tipo `record` para transferência limpa de informações.
 4. **Infrastructure Layer (`infra`)**: Camada mais externa que contém o Spring Boot, os controladores REST (`infra/web`), as entidades JPA (`infra/entity`) e repositórios Spring Data (`infra/repository`), os adaptadores de gateway (`infra/gateway`), configurações de beans (`infra/config`), tratamento global de erros HTTP por meio de `ProblemDetail`, e os scripts SQL gerenciados pelo Flyway.
 
+### 5.2. Diagrama de Arquitetura
+
+![Arquitetura do Sistema](diagramas/architecture.svg)
+
+### 5.3. Modelo de Domínio
+
+![Modelo de Domínio](diagramas/domain.svg)
+
 ---
 
 ## 6. Fluxos Principais do MVP
@@ -115,6 +123,8 @@ A demonstração do sistema executa o fluxo operacional em um ciclo fechado de 5
        |
 [Dashboard Atualizado] -> Exibe progresso da ação e evolução do território
 ```
+
+![Fluxos Principais](diagramas/flows.svg)
 
 ---
 
