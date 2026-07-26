@@ -1,0 +1,20 @@
+%% Implantação Docker - SUS-Connect APS MVP (Fase 05)
+
+graph TD
+    subgraph DockerCompose ["docker-compose.yml"]
+        subgraph NetSC ["rede: susconnect-network"]
+            SVC["aps-prioritization-service\nPorta 8205 → 8205\nJava 21 / Spring Boot 3.4.5"]
+            PG[("aps-prioritization-postgres\nPostgreSQL 15-alpine\nPorta 5434 → 5432\nBanco: aps_priority_db")]
+        end
+    end
+
+    SVC -->|"JDBC jdbc:postgresql://\naps-prioritization-postgres:5432"| PG
+    SVC -->|"depends_on (healthcheck)"| PG
+
+    Flyway["Flyway\n(schema versionado\nao inicializar)"] --> PG
+
+    ENV["Variáveis de ambiente\nSPRING_DATASOURCE_URL\nAPS_DEMO_DATA_ENABLED=true\nAPS_LINKAGE_TARGET=50"] --> SVC
+
+    VOL[("Volume\naps_priority_postgres_data")] --> PG
+
+    Client["Usuário / Bruno / Insomnia"] -->|"HTTP :8205"| SVC

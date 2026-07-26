@@ -1,0 +1,40 @@
+%% Modelagem Relacional - SUS-Connect APS MVP (Fase 05)
+
+erDiagram
+    territories {
+        UUID    id                       PK
+        VARCHAR code                     UK "50 chars, obrigatorio"
+        VARCHAR name                        "120 chars, obrigatorio"
+        VARCHAR unit_name                   "120 chars, obrigatorio"
+        NUMERIC linked_population_percent   "NUMERIC(5,2), 0-100"
+        VARCHAR data_competence             "7 chars, formato YYYY-MM"
+        TIMESTAMP created_at                "obrigatorio, imutavel"
+    }
+
+    territory_indicators {
+        UUID    id            PK
+        UUID    territory_id  FK "references territories(id) ON DELETE CASCADE"
+        VARCHAR focus            "40 chars, enum PreventiveFocus"
+        NUMERIC score            "NUMERIC(5,2), percentual atual"
+        NUMERIC target           "NUMERIC(5,2), meta de referencia"
+    }
+
+    search_actions {
+        UUID      id               PK
+        UUID      territory_id     FK "references territories(id)"
+        VARCHAR   focus               "40 chars, enum PreventiveFocus"
+        VARCHAR   objective           "500 chars, obrigatorio"
+        VARCHAR   responsible_team    "160 chars, obrigatorio"
+        DATE      planned_start       "obrigatorio"
+        DATE      planned_end         "obrigatorio, maior que planned_start"
+        INTEGER   target_count        "maior que zero"
+        INTEGER   performed_count     "nao negativo"
+        VARCHAR   status              "30 chars, enum ActionStatus"
+        VARCHAR   notes               "1000 chars, opcional"
+        VARCHAR   result_notes        "1000 chars, opcional"
+        TIMESTAMP created_at          "obrigatorio, imutavel"
+        TIMESTAMP updated_at          "obrigatorio"
+    }
+
+    territories ||--o{ territory_indicators : "possui (cascade delete)"
+    territories ||--o{ search_actions       : "recebe"
