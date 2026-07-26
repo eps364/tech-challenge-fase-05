@@ -24,12 +24,15 @@ minutos e 20 segundos e 7 minutos e 40 segundos, mantendo margem de seguranca.
 
 Tambem existem riscos de entrega fora do video:
 
-1. a `main` publica do GitHub esta desatualizada; o MVP completo esta na branch
-   `codex-oportunidades-sus-analise`;
-2. nao existe um relatorio unico que consolide todos os itens obrigatorios do
+1. nao existe um relatorio unico que consolide todos os itens obrigatorios do
    enunciado;
-3. nao foi localizado um documento `.txt` ou `.doc` de entrega com o link para
+2. nao foi localizado um documento `.txt` ou `.doc` de entrega com o link para
    um Drive publico contendo todos os materiais.
+
+O desenvolvimento completo esta na branch publica
+`codex-oportunidades-sus-analise`. A equipe informou que o merge para `main`
+sera feito quando os materiais estiverem finalizados, portanto isso e uma
+etapa planejada de fechamento e nao um risco atual.
 
 ## O que funciona bem no pitch
 
@@ -184,7 +187,7 @@ Para uma nova gravacao:
 | Video do MVP com no maximo 8 minutos | Pendente | Usar o roteiro tecnico de aproximadamente 7:35. |
 | Demonstracao pratica por Swagger, Postman ou equivalente | Pendente | O Bruno atende ao objetivo quando as chamadas forem gravadas. |
 | Relatorio do projeto | **Risco** | Consolidar os documentos existentes em um relatorio unico. |
-| Repositorio de codigo acessivel | Parcial | O repositorio e publico, mas a `main` esta desatualizada. |
+| Repositorio de codigo acessivel | Conforme no desenvolvimento | A branch completa e publica; concluir o merge planejado antes da entrega. |
 | Documento `.txt` ou `.doc` com Drive publico | Nao verificado | Criar, testar em janela anonima e entregar pela plataforma FIAP. |
 
 ## Prioridades antes da entrega
@@ -192,10 +195,8 @@ Para uma nova gravacao:
 ### Criticas
 
 1. Substituir o pitch de 8:51 por uma versao com menos de 8 minutos.
-2. Fazer a pagina padrao do repositorio abrir a versao completa do MVP, por
-   merge ou alteracao da branch padrao.
-3. Criar o relatorio unico com os sete itens obrigatorios.
-4. Preparar o `.txt` ou `.doc` com um Drive publico e testar todos os links
+2. Criar o relatorio unico com os sete itens obrigatorios.
+3. Preparar o `.txt` ou `.doc` com um Drive publico e testar todos os links
    fora da conta dos autores.
 
 ### Importantes
