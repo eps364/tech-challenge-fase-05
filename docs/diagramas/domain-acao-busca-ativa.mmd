@@ -40,6 +40,13 @@ classDiagram
         +label() String
     }
 
+    class RegrasSearchAction {
+        <<restricoes>>
+        COMPLETED exige performedCount maior que zero
+        performedCount nao pode ser negativo
+        plannedEnd nao pode ser anterior a plannedStart
+    }
+
     SearchAction --> ActionStatus : tem status
     SearchAction --> PreventiveFocus : foco preventivo
-    note for SearchAction "COMPLETED exige performedCount > 0\nperformedCount nunca pode ser negativo\nplannedEnd não pode ser antes de plannedStart"
+    SearchAction .. RegrasSearchAction
