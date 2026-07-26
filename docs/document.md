@@ -119,6 +119,10 @@ A estrutura do módulo `aps-prioritization-service` separa rigorosamente as preo
 
 ![Domínio Ação de Busca Ativa](diagramas/domain-acao-busca-ativa.svg)
 
+### 5.7. Modelagem Relacional
+
+![Modelagem Relacional](diagramas/relational-model.svg)
+
 ---
 
 ## 6. Fluxos Principais do MVP
