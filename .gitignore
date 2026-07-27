@@ -46,7 +46,9 @@ out/
 bin/
 
 # IDE — VS Code
-.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/markdown-pdf-plus-abnt.css
 
 # OS
 .DS_Store

@@ -508,7 +508,7 @@ O projeto disponibiliza coleções completas pré-configuradas para validação 
 * **Repositório do Código**: [GitHub - eps364/tech-challenge-fase-05](https://github.com/eps364/tech-challenge-fase-05)
 * **Vídeo de Pitch**: [https://www.youtube.com/watch?v=KekyDE0KM9Q](https://www.youtube.com/watch?v=KekyDE0KM9Q)
 * **Vídeo Técnico**: [https://www.youtube.com/watch?v=xZ7hp1wO3sY](https://www.youtube.com/watch?v=xZ7hp1wO3sY)
-
+* **Documento do Projeto**: [docs/document.md](https://github.com/eps364/tech-challenge-fase-05/blob/main/docs/document.md)
 
 ---
 
